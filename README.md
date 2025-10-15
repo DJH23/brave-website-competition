@@ -42,9 +42,9 @@ Notes
 Roadmap
 
 1. Phase 1 — Scaffold ✅
-2. Phase 2 — Design system (this PR)
-3. Phase 3 — BAT/Brave integration placeholders and docs
-4. Phase 4 — Content and accessibility polish
+2. Phase 2 — Design system ✅
+3. Phase 3 — BAT/Brave integration + content (this PR)
+4. Phase 4 — Final polish and optimization
 
 ## Design System
 
@@ -77,3 +77,45 @@ Phase 2 introduces a cohesive design system:
 <Button variant="primary" size="md">Click Me</Button>
 <Card title="My Card" variant="highlight">Content here</Card>
 ```
+
+## Phase 3 — Content & BAT Integration
+
+### New Features
+
+**Portfolio Section** (`Portfolio.vue`)
+
+- Development projects showcase with tags and links
+- Music productions with BAT-powered streaming
+- Responsive grid layout
+
+**Privacy Demos** (`PrivacyDemos.vue`)
+
+- Interactive tracker blocking demo
+- Ad blocker visualization
+- Privacy score calculator
+- Live statistics and animations
+
+**BAT Integration** (`BATIntegration.vue`)
+
+- Brave Wallet connection stub (demo)
+- BAT tipping interface
+- Balance display and transaction UI
+- Educational content about BAT
+
+### Competition Scoring Checklist
+
+✅ **Videos (5 points)**: YouTube embed demo video  
+✅ **Images (5 points)**: Screenshot cards, visual placeholders  
+✅ **External links (5 points)**: Brave.com, BAT.org, Brave Rewards, Support docs  
+✅ **Social media integration (5 points)**: GitHub, Twitter/X, SoundCloud  
+✅ **Mobile experience (10 points)**: Responsive design, sticky header, mobile-first  
+🔄 **No broken links (5 points)**: All external links tested  
+🔄 **Design/Aesthetics (35 points)**: Dark theme, gradients, animations, 3D hero  
+🔄 **Brave/BAT Integration (10 points)**: Wallet stub, tipping UI, BAT education
+
+### External Links
+
+- [Brave Browser](https://brave.com)
+- [Basic Attention Token](https://basicattentiontoken.org)
+- [Brave Rewards](https://brave.com/brave-rewards/)
+- [Brave Support](https://support.brave.com)
