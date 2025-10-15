@@ -43,31 +43,32 @@ const startDemo = () => {
 </script>
 
 <template>
-    <section class="py-12 px-6 bg-neutral-900/30">
+    <section class="py-12 px-6 bg-neutral-900/30" aria-labelledby="privacy-demos-heading">
         <div class="max-w-7xl mx-auto">
-            <h2 class="text-4xl font-bold mb-4 animate-fade-in">Privacy Demos</h2>
+            <h2 id="privacy-demos-heading" class="text-4xl font-bold mb-4 animate-fade-in">Privacy Demos</h2>
             <p class="text-neutral-300 mb-8">
                 Interactive demonstrations of privacy-first web technologies and
                 tracking protection.
             </p>
 
-            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-12">
-                <Card v-for="demo in demos" :key="demo.title" :title="demo.title" hoverable>
-                    <div class="text-4xl mb-3">{{ demo.icon }}</div>
+            <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 mb-12" role="list" aria-label="Privacy demo cards">
+                <Card v-for="demo in demos" :key="demo.title" :title="demo.title" hoverable role="listitem">
+                    <div class="text-4xl mb-3" aria-hidden="true">{{ demo.icon }}</div>
                     <p class="mb-4 text-sm">{{ demo.description }}</p>
-                    <div class="flex gap-4 mb-4 text-sm">
-                        <div v-for="(value, key) in demo.stats" :key="key" class="flex flex-col">
-                            <span class="text-bravePurple font-semibold">{{ value }}</span>
-                            <span class="text-neutral-500 capitalize">{{ key }}</span>
+                    <div class="flex gap-4 mb-4 text-sm" role="list" aria-label="Demo statistics">
+                        <div v-for="(value, key) in demo.stats" :key="key" class="flex flex-col" role="listitem">
+                            <span class="text-bravePurple font-semibold" :aria-label="`${key}: ${value}`">{{ value
+                                }}</span>
+                            <span class="text-neutral-500 capitalize" aria-hidden="true">{{ key }}</span>
                         </div>
                     </div>
-                    <Button size="sm" variant="secondary">Try Demo →</Button>
+                    <Button size="sm" variant="secondary" :aria-label="`Try ${demo.title} demo`">Try Demo →</Button>
                 </Card>
             </div>
 
             <!-- Live Demo Section -->
-            <Card variant="highlight">
-                <h3 class="text-2xl font-semibold mb-4">
+            <Card variant="highlight" aria-labelledby="live-demo-heading">
+                <h3 id="live-demo-heading" class="text-2xl font-semibold mb-4">
                     Live Tracker Blocking Demo
                 </h3>
                 <p class="text-neutral-300 mb-6">
@@ -76,51 +77,49 @@ const startDemo = () => {
                 </p>
 
                 <div v-if="!showDemo" class="text-center py-8">
-                    <Button variant="primary" @click="startDemo">
-                        🚀 Start Live Demo
+                    <Button variant="primary" @click="startDemo" aria-label="Start live tracker blocking demonstration">
+                        <span aria-hidden="true">🚀</span> Start Live Demo
                     </Button>
                 </div>
 
-                <div v-else class="p-6 bg-neutral-950/50 rounded-lg border border-bravePurple/30">
+                <div v-else class="p-6 bg-neutral-950/50 rounded-lg border border-bravePurple/30" role="region"
+                    aria-live="polite" aria-atomic="true">
                     <div class="flex items-center justify-between mb-6">
                         <div>
-                            <div class="text-4xl font-bold text-bravePurple">
+                            <div class="text-4xl font-bold text-bravePurple" aria-label="Trackers blocked count">
                                 {{ activeBlockCount }}
                             </div>
                             <div class="text-sm text-neutral-400">Trackers Blocked</div>
                         </div>
                         <div class="text-right">
-                            <div class="text-2xl font-bold text-braveOrange">
+                            <div class="text-2xl font-bold text-braveOrange"
+                                :aria-label="`${Math.floor(activeBlockCount * 0.8)} milliseconds saved`">
                                 ~{{ Math.floor(activeBlockCount * 0.8) }}ms
                             </div>
                             <div class="text-sm text-neutral-400">Time Saved</div>
                         </div>
                     </div>
 
-                    <div class="space-y-2">
-                        <div class="flex items-center justify-between text-sm">
+                    <div class="space-y-2" role="list" aria-label="Breakdown of blocked trackers">
+                        <div class="flex items-center justify-between text-sm" role="listitem">
                             <span>Ad Trackers</span>
-                            <span class="text-braveOrange">{{
-                                Math.floor(activeBlockCount * 0.4)
-                                }}</span>
+                            <span class="text-braveOrange">{{ Math.floor(activeBlockCount * 0.4) }}</span>
                         </div>
-                        <div class="flex items-center justify-between text-sm">
+                        <div class="flex items-center justify-between text-sm" role="listitem">
                             <span>Cross-site Trackers</span>
-                            <span class="text-braveOrange">{{
-                                Math.floor(activeBlockCount * 0.35)
-                                }}</span>
+                            <span class="text-braveOrange">{{ Math.floor(activeBlockCount * 0.35) }}</span>
                         </div>
-                        <div class="flex items-center justify-between text-sm">
+                        <div class="flex items-center justify-between text-sm" role="listitem">
                             <span>Fingerprinting Attempts</span>
-                            <span class="text-braveOrange">{{
-                                Math.floor(activeBlockCount * 0.25)
-                                }}</span>
+                            <span class="text-braveOrange">{{ Math.floor(activeBlockCount * 0.25) }}</span>
                         </div>
                     </div>
 
-                    <div class="mt-6 p-4 bg-green-900/20 border border-green-700/30 rounded">
+                    <div class="mt-6 p-4 bg-green-900/20 border border-green-700/30 rounded" role="status"
+                        aria-live="polite">
                         <p class="text-sm text-green-400">
-                            ✅ Your privacy is protected. Brave blocked all tracking attempts.
+                            <span aria-hidden="true">✅</span> Your privacy is protected. Brave blocked all tracking
+                            attempts.
                         </p>
                     </div>
                 </div>

@@ -10,7 +10,13 @@ import BATIntegration from "./components/BATIntegration.vue";
 
 <template>
     <div class="min-h-screen flex flex-col">
-        <header
+        <!-- Skip to main content link for keyboard users -->
+        <a href="#main-content"
+            class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:bg-bravePurple focus:text-white focus:rounded-lg focus:shadow-glow-purple">
+            Skip to main content
+        </a>
+
+        <header role="banner"
             class="p-6 flex items-center justify-between animate-fade-in sticky top-0 bg-neutral-950/80 backdrop-blur-sm z-50 border-b border-neutral-800/50">
             <div>
                 <h1 class="text-2xl md:text-3xl font-bold tracking-tight">
@@ -20,48 +26,51 @@ import BATIntegration from "./components/BATIntegration.vue";
                     Built with Vue 3 + Vite + Tailwind + Three.js + NestJS
                 </p>
             </div>
-            <div class="flex items-center gap-4">
+            <nav class="flex items-center gap-4" aria-label="Social media and settings">
                 <!-- Social Media Links -->
                 <div class="hidden md:flex items-center gap-3">
-                    <a href="https://github.com" target="_blank" rel="noopener"
-                        class="text-neutral-400 hover:text-white transition-colors" aria-label="GitHub">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <a href="https://github.com" target="_blank" rel="noopener noreferrer"
+                        class="text-neutral-400 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-bravePurple rounded-sm"
+                        aria-label="Visit our GitHub profile">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path
                                 d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.762-1.605-2.665-.3-5.466-1.332-5.466-5.916 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.616-5.475 5.916.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" />
                         </svg>
                     </a>
-                    <a href="https://twitter.com" target="_blank" rel="noopener"
-                        class="text-neutral-400 hover:text-white transition-colors" aria-label="Twitter / X">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
+                        class="text-neutral-400 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-bravePurple rounded-sm"
+                        aria-label="Visit our Twitter / X profile">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path
                                 d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                         </svg>
                     </a>
-                    <a href="https://soundcloud.com" target="_blank" rel="noopener"
-                        class="text-neutral-400 hover:text-braveOrange transition-colors" aria-label="SoundCloud">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                    <a href="https://soundcloud.com" target="_blank" rel="noopener noreferrer"
+                        class="text-neutral-400 hover:text-braveOrange transition-colors focus:outline-none focus:ring-2 focus:ring-braveOrange rounded-sm"
+                        aria-label="Listen to our music on SoundCloud">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path
                                 d="M1.175 12.225c-.051 0-.094.046-.101.1l-.233 2.154.233 2.105c.007.058.05.098.101.098.05 0 .09-.04.099-.098l.255-2.105-.27-2.154c0-.057-.045-.1-.09-.1m-.899.828c-.06 0-.091.037-.104.094L0 14.479l.165 1.308c0 .055.045.094.09.094s.089-.045.104-.104l.21-1.319-.21-1.334c0-.061-.044-.09-.09-.09m1.83-1.229c-.061 0-.12.045-.12.104l-.21 2.563.225 2.458c0 .06.045.12.119.12.061 0 .105-.061.121-.12l.254-2.474-.254-2.548c-.016-.06-.061-.12-.121-.12M4.46 9.784c-.061 0-.12.061-.127.12l-.21 4.479.21 4.404c.008.059.067.104.135.104.061 0 .112-.045.135-.104l.254-4.389-.254-4.479c-.008-.059-.061-.135-.135-.135m1.8-.135c-.061 0-.135.06-.135.135l-.21 4.613.21 4.404c0 .06.061.135.135.135.061 0 .135-.061.135-.135l.254-4.404-.254-4.613c0-.061-.074-.135-.135-.135m1.801-.135c-.075 0-.135.06-.135.135L7.695 14.479l.21 4.404c0 .074.06.135.135.135s.135-.061.135-.135l.254-4.389-.254-4.479c0-.061-.06-.135-.135-.135m1.859.195c-.074 0-.135.061-.135.135l-.225 4.418.225 4.404c0 .061.061.135.135.135.075 0 .135-.061.135-.135l.24-4.404-.24-4.418c0-.074-.06-.135-.135-.135m1.8-.195c-.075 0-.135.061-.135.135l-.225 4.613.225 4.404c0 .074.06.135.135.135.074 0 .135-.061.135-.135l.254-4.404-.254-4.613c0-.074-.061-.135-.135-.135m1.8 0c-.075 0-.135.061-.135.135l-.225 4.613.225 4.404c0 .074.06.135.135.135.074 0 .135-.061.135-.135l.254-4.404-.254-4.613c0-.074-.061-.135-.135-.135m1.8.06c-.074 0-.135.061-.135.135l-.225 4.554.225 4.404c0 .074.061.135.135.135.075 0 .135-.061.135-.135l.254-4.404-.254-4.554c0-.074-.061-.135-.135-.135m1.8.165c-.074 0-.135.061-.135.135l-.225 4.388.225 4.404c0 .074.061.135.135.135.075 0 .135-.061.135-.135l.254-4.404-.254-4.388c0-.074-.061-.135-.135-.135m1.801-.195c-.075 0-.135.061-.135.135l-.225 4.583.225 4.404c0 .074.061.135.135.135.075 0 .135-.061.135-.135l.254-4.404-.254-4.583c0-.074-.061-.135-.135-.135m1.8.195c-.074 0-.135.061-.135.135l-.225 4.388.225 4.404c0 .074.061.135.135.135.075 0 .135-.061.135-.135l.254-4.404-.254-4.388c0-.074-.061-.135-.135-.135m1.8-.165c-.074 0-.135.061-.135.135l-.225 4.554.225 4.404c0 .074.061.135.135.135s.135-.061.135-.135l.254-4.404-.254-4.554c0-.074-.061-.135-.135-.135" />
                         </svg>
                     </a>
                 </div>
                 <DarkModeToggle />
-            </div>
+            </nav>
         </header>
-        <main class="flex-1">
+        <main id="main-content" class="flex-1" role="main">
             <Hero3D />
 
             <!-- Video Section -->
-            <section class="py-12 px-6 bg-neutral-900/20">
+            <section class="py-12 px-6 bg-neutral-900/20" aria-labelledby="video-section">
                 <div class="max-w-4xl mx-auto text-center">
-                    <h2 class="text-3xl font-bold mb-4">Watch the Demo</h2>
+                    <h2 id="video-section" class="text-3xl font-bold mb-4">Watch the Demo</h2>
                     <p class="text-neutral-300 mb-8">
                         See how privacy-first technologies and BAT integration work together
                     </p>
                     <div
                         class="relative aspect-video rounded-xl overflow-hidden border border-neutral-800 shadow-2xl shadow-bravePurple/20">
                         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                            title="Privacy-First Creator Hub Demo" frameborder="0"
+                            title="Privacy-First Creator Hub Demo Video" frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowfullscreen class="absolute inset-0"></iframe>
                     </div>
@@ -73,9 +82,9 @@ import BATIntegration from "./components/BATIntegration.vue";
             <BATIntegration />
 
             <!-- Image Gallery Section -->
-            <section class="py-12 px-6">
+            <section class="py-12 px-6" aria-labelledby="gallery-section">
                 <div class="max-w-7xl mx-auto">
-                    <h2 class="text-3xl font-bold mb-8 text-center">Screenshots & Visuals</h2>
+                    <h2 id="gallery-section" class="text-3xl font-bold mb-8 text-center">Screenshots & Visuals</h2>
                     <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                         <Card hoverable>
                             <div
@@ -111,7 +120,8 @@ import BATIntegration from "./components/BATIntegration.vue";
                 </div>
             </section>
         </main>
-        <footer class="p-6 text-neutral-400 text-sm border-t border-neutral-800/50 mt-12 bg-neutral-950/50">
+        <footer role="contentinfo"
+            class="p-6 text-neutral-400 text-sm border-t border-neutral-800/50 mt-12 bg-neutral-950/50">
             <div class="max-w-7xl mx-auto">
                 <div class="grid md:grid-cols-3 gap-8 mb-8">
                     <!-- Project Info -->
@@ -121,52 +131,52 @@ import BATIntegration from "./components/BATIntegration.vue";
                             Built for the Brave Website Challenge. Showcasing privacy-first
                             technologies, BAT integration, and modern web development.
                         </p>
-                        <div class="flex gap-3">
-                            <a href="https://github.com" target="_blank" rel="noopener"
-                                class="hover:text-white transition-colors">
+                        <nav class="flex gap-3" aria-label="Footer social media links">
+                            <a href="https://github.com" target="_blank" rel="noopener noreferrer"
+                                class="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-bravePurple rounded-sm">
                                 GitHub
                             </a>
-                            <a href="https://twitter.com" target="_blank" rel="noopener"
-                                class="hover:text-white transition-colors">
+                            <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
+                                class="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-bravePurple rounded-sm">
                                 Twitter
                             </a>
-                            <a href="https://soundcloud.com" target="_blank" rel="noopener"
-                                class="hover:text-white transition-colors">
+                            <a href="https://soundcloud.com" target="_blank" rel="noopener noreferrer"
+                                class="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-braveOrange rounded-sm">
                                 SoundCloud
                             </a>
-                        </div>
+                        </nav>
                     </div>
 
                     <!-- Quick Links -->
-                    <div>
+                    <nav aria-label="Resource links">
                         <h3 class="text-white font-semibold mb-3">Resources</h3>
                         <ul class="space-y-2 text-xs">
                             <li>
-                                <a href="https://brave.com" target="_blank" rel="noopener"
-                                    class="hover:text-bravePurple transition-colors">
+                                <a href="https://brave.com" target="_blank" rel="noopener noreferrer"
+                                    class="hover:text-bravePurple transition-colors focus:outline-none focus:ring-2 focus:ring-bravePurple rounded-sm">
                                     Brave Browser
                                 </a>
                             </li>
                             <li>
-                                <a href="https://basicattentiontoken.org" target="_blank" rel="noopener"
-                                    class="hover:text-braveOrange transition-colors">
+                                <a href="https://basicattentiontoken.org" target="_blank" rel="noopener noreferrer"
+                                    class="hover:text-braveOrange transition-colors focus:outline-none focus:ring-2 focus:ring-braveOrange rounded-sm">
                                     Basic Attention Token
                                 </a>
                             </li>
                             <li>
-                                <a href="https://brave.com/brave-rewards/" target="_blank" rel="noopener"
-                                    class="hover:text-braveBlue transition-colors">
+                                <a href="https://brave.com/brave-rewards/" target="_blank" rel="noopener noreferrer"
+                                    class="hover:text-braveBlue transition-colors focus:outline-none focus:ring-2 focus:ring-braveBlue rounded-sm">
                                     Brave Rewards
                                 </a>
                             </li>
                             <li>
-                                <a href="https://support.brave.com" target="_blank" rel="noopener"
-                                    class="hover:text-white transition-colors">
+                                <a href="https://support.brave.com" target="_blank" rel="noopener noreferrer"
+                                    class="hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-bravePurple rounded-sm">
                                     Support & Docs
                                 </a>
                             </li>
                         </ul>
-                    </div>
+                    </nav>
 
                     <!-- Tech Stack -->
                     <div>

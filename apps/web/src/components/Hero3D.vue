@@ -59,8 +59,8 @@ onMounted(() => {
 </script>
 
 <template>
-    <section class="w-full flex items-center justify-center py-10">
-        <canvas ref="canvas"
+    <section class="w-full flex items-center justify-center py-10" aria-label="3D Interactive Hero Animation">
+        <canvas ref="canvas" role="img" aria-label="Animated 3D cube representing Brave's innovative technology"
             class="rounded-2xl border border-neutral-800/80 shadow-2xl shadow-bravePurple/20 hover:shadow-glow-purple transition-shadow duration-500 animate-fade-in"></canvas>
     </section>
 </template>
