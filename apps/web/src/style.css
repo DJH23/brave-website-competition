@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Subtle noise/gradient overlay can be added later */
+body {
+  background-blend-mode: overlay;
+}
