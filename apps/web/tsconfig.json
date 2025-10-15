@@ -6,5 +6,8 @@
     "moduleResolution": "Bundler",
     "types": ["vite/client"]
   },
+  "vueCompilerOptions": {
+    "globalTypesPath": "./env.d.ts"
+  },
   "include": ["src", "env.d.ts", "vite.config.ts", "tailwind.config.ts"]
 }
