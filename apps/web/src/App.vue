@@ -33,7 +33,7 @@ const PrivacyDemosAsync = defineAsyncComponent(() => import("./components/Privac
                 <!-- Social Media Links -->
                 <div class="hidden md:flex items-center gap-3">
                     <a href="https://github.com" target="_blank" rel="noopener noreferrer"
-                        class="text-neutral-400 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-bravePurple rounded-sm"
+                        class="p-2 rounded-md text-neutral-400 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-bravePurple"
                         aria-label="Visit our GitHub profile">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path
@@ -41,7 +41,7 @@ const PrivacyDemosAsync = defineAsyncComponent(() => import("./components/Privac
                         </svg>
                     </a>
                     <a href="https://twitter.com" target="_blank" rel="noopener noreferrer"
-                        class="text-neutral-400 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-bravePurple rounded-sm"
+                        class="p-2 rounded-md text-neutral-400 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-bravePurple"
                         aria-label="Visit our Twitter / X profile">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path
@@ -49,7 +49,7 @@ const PrivacyDemosAsync = defineAsyncComponent(() => import("./components/Privac
                         </svg>
                     </a>
                     <a href="https://soundcloud.com" target="_blank" rel="noopener noreferrer"
-                        class="text-neutral-400 hover:text-braveOrange transition-colors focus:outline-none focus:ring-2 focus:ring-braveOrange rounded-sm"
+                        class="p-2 rounded-md text-neutral-400 hover:text-braveOrange transition-colors focus:outline-none focus:ring-2 focus:ring-braveOrange"
                         aria-label="Listen to our music on SoundCloud">
                         <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                             <path
