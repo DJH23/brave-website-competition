@@ -1,0 +1,16 @@
+{
+  "name": "brave-website-competition",
+  "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n web,api -c cyan,magenta \"npm run dev --workspace @app/web\" \"npm run start:dev --workspace @app/api\"",
+    "build": "npm run build --workspaces",
+    "start": "concurrently -k -n api,web -c magenta,cyan \"npm run start --workspace @app/api\" \"npm run preview --workspace @app/web\"",
+    "test": "echo \"no tests yet\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  }
+}
