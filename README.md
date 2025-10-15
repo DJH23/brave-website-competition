@@ -41,7 +41,39 @@ Notes
 
 Roadmap
 
-1. Phase 1 — Scaffold (this PR)
-2. Phase 2 — Design system (tokens, components, micro-interactions)
+1. Phase 1 — Scaffold ✅
+2. Phase 2 — Design system (this PR)
 3. Phase 3 — BAT/Brave integration placeholders and docs
 4. Phase 4 — Content and accessibility polish
+
+## Design System
+
+Phase 2 introduces a cohesive design system:
+
+### Tailwind Tokens
+
+- Brand colors: `brand-purple`, `brand-orange`, `brand-blue`
+- Typography: Inter (sans), JetBrains Mono (mono), with semantic scale
+- Spacing: Extended scale (18, 88, 128)
+- Shadows: Glow effects (`glow-purple`, `glow-orange`, `glow-blue`)
+- Animations: `fade-in`, `slide-up`, `glow`
+
+### UI Components
+
+- `Button.vue`: Three variants (primary, secondary, ghost), three sizes (sm, md, lg), accessible focus states
+- `Card.vue`: Default and highlight variants, hover lift effect
+- `DarkModeToggle.vue`: Toggles dark/light theme with animated icon switch
+
+### Layout Enhancements
+
+- Animated header with dark mode toggle
+- Enhanced footer with external links
+- Three-column card grid (responsive)
+- Hover/focus micro-interactions
+
+### Usage
+
+```vue
+<Button variant="primary" size="md">Click Me</Button>
+<Card title="My Card" variant="highlight">Content here</Card>
+```

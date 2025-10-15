@@ -60,7 +60,8 @@ onMounted(() => {
 
 <template>
     <section class="w-full flex items-center justify-center py-10">
-        <canvas ref="canvas" class="rounded-2xl border border-neutral-800/80 shadow-2xl shadow-bravePurple/20"></canvas>
+        <canvas ref="canvas"
+            class="rounded-2xl border border-neutral-800/80 shadow-2xl shadow-bravePurple/20 hover:shadow-glow-purple transition-shadow duration-500 animate-fade-in"></canvas>
     </section>
 </template>
 
