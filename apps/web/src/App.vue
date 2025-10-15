@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import Hero3D from "./components/Hero3D.vue";
+import { defineAsyncComponent } from "vue";
 import Button from "./components/Button.vue";
 import Card from "./components/Card.vue";
 import DarkModeToggle from "./components/DarkModeToggle.vue";
 import Portfolio from "./components/Portfolio.vue";
-import PrivacyDemos from "./components/PrivacyDemos.vue";
 import BATIntegration from "./components/BATIntegration.vue";
+
+// Lazy-load heavier components to reduce initial bundle size
+const Hero3DAsync = defineAsyncComponent(() => import("./components/Hero3D.vue"));
+const PrivacyDemosAsync = defineAsyncComponent(() => import("./components/PrivacyDemos.vue"));
 </script>
 
 <template>
@@ -58,7 +61,17 @@ import BATIntegration from "./components/BATIntegration.vue";
             </nav>
         </header>
         <main id="main-content" class="flex-1" role="main">
-            <Hero3D />
+            <Suspense>
+                <template #default>
+                    <Hero3DAsync />
+                </template>
+                <template #fallback>
+                    <div class="mx-auto max-w-6xl py-10">
+                        <div class="h-64 md:h-80 w-full rounded-2xl border border-neutral-800/80 bg-neutral-900/40 animate-pulse"
+                            aria-hidden="true"></div>
+                    </div>
+                </template>
+            </Suspense>
 
             <!-- Video Section -->
             <section class="py-12 px-6 bg-neutral-900/20" aria-labelledby="video-section">
@@ -70,15 +83,32 @@ import BATIntegration from "./components/BATIntegration.vue";
                     <div
                         class="relative aspect-video rounded-xl overflow-hidden border border-neutral-800 shadow-2xl shadow-bravePurple/20">
                         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-                            title="Privacy-First Creator Hub Demo Video" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            title="Privacy-First Creator Hub Demo Video" frameborder="0" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                             allowfullscreen class="absolute inset-0"></iframe>
                     </div>
                 </div>
             </section>
 
             <Portfolio />
-            <PrivacyDemos />
+            <Suspense>
+                <template #default>
+                    <PrivacyDemosAsync />
+                </template>
+                <template #fallback>
+                    <div class="max-w-7xl mx-auto px-6 py-12">
+                        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                            <div class="h-40 rounded-xl bg-neutral-900/50 border border-neutral-800 animate-pulse"
+                                aria-hidden="true"></div>
+                            <div class="h-40 rounded-xl bg-neutral-900/50 border border-neutral-800 animate-pulse"
+                                aria-hidden="true"></div>
+                            <div class="h-40 rounded-xl bg-neutral-900/50 border border-neutral-800 animate-pulse"
+                                aria-hidden="true"></div>
+                        </div>
+                    </div>
+                </template>
+            </Suspense>
             <BATIntegration />
 
             <!-- Image Gallery Section -->
