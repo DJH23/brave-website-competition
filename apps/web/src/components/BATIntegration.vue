@@ -1,39 +1,80 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch, computed } from "vue";
+import { useWallet } from "../composables/useWallet";
+import { useBATPrice } from "../composables/useBATPrice";
 import Card from "./Card.vue";
 import Button from "./Button.vue";
+import BATPriceTicker from "./BATPriceTicker.vue";
+import TipConfirmationModal from "./TipConfirmationModal.vue";
 
-const walletConnected = ref(false);
-const batBalance = ref(0);
-const tipAmount = ref(1);
+const {
+    address,
+    isConnected,
+    isCorrectNetwork,
+    batBalance,
+    isLoading,
+    error,
+    connectWallet,
+    fetchBATBalance,
+    sendBATTip
+} = useWallet();
+
+const { batPrice } = useBATPrice();
+
+const tipAmount = ref<string>("1");
 const showWalletInfo = ref(false);
+const showConfirmation = ref(false);
+const lastTransactionHash = ref<string>("");
 
-// Brave Search API demo state
 const searchQuery = ref("");
-const searchResults = ref([]);
+const searchResults = ref<any[]>([]);
 const searchLoading = ref(false);
 const searchError = ref("");
 
-const connectWallet = () => {
-    // This is a mock integration. Real Brave Wallet API is not available yet.
-    walletConnected.value = true;
-    batBalance.value = 42.5; // Mock balance
-};
+watch(isConnected, async (connected) => {
+    if (connected) {
+        await fetchBATBalance();
+    }
+});
 
-const sendTip = () => {
-    if (batBalance.value >= tipAmount.value) {
-        batBalance.value -= tipAmount.value;
-        alert(`✅ Thank you! ${tipAmount.value} BAT sent successfully.`);
+const batBalanceUSD = computed(() => {
+    const balance = parseFloat(batBalance.value || "0");
+    const price = batPrice.value?.usd || 0;
+    return (balance * price).toFixed(2);
+});
+
+const tipAmountUSD = computed(() => {
+    const amount = parseFloat(tipAmount.value || "0");
+    const price = batPrice.value?.usd || 0;
+    return (amount * price).toFixed(2);
+});
+
+const canSendTip = computed(() => {
+    const balance = parseFloat(batBalance.value || "0");
+    const amount = parseFloat(tipAmount.value || "0");
+    return isConnected.value &&
+        isCorrectNetwork.value &&
+        balance >= amount &&
+        amount > 0 &&
+        !isLoading.value;
+});
+
+const handleSendTip = async () => {
+    if (!canSendTip.value) return;
+    const success = await sendBATTip(tipAmount.value);
+    if (success) {
+        lastTransactionHash.value = "0x...";
+        showConfirmation.value = true;
     }
 };
 
-// Brave Search API demo
+const presetAmounts = [1, 5, 10, 25];
+
 const searchBrave = async () => {
     searchLoading.value = true;
     searchError.value = "";
     searchResults.value = [];
     try {
-        // Use backend proxy to avoid CORS issues
         const response = await fetch(`http://localhost:3000/search?q=${encodeURIComponent(searchQuery.value)}`);
         if (!response.ok) throw new Error("Backend search API error");
         const data = await response.json();
@@ -57,105 +98,127 @@ const searchBrave = async () => {
 </script>
 
 <template>
+    <TipConfirmationModal :is-open="showConfirmation" :tip-amount="tipAmount" :transaction-hash="lastTransactionHash"
+        @close="showConfirmation = false" />
+
     <section class="py-12 px-6">
         <div class="max-w-7xl mx-auto">
-            <h2 class="text-4xl font-bold mb-4 animate-fade-in">
+            <h2 class="text-4xl font-bold mb-4 animate-fade-in text-gradient-rainbow">
                 BAT & Brave Wallet Integration
             </h2>
             <p class="text-neutral-300 mb-8">
-                <strong>Note:</strong> This is a mock integration for demonstration purposes. Real Brave Wallet API is
-                not available yet.<br>
+                Connect your Brave Wallet or MetaMask to tip with real BAT tokens on Ethereum Mainnet.<br>
                 <a href="https://etherscan.io/token/0x0d8775f648430679a709e98d2b0cb6250d2887ef" target="_blank"
-                    rel="noopener noreferrer" class="underline text-braveOrange hover:text-bravePurple">Learn about BAT
-                    on Etherscan</a> &nbsp;|&nbsp;
+                    rel="noopener noreferrer" class="underline text-braveOrange hover:text-bravePurple">View BAT on
+                    Etherscan</a>
+                &nbsp;|&nbsp;
                 <a href="https://wallet-docs.brave.com/" target="_blank" rel="noopener noreferrer"
                     class="underline text-braveBlue hover:text-bravePurple">Brave Wallet Documentation</a>
             </p>
-            <Button variant="secondary" size="sm" class="mb-6" @click="showWalletInfo = true">What is Brave
-                Wallet?</Button>
-            <div v-if="showWalletInfo" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center">
+
+            <div class="mb-8">
+                <BATPriceTicker />
+            </div>
+
+            <Button variant="secondary" size="sm" class="mb-6" @click="showWalletInfo = true">
+                What is Brave Wallet?
+            </Button>
+
+            <div v-if="showWalletInfo" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center"
+                @click.self="showWalletInfo = false">
                 <div
                     class="bg-neutral-900 rounded-xl p-8 max-w-md w-full border border-bravePurple shadow-2xl relative">
-                    <button class="absolute top-3 right-3 text-neutral-400 hover:text-white"
+                    <button class="absolute top-3 right-3 text-neutral-400 hover:text-white text-2xl leading-none"
                         @click="showWalletInfo = false" aria-label="Close info">
-                        &times;
+                        ×
                     </button>
-                    <h3 class="text-2xl font-bold mb-3 text-bravePurple">Brave Wallet Features</h3>
-                    <ul class="list-disc pl-5 text-neutral-300 mb-3">
+                    <h3 class="text-2xl font-bold mb-3 text-gradient-purple">Brave Wallet Features</h3>
+                    <ul class="list-disc pl-5 text-neutral-300 mb-3 space-y-1">
                         <li>Built into Brave Browser—no extensions required</li>
                         <li>Supports BAT, Ethereum, and other crypto assets</li>
                         <li>Private, secure, and easy to use</li>
                         <li>Send, receive, and manage tokens</li>
                         <li>Earn BAT via Brave Ads (opt-in)</li>
-                        <li>Connect to dApps (when API is available)</li>
+                        <li>Connect to dApps seamlessly</li>
                     </ul>
                     <a href="https://wallet-docs.brave.com/" target="_blank" rel="noopener noreferrer"
-                        class="underline text-braveBlue hover:text-bravePurple">Read the full Brave Wallet
-                        documentation</a>
+                        class="underline text-braveBlue hover:text-bravePurple">Read the full documentation</a>
                 </div>
             </div>
 
             <div class="grid gap-6 lg:grid-cols-2">
-                <!-- Wallet Connection Card -->
                 <Card title="Connect Your Wallet" variant="highlight">
-                    <div v-if="!walletConnected" class="text-center py-6">
-                        <div class="text-6xl mb-4">🦁</div>
+                    <div v-if="!isConnected" class="text-center py-6">
+                        <div class="text-6xl mb-4">���</div>
                         <p class="text-neutral-300 mb-6">
-                            Connect your Brave Wallet to start earning and tipping with BAT
+                            Connect your Brave Wallet or MetaMask to start tipping with BAT
                         </p>
-                        <Button variant="primary" @click="connectWallet">
-                            🔗 Connect Brave Wallet
+                        <Button variant="primary" @click="connectWallet" :disabled="isLoading">
+                            {{ isLoading ? '⏳ Connecting...' : '��� Connect Wallet' }}
                         </Button>
                         <p class="text-xs text-neutral-500 mt-4">
-                            <strong>Demo only:</strong> Real Brave Wallet integration is not possible yet. <br>
-                            <a href="https://wallet-docs.brave.com/" target="_blank" rel="noopener noreferrer"
-                                class="underline text-braveBlue hover:text-bravePurple">Learn more about Brave
-                                Wallet</a>
+                            Real Web3 integration using Web3Modal & ethers.js
                         </p>
                     </div>
 
                     <div v-else class="space-y-4">
+                        <div v-if="!isCorrectNetwork"
+                            class="p-3 bg-yellow-500/10 border border-yellow-500/50 rounded-lg">
+                            <p class="text-yellow-400 text-sm">⚠️ Please switch to Ethereum Mainnet</p>
+                        </div>
+
+                        <div v-if="error" class="p-3 bg-red-500/10 border border-red-500/50 rounded-lg">
+                            <p class="text-red-400 text-sm">{{ error }}</p>
+                        </div>
+
                         <div class="p-4 bg-gradient-to-br from-bravePurple/20 to-braveOrange/20 rounded-lg">
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-sm text-neutral-400">Your BAT Balance</span>
                                 <span class="text-green-400 text-sm">● Connected</span>
                             </div>
                             <div class="text-3xl font-bold text-braveOrange">
-                                {{ batBalance.toFixed(2) }} BAT
+                                {{ isLoading ? '...' : parseFloat(batBalance).toFixed(2) }} BAT
                             </div>
                             <div class="text-sm text-neutral-400 mt-1">
-                                ≈ ${{ (batBalance * 0.25).toFixed(2) }} USD
+                                ≈ ${{ batBalanceUSD }} USD
                             </div>
                         </div>
 
-                        <div class="grid grid-cols-2 gap-3">
-                            <Button size="sm" variant="secondary">Earn BAT</Button>
-                            <Button size="sm" variant="secondary">Wallet Settings</Button>
+                        <div class="p-3 bg-neutral-900/50 rounded-lg border border-neutral-800">
+                            <div class="text-xs text-neutral-400 mb-1">Connected Address</div>
+                            <div class="font-mono text-xs text-neutral-300 truncate">
+                                {{ address }}
+                            </div>
                         </div>
+
+                        <Button size="sm" variant="secondary" @click="fetchBATBalance" :disabled="isLoading"
+                            class="w-full">
+                            ��� Refresh Balance
+                        </Button>
                     </div>
                 </Card>
 
-                <!-- Tipping Card -->
                 <Card title="Support This Project">
                     <p class="text-neutral-300 mb-4">
-                        Enjoy this privacy-first creator hub? Send a tip with BAT to support
-                        development.
+                        Enjoy this privacy-first creator hub? Send a tip with BAT to support development.
                     </p>
 
-                    <div v-if="walletConnected" class="space-y-4">
+                    <div v-if="isConnected && isCorrectNetwork" class="space-y-4">
                         <div>
                             <label class="text-sm text-neutral-400 block mb-2">Tip Amount (BAT)</label>
-                            <div class="flex gap-2">
-                                <button v-for="amount in [1, 5, 10, 25]" :key="amount" @click="tipAmount = amount"
-                                    :class="[
+                            <div class="flex gap-2 mb-3">
+                                <button v-for="amount in presetAmounts" :key="amount"
+                                    @click="tipAmount = amount.toString()" :class="[
                                         'px-4 py-2 rounded-lg transition-all',
-                                        tipAmount === amount
-                                            ? 'bg-bravePurple text-white'
+                                        tipAmount === amount.toString()
+                                            ? 'bg-bravePurple text-white neon-glow'
                                             : 'bg-neutral-800 hover:bg-neutral-700',
                                     ]">
                                     {{ amount }}
                                 </button>
                             </div>
+                            <input v-model="tipAmount" type="number" step="0.1" min="0" placeholder="Custom amount"
+                                class="w-full px-4 py-2 bg-neutral-900 border border-neutral-700 rounded-lg text-white focus:border-bravePurple focus:outline-none" />
                         </div>
 
                         <div class="p-4 bg-neutral-900/50 rounded-lg border border-neutral-800">
@@ -164,73 +227,76 @@ const searchBrave = async () => {
                                 <span class="font-semibold">{{ tipAmount }} BAT</span>
                             </div>
                             <div class="flex justify-between text-sm text-neutral-400">
-                                <span>Transaction fee</span>
-                                <span>0.00 BAT</span>
+                                <span>Value in USD</span>
+                                <span>≈ ${{ tipAmountUSD }}</span>
                             </div>
                         </div>
 
-                        <Button variant="primary" @click="sendTip" :disabled="batBalance < tipAmount" class="w-full">
-                            💝 Send {{ tipAmount }} BAT Tip
+                        <Button variant="primary" @click="handleSendTip" :disabled="!canSendTip" class="w-full">
+                            <span v-if="isLoading">⏳ Processing...</span>
+                            <span v-else>��� Send {{ tipAmount }} BAT Tip</span>
                         </Button>
                     </div>
 
                     <div v-else class="text-center py-6">
                         <p class="text-neutral-400 mb-4">
-                            Connect your Brave Wallet to send tips
+                            {{ isConnected ? 'Switch to Ethereum Mainnet to send tips' : 'Connect your wallet to send tips' }}
                         </p>
-                        <Button variant="secondary" @click="connectWallet">
+                        <Button v-if="!isConnected" variant="secondary" @click="connectWallet">
                             Connect Wallet
                         </Button>
                     </div>
                 </Card>
             </div>
 
-            <!-- BAT Features -->
             <div class="mt-12 grid gap-6 md:grid-cols-3">
                 <Card hoverable>
                     <div class="text-3xl mb-3">⚡</div>
-                    <h3 class="text-lg font-semibold mb-2">Earn BAT</h3>
+                    <h3 class="text-lg font-semibold mb-2 text-gradient-purple">Earn BAT</h3>
                     <p class="text-sm text-neutral-400">
                         Get paid in BAT for viewing privacy-respecting ads in Brave Browser.
                     </p>
                 </Card>
 
                 <Card hoverable>
-                    <div class="text-3xl mb-3">🎁</div>
-                    <h3 class="text-lg font-semibold mb-2">Tip Creators</h3>
+                    <div class="text-3xl mb-3">���</div>
+                    <h3 class="text-lg font-semibold mb-2 text-gradient-orange">Tip Creators</h3>
                     <p class="text-sm text-neutral-400">
                         Support your favorite websites and creators directly with BAT tips.
                     </p>
                 </Card>
 
                 <Card hoverable>
-                    <div class="text-3xl mb-3">🔒</div>
-                    <h3 class="text-lg font-semibold mb-2">Privacy First</h3>
+                    <div class="text-3xl mb-3">���</div>
+                    <h3 class="text-lg font-semibold mb-2 text-gradient-blue">Privacy First</h3>
                     <p class="text-sm text-neutral-400">
                         All BAT transactions are private and don't require personal data.
                     </p>
                 </Card>
             </div>
-            <!-- Brave Search API Demo -->
+
             <div class="mt-16">
                 <Card title="Brave Search Demo" variant="highlight">
-                    <h3 class="text-lg font-semibold mb-2">Try Brave Search</h3>
-                    <p class="text-sm text-neutral-400 mb-4">Brave Search is a privacy-first search engine. This demo
-                        uses the Brave Search API to show results for your query.</p>
+                    <h3 class="text-lg font-semibold mb-2 text-gradient-blue">Try Brave Search</h3>
+                    <p class="text-sm text-neutral-400 mb-4">
+                        Brave Search is a privacy-first search engine. This demo uses the Brave Search API.
+                    </p>
                     <form @submit.prevent="searchBrave">
                         <div class="flex gap-2 mb-4">
                             <input v-model="searchQuery" type="text" placeholder="Search Brave..."
-                                class="px-3 py-2 rounded-lg bg-neutral-800 text-white border border-neutral-700 w-full" />
-                            <Button variant="primary" size="sm" type="submit">Search</Button>
+                                class="px-3 py-2 rounded-lg bg-neutral-800 text-white border border-neutral-700 w-full focus:border-bravePurple focus:outline-none" />
+                            <Button variant="primary" size="sm" type="submit" :disabled="searchLoading">
+                                {{ searchLoading ? '...' : 'Search' }}
+                            </Button>
                         </div>
                     </form>
                     <div v-if="searchLoading" class="text-neutral-400">Searching...</div>
                     <ul v-if="searchResults.length" class="mt-4 space-y-2">
                         <li v-for="result in searchResults" :key="result.url"
-                            class="p-3 rounded bg-neutral-900 border border-neutral-800">
+                            class="p-3 rounded bg-neutral-900 border border-neutral-800 hover:border-bravePurple/50 transition-colors">
                             <a :href="result.url" target="_blank" rel="noopener noreferrer"
                                 class="text-braveBlue underline hover:text-bravePurple">{{ result.title }}</a>
-                            <div class="text-xs text-neutral-400">{{ result.description }}</div>
+                            <div class="text-xs text-neutral-400 mt-1">{{ result.description }}</div>
                         </li>
                     </ul>
                     <div v-if="searchError" class="text-red-400 mt-4">{{ searchError }}</div>
