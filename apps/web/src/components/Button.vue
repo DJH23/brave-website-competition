@@ -15,15 +15,15 @@ const props = withDefaults(defineProps<Props>(), {
 
 const classes = computed(() => {
     const base =
-        "inline-flex items-center justify-center font-medium transition-all duration-200 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-bravePurple disabled:opacity-50 disabled:cursor-not-allowed";
+        "inline-flex items-center justify-center font-medium transition-all duration-200 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-bravePurple disabled:opacity-50 disabled:cursor-not-allowed transform-gpu";
 
     const variants = {
         primary:
-            "bg-gradient-to-r from-bravePurple to-braveBlue text-white hover:shadow-glow-purple hover:scale-105 active:scale-95",
+            "bg-gradient-to-r from-bravePurple to-braveBlue text-white hover:neon-glow hover:scale-105 active:scale-95 active:shadow-inner",
         secondary:
-            "bg-neutral-800 text-white border border-neutral-700 hover:bg-neutral-700 hover:border-neutral-600",
+            "bg-neutral-800 text-white border border-neutral-700 hover:bg-neutral-700 hover:border-neutral-600 hover:neon-glow-blue hover:scale-[1.02] active:scale-95",
         ghost:
-            "text-neutral-300 hover:bg-neutral-800/50 hover:text-white",
+            "text-neutral-300 hover:bg-neutral-800/50 hover:text-white hover:scale-[1.02] active:scale-95",
     };
 
     const sizes = {

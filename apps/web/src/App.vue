@@ -5,6 +5,9 @@ import Card from "./components/Card.vue";
 import DarkModeToggle from "./components/DarkModeToggle.vue";
 import Portfolio from "./components/Portfolio.vue";
 import BATIntegration from "./components/BATIntegration.vue";
+import ParticleBackground from "./components/ParticleBackground.vue";
+import AnimatedBATLogo from "./components/AnimatedBATLogo.vue";
+import AnimatedBackground from "./components/AnimatedBackground.vue";
 
 // Lazy-load heavier components to reduce initial bundle size
 const Hero3DAsync = defineAsyncComponent(() => import("./components/Hero3D.vue"));
@@ -12,7 +15,9 @@ const PrivacyDemosAsync = defineAsyncComponent(() => import("./components/Privac
 </script>
 
 <template>
-    <div class="min-h-screen flex flex-col">
+    <AnimatedBackground variant="dots" :opacity="0.12" />
+    <ParticleBackground />
+    <div class="min-h-screen flex flex-col relative z-10">
         <!-- Skip to main content link for keyboard users -->
         <a href="#main-content"
             class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:px-4 focus:py-2 focus:bg-bravePurple focus:text-white focus:rounded-lg focus:shadow-glow-purple">
@@ -21,13 +26,16 @@ const PrivacyDemosAsync = defineAsyncComponent(() => import("./components/Privac
 
         <header role="banner"
             class="p-6 flex items-center justify-between animate-fade-in sticky top-0 bg-neutral-950/80 backdrop-blur-sm z-50 border-b border-neutral-800/50">
-            <div>
-                <h1 class="text-2xl md:text-3xl font-bold tracking-tight">
-                    Privacy‑First Creator Hub
-                </h1>
-                <p class="text-xs md:text-sm text-neutral-300 mt-1">
-                    Built with Vue 3 + Vite + Tailwind + Three.js + NestJS
-                </p>
+            <div class="flex items-center gap-3">
+                <AnimatedBATLogo :width="80" :height="70" />
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-bold tracking-tight">
+                        Privacy‑First Creator Hub
+                    </h1>
+                    <p class="text-xs md:text-sm text-neutral-300 mt-1">
+                        Built with Vue 3 + Vite + Tailwind + Three.js + NestJS
+                    </p>
+                </div>
             </div>
             <nav class="flex items-center gap-4" aria-label="Social media and settings">
                 <!-- Social Media Links -->
@@ -98,14 +106,22 @@ const PrivacyDemosAsync = defineAsyncComponent(() => import("./components/Privac
                 </template>
                 <template #fallback>
                     <div class="max-w-7xl mx-auto px-6 py-12">
-                        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                            <div class="h-40 rounded-xl bg-neutral-900/50 border border-neutral-800 animate-pulse"
-                                aria-hidden="true"></div>
-                            <div class="h-40 rounded-xl bg-neutral-900/50 border border-neutral-800 animate-pulse"
-                                aria-hidden="true"></div>
-                            <div class="h-40 rounded-xl bg-neutral-900/50 border border-neutral-800 animate-pulse"
-                                aria-hidden="true"></div>
-                        </div>
+                        <Card variant="highlight">
+                            <div class="flex items-center gap-3" role="status" aria-live="polite">
+                                <svg class="animate-spin h-5 w-5 text-bravePurple" viewBox="0 0 24 24" fill="none"
+                                    aria-hidden="true">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                        stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor"
+                                        d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                                </svg>
+                                <span class="font-medium">Loading privacy demos…</span>
+                            </div>
+                            <p class="text-sm text-neutral-400 mt-2">
+                                This section is optimized and loads on demand. If it takes too long, check your
+                                connection or reload the page.
+                            </p>
+                        </Card>
                     </div>
                 </template>
             </Suspense>

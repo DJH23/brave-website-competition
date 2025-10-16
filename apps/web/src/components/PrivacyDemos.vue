@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, nextTick } from "vue";
 import Card from "./Card.vue";
 import Button from "./Button.vue";
+import TrackerNetworkVisualization from "./TrackerNetworkVisualization.vue";
+import PrivacyScoreCalculator from "./PrivacyScoreCalculator.vue";
+import FingerprintingDemo from "./FingerprintingDemo.vue";
 
 const demos = ref([
     {
@@ -10,6 +13,7 @@ const demos = ref([
             "See in real-time how Brave Shields blocks trackers, ads, and fingerprinting attempts.",
         icon: "🛡️",
         stats: { blocked: "3.2M+", saved: "42min" },
+        refName: "trackerNetworkRef"
     },
     {
         title: "Privacy Score Calculator",
@@ -17,6 +21,7 @@ const demos = ref([
             "Calculate your privacy score based on browser settings and extension usage.",
         icon: "📊",
         stats: { score: "94/100", level: "Expert" },
+        refName: "privacyScoreRef"
     },
     {
         title: "Tracker Inspector",
@@ -24,11 +29,16 @@ const demos = ref([
             "Interactive tool showing what data trackers collect and how to stop them.",
         icon: "🔍",
         stats: { trackers: "128", networks: "42" },
+        refName: "fingerprintingRef"
     },
 ]);
 
 const showDemo = ref(false);
 const activeBlockCount = ref(0);
+
+const trackerNetworkRef = ref<HTMLElement | null>(null);
+const privacyScoreRef = ref<HTMLElement | null>(null);
+const fingerprintingRef = ref<HTMLElement | null>(null);
 
 const startDemo = () => {
     showDemo.value = true;
@@ -39,6 +49,17 @@ const startDemo = () => {
             clearInterval(interval);
         }
     }, 100);
+};
+
+const scrollToDemo = async (refName: string) => {
+    await nextTick();
+    let el: HTMLElement | null = null;
+    if (refName === "trackerNetworkRef") el = trackerNetworkRef.value;
+    if (refName === "privacyScoreRef") el = privacyScoreRef.value;
+    if (refName === "fingerprintingRef") el = fingerprintingRef.value;
+    if (el) {
+        el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
 };
 </script>
 
@@ -62,7 +83,8 @@ const startDemo = () => {
                             <span class="text-neutral-500 capitalize" aria-hidden="true">{{ key }}</span>
                         </div>
                     </div>
-                    <Button size="sm" variant="secondary" :aria-label="`Try ${demo.title} demo`">Try Demo →</Button>
+                    <Button size="sm" variant="secondary" :aria-label="`Try ${demo.title} demo`"
+                        @click="scrollToDemo(demo.refName)">Try Demo →</Button>
                 </Card>
             </div>
 
@@ -124,6 +146,19 @@ const startDemo = () => {
                     </div>
                 </div>
             </Card>
+
+            <!-- New Privacy Visualization Components -->
+            <div class="space-y-8 mt-12">
+                <div ref="trackerNetworkRef">
+                    <TrackerNetworkVisualization />
+                </div>
+                <div ref="privacyScoreRef">
+                    <PrivacyScoreCalculator />
+                </div>
+                <div ref="fingerprintingRef">
+                    <FingerprintingDemo />
+                </div>
+            </div>
         </div>
     </section>
 </template>
