@@ -110,8 +110,8 @@ const createBATLogo = () => {
 };
 
 onMounted(() => {
-  const width = 140;
-  const height = 140;
+  const width = 100;
+  const height = 100;
 
   renderer = new THREE.WebGLRenderer({
     canvas: canvas.value!,

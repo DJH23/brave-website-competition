@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import Portfolio from '../components/Portfolio.vue';
+import MusicProductions from '../components/MusicProductions.vue';
 import BATIntegration from '../components/BATIntegration.vue';
 import Button from '../components/Button.vue';
 
@@ -12,9 +12,9 @@ const showTipModal = ref(false);
         <!-- Header Section -->
         <div class="max-w-5xl mx-auto mb-16">
             <div class="text-center space-y-6">
-                <h1 class="text-5xl md:text-6xl font-bold bg-gradient-to-r from-purple-400 via-pink-400 to-orange-400 
-                           bg-clip-text text-transparent">
-                    🎵 Music Hub
+                <h1
+                    class="text-5xl md:text-6xl font-bold text-gradient-rainbow transition-all duration-700 opacity-100 translate-y-0">
+                    <i class="bi bi-music-note-beamed" aria-hidden="true"></i> Music Hub
                 </h1>
                 <p class="text-xl text-gray-300 max-w-3xl mx-auto">
                     Premium music productions powered by creativity and privacy.
@@ -26,7 +26,7 @@ const showTipModal = ref(false);
             <div class="mt-12 bg-gradient-to-br from-purple-500/10 to-pink-500/10 
                         backdrop-blur-sm border border-purple-500/20 rounded-2xl p-8">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                    <span>💡</span>
+                    <i class="bi bi-lightbulb text-yellow-400" aria-hidden="true"></i>
                     Why This Matters for Creators
                 </h2>
                 <div class="space-y-4 text-gray-300">
@@ -61,14 +61,15 @@ const showTipModal = ref(false);
 
         <!-- Music Portfolio Section -->
         <div class="max-w-7xl mx-auto mb-16">
-            <Portfolio />
+            <MusicProductions />
         </div>
 
         <!-- BAT Tipping Integration -->
         <div class="max-w-5xl mx-auto">
             <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8">
-                <h2 class="text-3xl font-bold text-white mb-6 text-center">
-                    Support with BAT 🦁
+                <h2
+                    class="text-3xl font-bold text-white mb-6 text-center text-gradient-orange transition-all duration-700 opacity-100 translate-y-0">
+                    <i class="bi bi-coin text-braveOrange" aria-hidden="true"></i> Support with BAT
                 </h2>
                 <p class="text-gray-300 text-center mb-8 max-w-2xl mx-auto">
                     Love what you hear? Tip directly using Basic Attention Token.
@@ -80,26 +81,27 @@ const showTipModal = ref(false);
 
         <!-- How It Works Section -->
         <div class="max-w-5xl mx-auto mt-16">
-            <h2 class="text-3xl font-bold text-white mb-8 text-center">
+            <h2
+                class="text-3xl font-bold text-white mb-8 text-center text-gradient-purple transition-all duration-700 opacity-100 translate-y-0">
                 How BAT Tipping Works
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 text-center">
-                    <div class="text-4xl mb-4">1️⃣</div>
+                    <div class="text-4xl mb-4"><i class="bi bi-1-circle text-bravePurple" aria-hidden="true"></i></div>
                     <h3 class="text-xl font-bold text-white mb-2">Get Brave Browser</h3>
                     <p class="text-gray-400">
                         Download Brave (free) with built-in privacy protection and BAT wallet
                     </p>
                 </div>
                 <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 text-center">
-                    <div class="text-4xl mb-4">2️⃣</div>
+                    <div class="text-4xl mb-4"><i class="bi bi-2-circle text-braveOrange" aria-hidden="true"></i></div>
                     <h3 class="text-xl font-bold text-white mb-2">Earn or Buy BAT</h3>
                     <p class="text-gray-400">
                         Earn BAT by viewing privacy-respecting ads, or buy BAT on exchanges
                     </p>
                 </div>
                 <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 text-center">
-                    <div class="text-4xl mb-4">3️⃣</div>
+                    <div class="text-4xl mb-4"><i class="bi bi-3-circle text-braveBlue" aria-hidden="true"></i></div>
                     <h3 class="text-xl font-bold text-white mb-2">Tip Creators</h3>
                     <p class="text-gray-400">
                         One-click tipping directly to creators. Private, fast, and fair.
@@ -110,18 +112,19 @@ const showTipModal = ref(false);
 
         <!-- CTA Section -->
         <div class="max-w-3xl mx-auto mt-16 text-center space-y-6">
-            <h3 class="text-2xl font-bold text-white">
+            <h3
+                class="text-2xl font-bold text-white text-gradient-rainbow transition-all duration-700 opacity-100 translate-y-0">
                 Ready to explore more privacy features?
             </h3>
             <div class="flex flex-wrap gap-4 justify-center">
                 <RouterLink to="/wallet">
                     <Button variant="primary" size="lg">
-                        💰 Explore Brave Wallet
+                        <i class="bi bi-wallet2" aria-hidden="true"></i> Explore Brave Wallet
                     </Button>
                 </RouterLink>
                 <RouterLink to="/privacy">
                     <Button variant="secondary" size="lg">
-                        🛡️ Try Privacy Demos
+                        <i class="bi bi-shield-check" aria-hidden="true"></i> Try Privacy Demos
                     </Button>
                 </RouterLink>
             </div>

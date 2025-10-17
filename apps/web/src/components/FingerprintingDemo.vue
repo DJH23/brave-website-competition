@@ -130,7 +130,7 @@ const closeDetail = () => {
     <Card variant="highlight">
         <div class="mb-6">
             <h3 class="text-2xl font-bold mb-2 text-gradient-orange">
-                👤 Fingerprinting Protection Demo
+                <i class="bi bi-person-bounding-box" aria-hidden="true"></i> Fingerprinting Protection Demo
             </h3>
             <p class="text-neutral-300 text-sm">
                 See how Brave protects you from advanced browser fingerprinting techniques
@@ -165,7 +165,10 @@ const closeDetail = () => {
                 :class="showComparison
                     ? 'bg-green-600 hover:bg-green-700 neon-glow'
                     : 'bg-bravePurple hover:bg-purple-700'">
-                {{ showComparison ? '🛡️ Brave Protection ON' : '⚠️ Show Without Protection' }}
+                <span v-if="showComparison"><i class="bi bi-shield-check" aria-hidden="true"></i> Brave Protection
+                    ON</span>
+                <span v-else><i class="bi bi-exclamation-triangle" aria-hidden="true"></i> Show Without
+                    Protection</span>
             </button>
         </div>
 
@@ -175,7 +178,7 @@ const closeDetail = () => {
                 class="glass rounded-lg p-4 cursor-pointer hover:scale-105 transition-all border-2"
                 :class="getProtectionBg(item.protectionLevel)">
                 <div class="flex items-start gap-3 mb-3">
-                    <i :class="item.icon" class="text-2xl text-bravePurple"></i>
+                    <i :class="['bi', item.icon]" class="text-2xl text-bravePurple" aria-hidden="true"></i>
                     <div class="flex-1 min-w-0">
                         <h4 class="font-semibold text-sm mb-1">{{ item.category }}</h4>
                         <div class="flex items-center gap-2">
@@ -188,11 +191,13 @@ const closeDetail = () => {
 
                 <div v-if="showComparison" class="space-y-2 text-xs">
                     <div class="p-2 bg-red-900/20 border border-red-700/30 rounded">
-                        <div class="text-red-400 font-medium mb-1">❌ Without Brave:</div>
+                        <div class="text-red-400 font-medium mb-1"><i class="bi bi-x-circle" aria-hidden="true"></i>
+                            Without Brave:</div>
                         <div class="text-neutral-300 truncate">{{ item.normalValue }}</div>
                     </div>
                     <div class="p-2 bg-green-900/20 border border-green-700/30 rounded">
-                        <div class="text-green-400 font-medium mb-1">✅ With Brave:</div>
+                        <div class="text-green-400 font-medium mb-1"><i class="bi bi-check-circle"
+                                aria-hidden="true"></i> With Brave:</div>
                         <div class="text-neutral-300 truncate">{{ item.braveValue }}</div>
                     </div>
                 </div>
@@ -226,7 +231,7 @@ const closeDetail = () => {
                     class="glass-strong rounded-xl p-6 max-w-2xl w-full border-2 border-bravePurple/50 max-h-[90vh] overflow-y-auto">
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center gap-3">
-                            <div class="text-4xl">{{ selectedItem.icon }}</div>
+                            <div class="text-4xl"><i :class="['bi', selectedItem.icon]" aria-hidden="true"></i></div>
                             <div>
                                 <h3 class="text-xl font-bold">{{ selectedItem.category }}</h3>
                                 <span class="text-sm font-medium"
@@ -246,7 +251,7 @@ const closeDetail = () => {
                     <div class="space-y-4">
                         <div class="p-4 bg-red-900/20 border-2 border-red-700/50 rounded-lg">
                             <div class="font-semibold text-red-400 mb-2 flex items-center gap-2">
-                                <span>❌</span> Without Brave Protection
+                                <span><i class="bi bi-x-circle" aria-hidden="true"></i></span> Without Brave Protection
                             </div>
                             <div class="text-neutral-200 font-mono text-sm break-all">
                                 {{ selectedItem.normalValue }}
@@ -255,7 +260,7 @@ const closeDetail = () => {
 
                         <div class="p-4 bg-green-900/20 border-2 border-green-700/50 rounded-lg">
                             <div class="font-semibold text-green-400 mb-2 flex items-center gap-2">
-                                <span>✅</span> With Brave Protection
+                                <span><i class="bi bi-check-circle" aria-hidden="true"></i></span> With Brave Protection
                             </div>
                             <div class="text-neutral-200 font-mono text-sm break-all">
                                 {{ selectedItem.braveValue }}
