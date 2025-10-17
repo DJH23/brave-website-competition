@@ -30,6 +30,7 @@
     "vue-demi": "^0.14.10",
     "vue-draggable-next": "^2.3.0",
     "vue-echarts": "^8.0.1",
+    "vue-router": "^4.6.3",
     "wavesurfer.js": "^7.11.0",
     "web3modal": "^1.9.12",
     "workbox-window": "^7.3.0"

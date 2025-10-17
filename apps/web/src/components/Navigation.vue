@@ -1,0 +1,121 @@
+<script setup lang="ts">
+import { ref } from 'vue';
+import { RouterLink, useRoute } from 'vue-router';
+import BATLogo3DAsync from './BATLogo3DAsync.vue';
+
+const route = useRoute();
+const mobileMenuOpen = ref(false);
+
+const navItems = [
+    { path: '/', label: 'Home', icon: '🏠', tooltip: 'Back to home' },
+    { path: '/music', label: 'Music', icon: '🎵', tooltip: 'Music productions' },
+    { path: '/wallet', label: 'Wallet', icon: '💰', tooltip: 'BAT & Brave Wallet' },
+    { path: '/search', label: 'Search', icon: '🔍', tooltip: 'Private search' },
+    { path: '/privacy', label: 'Privacy', icon: '🛡️', tooltip: 'Privacy demos' }
+];
+
+const toggleMobileMenu = () => {
+    mobileMenuOpen.value = !mobileMenuOpen.value;
+};
+</script>
+
+<template>
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-lg border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo and Brand -->
+                <RouterLink to="/" class="flex items-center gap-3 hover:opacity-80 transition-opacity group"
+                    @click="mobileMenuOpen = false">
+                    <Suspense>
+                        <BATLogo3DAsync :size="48" />
+                        <template #fallback>
+                            <div class="w-12 h-12 bg-purple-500/20 rounded-lg animate-pulse"></div>
+                        </template>
+                    </Suspense>
+                    <span class="text-xl font-bold bg-gradient-to-r from-purple-400 to-orange-400 
+                                 bg-clip-text text-transparent hidden sm:block">
+                        Privacy Hub
+                    </span>
+                </RouterLink>
+
+                <!-- Desktop Navigation -->
+                <div class="hidden md:flex items-center gap-1">
+                    <RouterLink v-for="item in navItems" :key="item.path" :to="item.path" class="group relative px-4 py-2 rounded-lg transition-all duration-200
+                               hover:bg-white/10"
+                        :class="route.path === item.path ? 'bg-white/10 text-white' : 'text-gray-300'">
+                        <!-- Tooltip -->
+                        <div class="absolute -bottom-12 left-1/2 -translate-x-1/2 px-3 py-1 
+                                    bg-black/90 text-white text-sm rounded-lg whitespace-nowrap
+                                    opacity-0 group-hover:opacity-100 pointer-events-none
+                                    transition-opacity duration-200">
+                            {{ item.tooltip }}
+                            <div class="absolute -top-1 left-1/2 -translate-x-1/2 w-2 h-2 
+                                        bg-black/90 rotate-45"></div>
+                        </div>
+
+                        <span class="flex items-center gap-2">
+                            <span class="text-lg">{{ item.icon }}</span>
+                            <span class="font-medium">{{ item.label }}</span>
+                        </span>
+
+                        <!-- Active Indicator -->
+                        <div v-if="route.path === item.path" class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 
+                                   bg-gradient-to-r from-purple-400 to-orange-400 rounded-full"></div>
+                    </RouterLink>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <button @click="toggleMobileMenu" class="md:hidden p-2 rounded-lg hover:bg-white/10 transition-colors"
+                    aria-label="Toggle menu">
+                    <svg v-if="!mobileMenuOpen" class="w-6 h-6 text-white" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
+                    <svg v-else class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <Transition enter-active-class="transition-all duration-300 ease-out"
+            enter-from-class="opacity-0 -translate-y-4" enter-to-class="opacity-100 translate-y-0"
+            leave-active-class="transition-all duration-200 ease-in" leave-from-class="opacity-100 translate-y-0"
+            leave-to-class="opacity-0 -translate-y-4">
+            <div v-if="mobileMenuOpen" class="md:hidden border-t border-white/10 bg-black/95 backdrop-blur-lg">
+                <div class="px-4 py-4 space-y-2">
+                    <RouterLink v-for="item in navItems" :key="item.path" :to="item.path"
+                        @click="mobileMenuOpen = false"
+                        class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors" :class="route.path === item.path
+                            ? 'bg-white/10 text-white'
+                            : 'text-gray-300 hover:bg-white/5'">
+                        <span class="text-2xl">{{ item.icon }}</span>
+                        <div class="flex-1">
+                            <div class="font-medium">{{ item.label }}</div>
+                            <div class="text-sm text-gray-400">{{ item.tooltip }}</div>
+                        </div>
+                        <svg v-if="route.path === item.path" class="w-5 h-5 text-purple-400" fill="currentColor"
+                            viewBox="0 0 20 20">
+                            <path fill-rule="evenodd"
+                                d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </RouterLink>
+                </div>
+            </div>
+        </Transition>
+    </nav>
+
+    <!-- Spacer to prevent content from hiding under fixed navbar -->
+    <div class="h-16"></div>
+</template>
+
+<style scoped>
+/* Add smooth hover effects */
+a {
+    position: relative;
+}
+</style>
