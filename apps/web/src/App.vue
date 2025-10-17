@@ -148,7 +148,7 @@ useHead({
             <!-- BATLogo3DAsync removed from main content section -->
 
             <!-- Video Section -->
-            <section class="py-12 px-6 bg-neutral-900/20" aria-labelledby="video-section">
+            <section class="py-12 px-6" aria-labelledby="video-section">
                 <div class="max-w-4xl mx-auto text-center">
                     <h2 id="video-section" class="text-3xl font-bold mb-4">Watch the Demo</h2>
                     <p class="text-neutral-300 mb-8">

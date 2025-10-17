@@ -64,7 +64,7 @@ const scrollToDemo = async (refName: string) => {
 </script>
 
 <template>
-    <section class="py-12 px-6 bg-neutral-900/30" aria-labelledby="privacy-demos-heading">
+    <section class="py-12 px-6" aria-labelledby="privacy-demos-heading">
         <div class="max-w-7xl mx-auto">
             <h2 id="privacy-demos-heading" class="text-4xl font-bold mb-4 animate-fade-in">Privacy Demos</h2>
             <p class="text-neutral-300 mb-8">
