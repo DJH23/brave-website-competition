@@ -7,7 +7,6 @@ import DarkModeToggle from "./components/DarkModeToggle.vue";
 import Portfolio from "./components/Portfolio.vue";
 import BATIntegration from "./components/BATIntegration.vue";
 import ParticleBackground from "./components/ParticleBackground.vue";
-import AnimatedBATLogo from "./components/AnimatedBATLogo.vue";
 import AnimatedBackground from "./components/AnimatedBackground.vue";
 
 // Lazy-load heavier components to reduce initial bundle size
@@ -88,7 +87,7 @@ useHead({
 </script>
 
 <template>
-    <AnimatedBackground variant="dots" :opacity="0.12" />
+    <AnimatedBackground variant="dots" :opacity="0.12" :parallaxFactor="0.2" :zIndex="-1" :debug="false" />
     <ParticleBackground />
     <div class="min-h-screen flex flex-col relative z-10">
         <!-- Skip to main content link for keyboard users -->
