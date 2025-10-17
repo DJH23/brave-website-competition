@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import WaveformPlayer from './WaveformPlayer.vue';
+import SkeletonLoader from './SkeletonLoader.vue';
 import { ref } from "vue";
-// No import needed for vue-audio-visual components; use <av-waveform> directly in template
-import { VueDraggableNext } from 'vue-draggable-next';
-import { useWallet } from '../composables/useWallet';
 import Card from "./Card.vue";
 import Button from "./Button.vue";
 import { useIntersectionObserver } from "../composables/useIntersectionObserver";
+import { useWallet } from '../composables/useWallet';
+import { useLazyLoad } from '../composables/useLazyLoad';
 
 const sectionRef = ref<HTMLElement | null>(null);
 const { hasBeenVisible } = useIntersectionObserver(sectionRef, {
@@ -40,34 +40,49 @@ const projects = ref([
 
 const musicTracks = ref([
     {
-        title: "Bach_Style",
+        title: "Bach Style",
         genre: "Classical",
-        duration: "Unknown",
         src: "/audio/Bach_Style.wav",
-        premium: false
+        price: 10 // Price in BAT
+    },
+    {
+        title: "Bach Style",
+        genre: "Classical",
+        src: "/audio/Bach_Style.wav",
+        price: 10 // Price in BAT
     }
 ]);
 
-const playingTrack = ref<string | null>(null);
-const unlockedPremium = ref(false);
-const { connectWallet, isConnected } = useWallet();
+const tipAmount = ref(5); // Default tip amount in BAT
+const { connectWallet, isConnected, sendBATTip } = useWallet();
 
-const playTrack = (track: any) => {
-    if (track.premium && !unlockedPremium.value) {
-        alert('Unlock premium tracks with BAT to play.');
-        return;
-    }
-    playingTrack.value = track.src;
+const openProjectLink = (link: string) => {
+    window.open(link, '_blank');
 };
 
-const unlockPremiumTracks = async () => {
-    // Simulate BAT payment flow
+const incrementTip = () => {
+    tipAmount.value += 1;
+};
+
+const decrementTip = () => {
+    if (tipAmount.value > 1) {
+        tipAmount.value -= 1;
+    }
+};
+
+const handleTipArtist = async () => {
     if (!isConnected.value) {
         await connectWallet();
+        if (!isConnected.value) return;
     }
-    // TODO: Integrate real BAT payment logic here
-    unlockedPremium.value = true;
-    alert('Premium tracks unlocked!');
+
+    try {
+        await sendBATTip(tipAmount.value.toString());
+        alert(`Thank you for tipping ${tipAmount.value} BAT to support the artist!`);
+    } catch (error) {
+        console.error('Tip failed:', error);
+        alert('Failed to send tip. Please try again.');
+    }
 };
 </script>
 
@@ -88,7 +103,7 @@ const unlockPremiumTracks = async () => {
             <div class="mb-12">
                 <h3 id="dev-projects-heading"
                     class="text-2xl font-semibold mb-6 flex items-center gap-2 text-gradient-purple">
-                    <span class="text-bravePurple" aria-hidden="true">💻</span> Development Projects
+                    <i class="bi-laptop text-bravePurple" aria-hidden="true"></i> Development Projects
                 </h3>
                 <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" role="list"
                     aria-labelledby="dev-projects-heading">
@@ -100,7 +115,7 @@ const unlockPremiumTracks = async () => {
                                 {{ tag }}
                             </span>
                         </div>
-                        <Button size="sm" variant="secondary" @click="() => window.open(project.link, '_blank')"
+                        <Button size="sm" variant="secondary" @click="() => openProjectLink(project.link)"
                             :aria-label="`View ${project.title} project`">
                             View Project →
                         </Button>
@@ -111,24 +126,52 @@ const unlockPremiumTracks = async () => {
             <!-- Music Productions -->
             <div>
                 <h3 id="music-heading" class="text-2xl font-semibold mb-6 flex items-center gap-2 text-gradient-orange">
-                    <span class="text-braveOrange" aria-hidden="true">🎵</span> Music Productions
+                    <i class="bi-music-note-beamed text-braveOrange" aria-hidden="true"></i> Music Productions
                 </h3>
-                <Card variant="highlight" aria-labelledby="music-heading">
-                    <div class="space-y-4">
-                        <div class="space-y-4">
-                            <div v-for="track in musicTracks" :key="track.src" class="flex items-center gap-2">
-                                <WaveformPlayer :src="track.src" :title="track.title" :genre="track.genre"
-                                    :duration="track.duration" />
-                            </div>
+
+                <!-- Music Container -->
+                <Card variant="highlight">
+                    <div v-if="!hasBeenVisible" class="space-y-4 mb-6">
+                        <!-- Skeleton loaders for waveforms -->
+                        <SkeletonLoader type="waveform" />
+                        <SkeletonLoader type="waveform" />
+                    </div>
+                    <div v-else class="space-y-4 mb-6">
+                        <div v-for="track in musicTracks" :key="track.src">
+                            <WaveformPlayer :src="track.src" :title="track.title" :genre="track.genre"
+                                :price="track.price" />
                         </div>
-                        <div class="pt-4 border-t border-neutral-700">
-                            <p class="text-sm text-neutral-400 mb-3">
-                                Support with BAT and unlock premium tracks
+                    </div>
+
+                    <!-- Tip Artist Section (Bottom Left) -->
+                    <div class="flex items-start gap-4 pt-4 border-t border-neutral-700">
+                        <div class="flex flex-col gap-3">
+                            <p class="text-sm text-neutral-400">
+                                Support the artist with a tip
                             </p>
-                            <Button variant="primary" aria-label="Unlock premium tracks with BAT"
-                                @click="unlockPremiumTracks">
-                                <span aria-hidden="true">🦁</span> Unlock Premium
-                            </Button>
+                            <div class="flex items-center gap-3">
+                                <!-- Tip Amount Controls -->
+                                <div class="flex items-center gap-2 bg-neutral-800/80 rounded-lg p-2">
+                                    <Button size="sm" variant="ghost" @click="decrementTip"
+                                        aria-label="Decrease tip amount">
+                                        <i class="bi-dash-lg text-xl" aria-hidden="true"></i>
+                                    </Button>
+                                    <div class="flex flex-row justify-center gap-2 items-center min-w-[60px]">
+                                        <span class="text-lg font-bold text-braveOrange">{{ tipAmount }}</span>
+                                        <span class="text-xs text-neutral-400">BAT</span>
+                                    </div>
+                                    <Button size="sm" variant="ghost" @click="incrementTip"
+                                        aria-label="Increase tip amount">
+                                        <i class="bi-plus-lg text-xl" aria-hidden="true"></i>
+                                    </Button>
+                                </div>
+
+                                <!-- Tip Button -->
+                                <Button variant="primary" @click="handleTipArtist"
+                                    :aria-label="`Tip ${tipAmount} BAT to artist`">
+                                    <i class="bi-coin" aria-hidden="true"></i> Tip Artist
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </Card>

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { defineAsyncComponent } from "vue";
+import { useHead } from '@vueuse/head';
 import Button from "./components/Button.vue";
 import Card from "./components/Card.vue";
 import DarkModeToggle from "./components/DarkModeToggle.vue";
@@ -10,8 +11,80 @@ import AnimatedBATLogo from "./components/AnimatedBATLogo.vue";
 import AnimatedBackground from "./components/AnimatedBackground.vue";
 
 // Lazy-load heavier components to reduce initial bundle size
-const Hero3DAsync = defineAsyncComponent(() => import("./components/Hero3D.vue"));
+const BATLogo3DAsync = defineAsyncComponent(() => import("./components/BATLogo3DAsync.vue"));
 const PrivacyDemosAsync = defineAsyncComponent(() => import("./components/PrivacyDemos.vue"));
+
+// SEO Meta Tags
+useHead({
+    title: 'Privacy-First Creator Hub | Web Development & Music Production',
+    meta: [
+        {
+            name: 'description',
+            content: 'A privacy-first platform showcasing web development projects and music productions. Built with Vue 3, powered by Brave Browser and BAT (Basic Attention Token).'
+        },
+        {
+            name: 'keywords',
+            content: 'privacy, web development, music production, Brave Browser, BAT, cryptocurrency, Web3, Vue 3, TypeScript'
+        },
+        {
+            name: 'author',
+            content: 'Privacy-First Creator'
+        },
+        // Open Graph / Facebook
+        {
+            property: 'og:type',
+            content: 'website'
+        },
+        {
+            property: 'og:title',
+            content: 'Privacy-First Creator Hub | Web Development & Music Production'
+        },
+        {
+            property: 'og:description',
+            content: 'A privacy-first platform showcasing web development projects and music productions. Built with Vue 3, powered by Brave Browser and BAT.'
+        },
+        {
+            property: 'og:url',
+            content: 'https://your-domain.com'
+        },
+        // Twitter
+        {
+            name: 'twitter:card',
+            content: 'summary_large_image'
+        },
+        {
+            name: 'twitter:title',
+            content: 'Privacy-First Creator Hub'
+        },
+        {
+            name: 'twitter:description',
+            content: 'A privacy-first platform showcasing web development projects and music productions.'
+        },
+        // Mobile
+        {
+            name: 'viewport',
+            content: 'width=device-width, initial-scale=1.0, viewport-fit=cover'
+        },
+        {
+            name: 'mobile-web-app-capable',
+            content: 'yes'
+        },
+        {
+            name: 'apple-mobile-web-app-capable',
+            content: 'yes'
+        },
+        {
+            name: 'apple-mobile-web-app-status-bar-style',
+            content: 'black-translucent'
+        }
+    ],
+    link: [
+        {
+            rel: 'canonical',
+            href: 'https://your-domain.com'
+        }
+    ]
+});
 </script>
 
 <template>
@@ -24,18 +97,22 @@ const PrivacyDemosAsync = defineAsyncComponent(() => import("./components/Privac
             Skip to main content
         </a>
 
+        <!-- Hero3D removed from hero section -->
         <header role="banner"
-            class="p-6 flex items-center justify-between animate-fade-in sticky top-0 bg-neutral-950/80 backdrop-blur-sm z-50 border-b border-neutral-800/50">
+            class="pl-6 pr-6 flex items-center justify-between animate-fade-in sticky top-0 bg-neutral-950/80 backdrop-blur-sm z-50 border-b border-neutral-800/50">
             <div class="flex items-center gap-3">
-                <AnimatedBATLogo :width="80" :height="70" />
-                <div>
-                    <h1 class="text-2xl md:text-3xl font-bold tracking-tight">
-                        Privacy‑First Creator Hub
-                    </h1>
-                    <p class="text-xs md:text-sm text-neutral-300 mt-1">
-                        Built with Vue 3 + Vite + Tailwind + Three.js + NestJS
-                    </p>
-                </div>
+                <h1 class="text-2xl md:text-3xl font-bold tracking-tight flex items-center gap-2">
+                    <Suspense>
+                        <template #default>
+                            <BATLogo3DAsync style="width: 48px; height: 48px; min-width: 48px; min-height: 48px;" />
+                        </template>
+                        <template #fallback>
+                            <div class="w-12 h-12 rounded-2xl border border-neutral-800/80 bg-neutral-900/40 animate-pulse"
+                                aria-hidden="true"></div>
+                        </template>
+                    </Suspense>
+                    Privacy‑First Creator Hub
+                </h1>
             </div>
             <nav class="flex items-center gap-4" aria-label="Social media and settings">
                 <!-- Social Media Links -->
@@ -69,17 +146,7 @@ const PrivacyDemosAsync = defineAsyncComponent(() => import("./components/Privac
             </nav>
         </header>
         <main id="main-content" class="flex-1" role="main">
-            <Suspense>
-                <template #default>
-                    <Hero3DAsync />
-                </template>
-                <template #fallback>
-                    <div class="mx-auto max-w-6xl py-10">
-                        <div class="h-64 md:h-80 w-full rounded-2xl border border-neutral-800/80 bg-neutral-900/40 animate-pulse"
-                            aria-hidden="true"></div>
-                    </div>
-                </template>
-            </Suspense>
+            <!-- BATLogo3DAsync removed from main content section -->
 
             <!-- Video Section -->
             <section class="py-12 px-6 bg-neutral-900/20" aria-labelledby="video-section">
@@ -135,7 +202,7 @@ const PrivacyDemosAsync = defineAsyncComponent(() => import("./components/Privac
                         <Card hoverable>
                             <div
                                 class="aspect-video bg-gradient-to-br from-bravePurple/20 to-braveBlue/20 rounded-lg flex items-center justify-center mb-3">
-                                <span class="text-4xl">🎨</span>
+                                <i class="bi-palette-fill text-4xl text-bravePurple"></i>
                             </div>
                             <h3 class="font-semibold mb-2">Design System</h3>
                             <p class="text-sm text-neutral-400">

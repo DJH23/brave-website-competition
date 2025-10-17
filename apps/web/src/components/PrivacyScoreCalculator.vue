@@ -304,28 +304,28 @@ onMounted(() => {
         <!-- Info Cards -->
         <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
             <div class="glass p-3 rounded-lg">
-                <div class="text-xs text-neutral-400 mb-1">🛡️ Trackers</div>
+                <div class="text-xs text-neutral-400 mb-1"><i class="bi-shield-fill-check"></i> Trackers</div>
                 <div class="text-lg font-bold text-bravePurple">{{ metrics.trackersBlocked.toLocaleString() }}</div>
             </div>
             <div class="glass p-3 rounded-lg">
-                <div class="text-xs text-neutral-400 mb-1">🔒 HTTPS</div>
+                <div class="text-xs text-neutral-400 mb-1"><i class="bi-lock-fill"></i> HTTPS</div>
                 <div class="text-lg font-bold text-green-400">{{ metrics.httpsUpgrades.toLocaleString() }}</div>
             </div>
             <div class="glass p-3 rounded-lg">
-                <div class="text-xs text-neutral-400 mb-1">👤 Fingerprinting</div>
+                <div class="text-xs text-neutral-400 mb-1"><i class="bi-person-fill"></i> Fingerprinting</div>
                 <div class="text-lg font-bold text-braveOrange">{{ metrics.fingerprintingBlocked.toLocaleString() }}
                 </div>
             </div>
             <div class="glass p-3 rounded-lg">
-                <div class="text-xs text-neutral-400 mb-1">🍪 Cookies</div>
+                <div class="text-xs text-neutral-400 mb-1"><i class="bi-cookie"></i> Cookies</div>
                 <div class="text-lg font-bold text-blue-400">{{ metrics.cookiesBlocked.toLocaleString() }}</div>
             </div>
             <div class="glass p-3 rounded-lg">
-                <div class="text-xs text-neutral-400 mb-1">📜 Scripts</div>
+                <div class="text-xs text-neutral-400 mb-1"><i class="bi-file-earmark-code"></i> Scripts</div>
                 <div class="text-lg font-bold text-yellow-400">{{ metrics.scriptsBlocked.toLocaleString() }}</div>
             </div>
             <div class="glass p-3 rounded-lg">
-                <div class="text-xs text-neutral-400 mb-1">⚡ Total</div>
+                <div class="text-xs text-neutral-400 mb-1"><i class="bi-lightning-charge-fill"></i> Total</div>
                 <div class="text-lg font-bold text-gradient-rainbow">
                     {{ (metrics.trackersBlocked + metrics.httpsUpgrades + metrics.fingerprintingBlocked +
                         metrics.cookiesBlocked + metrics.scriptsBlocked).toLocaleString() }}

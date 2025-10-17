@@ -251,7 +251,7 @@ const searchBrave = async () => {
 
             <div class="mt-12 grid gap-6 md:grid-cols-3">
                 <Card hoverable>
-                    <div class="text-3xl mb-3">⚡</div>
+                    <i class="bi-lightning-charge-fill text-3xl text-braveOrange mb-3"></i>
                     <h3 class="text-lg font-semibold mb-2 text-gradient-purple">Earn BAT</h3>
                     <p class="text-sm text-neutral-400">
                         Get paid in BAT for viewing privacy-respecting ads in Brave Browser.

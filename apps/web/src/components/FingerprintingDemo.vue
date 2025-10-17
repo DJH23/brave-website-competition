@@ -17,7 +17,7 @@ const selectedItem = ref<FingerprintData | null>(null)
 const fingerprintData: FingerprintData[] = [
     {
         category: 'Canvas Fingerprinting',
-        icon: '🎨',
+        icon: 'bi-palette-fill',
         description: 'Trackers render hidden images to identify your GPU and create a unique signature',
         normalValue: 'SHA256: a8f5f167f44f4964e6c998dee827110c',
         braveValue: 'Randomized per session',
@@ -25,7 +25,7 @@ const fingerprintData: FingerprintData[] = [
     },
     {
         category: 'WebGL Fingerprinting',
-        icon: '🎮',
+        icon: 'bi-controller',
         description: 'Graphics hardware information used to track you across websites',
         normalValue: 'NVIDIA GeForce RTX 3080 (Exact specs exposed)',
         braveValue: 'Generic renderer reported',
@@ -33,7 +33,7 @@ const fingerprintData: FingerprintData[] = [
     },
     {
         category: 'Font Detection',
-        icon: '📝',
+        icon: 'bi-fonts',
         description: 'List of installed fonts can uniquely identify your device',
         normalValue: '342 unique fonts detected',
         braveValue: 'Standard font list only',
@@ -41,7 +41,7 @@ const fingerprintData: FingerprintData[] = [
     },
     {
         category: 'Audio Context',
-        icon: '🔊',
+        icon: 'bi-volume-up-fill',
         description: 'Audio hardware fingerprinting via signal processing',
         normalValue: 'Unique audio signature: 124.04345722',
         braveValue: 'Noise added to output',
@@ -49,7 +49,7 @@ const fingerprintData: FingerprintData[] = [
     },
     {
         category: 'Screen Resolution',
-        icon: '🖥️',
+        icon: 'bi-display',
         description: 'Exact screen dimensions used for tracking',
         normalValue: '1920x1080 @ 144Hz, 24" diagonal',
         braveValue: 'Rounded to common sizes',
@@ -57,7 +57,7 @@ const fingerprintData: FingerprintData[] = [
     },
     {
         category: 'Browser Plugins',
-        icon: '🧩',
+        icon: 'bi-plugin',
         description: 'List of installed plugins creates unique profile',
         normalValue: 'PDF Viewer, Flash, Silverlight (8 plugins)',
         braveValue: 'No plugin enumeration',
@@ -65,7 +65,7 @@ const fingerprintData: FingerprintData[] = [
     },
     {
         category: 'Timezone & Language',
-        icon: '🌍',
+        icon: 'bi-globe',
         description: 'Location data derived from system settings',
         normalValue: 'EST (UTC-5), en-US, locale: en-US-POSIX',
         braveValue: 'Timezone preserved, precise locale hidden',
@@ -73,7 +73,7 @@ const fingerprintData: FingerprintData[] = [
     },
     {
         category: 'Hardware Concurrency',
-        icon: '⚙️',
+        icon: 'bi-cpu-fill',
         description: 'CPU core count used for device identification',
         normalValue: '16 cores (Exact count)',
         braveValue: '8 cores (Randomized)',
@@ -81,7 +81,7 @@ const fingerprintData: FingerprintData[] = [
     },
     {
         category: 'WebRTC IP Leak',
-        icon: '📡',
+        icon: 'bi-broadcast',
         description: 'Real IP address leaked even when using VPN',
         normalValue: 'Local IP: 192.168.1.42 exposed',
         braveValue: 'Protected (no leak)',
@@ -175,7 +175,7 @@ const closeDetail = () => {
                 class="glass rounded-lg p-4 cursor-pointer hover:scale-105 transition-all border-2"
                 :class="getProtectionBg(item.protectionLevel)">
                 <div class="flex items-start gap-3 mb-3">
-                    <div class="text-2xl">{{ item.icon }}</div>
+                    <i :class="item.icon" class="text-2xl text-bravePurple"></i>
                     <div class="flex-1 min-w-0">
                         <h4 class="font-semibold text-sm mb-1">{{ item.category }}</h4>
                         <div class="flex items-center gap-2">
@@ -204,7 +204,8 @@ const closeDetail = () => {
 
         <!-- Info Box -->
         <div class="glass-strong rounded-lg p-6 mt-6 border-2 border-bravePurple/30">
-            <h4 class="font-semibold mb-2 text-bravePurple">🔒 What is Browser Fingerprinting?</h4>
+            <h4 class="font-semibold mb-2 text-bravePurple"><i class="bi-lock-fill"></i> What is Browser Fingerprinting?
+            </h4>
             <p class="text-sm text-neutral-300 mb-3">
                 Browser fingerprinting is a tracking technique that collects information about your browser
                 configuration and device to create a unique "fingerprint." This fingerprint can track you
