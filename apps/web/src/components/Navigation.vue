@@ -7,11 +7,11 @@ const route = useRoute();
 const mobileMenuOpen = ref(false);
 
 const navItems = [
-    { path: '/', label: 'Home', icon: '🏠', tooltip: 'Back to home' },
-    { path: '/music', label: 'Music', icon: '🎵', tooltip: 'Music productions' },
-    { path: '/wallet', label: 'Wallet', icon: '💰', tooltip: 'BAT & Brave Wallet' },
-    { path: '/search', label: 'Search', icon: '🔍', tooltip: 'Private search' },
-    { path: '/privacy', label: 'Privacy', icon: '🛡️', tooltip: 'Privacy demos' }
+    { path: '/', label: 'Home', icon: 'bi-house-door', tooltip: 'Back to home' },
+    { path: '/music', label: 'Music', icon: 'bi-music-note-beamed', tooltip: 'Music productions' },
+    { path: '/wallet', label: 'Wallet', icon: 'bi-wallet2', tooltip: 'BAT & Brave Wallet' },
+    { path: '/search', label: 'Search', icon: 'bi-search', tooltip: 'Private search' },
+    { path: '/privacy', label: 'Privacy', icon: 'bi-shield-check', tooltip: 'Privacy demos' }
 ];
 
 const toggleMobileMenu = () => {
@@ -20,14 +20,14 @@ const toggleMobileMenu = () => {
 </script>
 
 <template>
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-black/80 backdrop-blur-lg border-b border-white/10">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-16">
+    <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg border-b border-white/10">
+        <div class="w-full px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
                 <!-- Logo and Brand -->
                 <RouterLink to="/" class="flex items-center gap-3 hover:opacity-80 transition-opacity group"
                     @click="mobileMenuOpen = false">
                     <Suspense>
-                        <BATLogo3DAsync :size="48" />
+                        <BATLogo3DAsync />
                         <template #fallback>
                             <div class="w-12 h-12 bg-purple-500/20 rounded-lg animate-pulse"></div>
                         </template>
@@ -54,7 +54,7 @@ const toggleMobileMenu = () => {
                         </div>
 
                         <span class="flex items-center gap-2">
-                            <span class="text-lg">{{ item.icon }}</span>
+                            <i :class="['bi', item.icon, 'text-lg']" aria-hidden="true"></i>
                             <span class="font-medium">{{ item.label }}</span>
                         </span>
 
@@ -92,7 +92,7 @@ const toggleMobileMenu = () => {
                         class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors" :class="route.path === item.path
                             ? 'bg-white/10 text-white'
                             : 'text-gray-300 hover:bg-white/5'">
-                        <span class="text-2xl">{{ item.icon }}</span>
+                        <i :class="['bi', item.icon, 'text-2xl']" aria-hidden="true"></i>
                         <div class="flex-1">
                             <div class="font-medium">{{ item.label }}</div>
                             <div class="text-sm text-gray-400">{{ item.tooltip }}</div>
@@ -110,7 +110,7 @@ const toggleMobileMenu = () => {
     </nav>
 
     <!-- Spacer to prevent content from hiding under fixed navbar -->
-    <div class="h-16"></div>
+    <div class="h-20"></div>
 </template>
 
 <style scoped>

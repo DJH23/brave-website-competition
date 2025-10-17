@@ -6,7 +6,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    parallaxFactor: 0.03
+    parallaxFactor: 0.035
 });
 
 const canvas = ref<HTMLCanvasElement | null>(null);

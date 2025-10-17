@@ -177,7 +177,7 @@ onUnmounted(() => {
     <Card variant="highlight" class="overflow-hidden">
         <div class="mb-6">
             <h3 class="text-2xl font-bold mb-2 text-gradient-rainbow">
-                🕸️ Real-Time Tracker Network
+                <i class="bi bi-diagram-3" aria-hidden="true"></i> Real-Time Tracker Network
             </h3>
             <p class="text-neutral-300 text-sm">
                 Watch as Brave Shields blocks trackers attempting to connect to your current browsing session
@@ -236,15 +236,15 @@ onUnmounted(() => {
         <div class="flex gap-3">
             <button @click="startSimulation" :disabled="!!animationInterval"
                 class="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm font-medium">
-                ▶️ Start
+                <i class="bi bi-play-fill" aria-hidden="true"></i> Start
             </button>
             <button @click="stopSimulation" :disabled="!animationInterval"
                 class="px-4 py-2 rounded-lg bg-yellow-600 hover:bg-yellow-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm font-medium">
-                ⏸️ Pause
+                <i class="bi bi-pause-fill" aria-hidden="true"></i> Pause
             </button>
             <button @click="resetSimulation"
                 class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 transition-all text-sm font-medium">
-                🔄 Reset
+                <i class="bi bi-arrow-repeat" aria-hidden="true"></i> Reset
             </button>
         </div>
     </Card>

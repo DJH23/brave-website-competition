@@ -33,9 +33,9 @@ const searchSuggestion = (query: string) => {
         <!-- Header Section -->
         <div class="max-w-5xl mx-auto mb-16">
             <div class="text-center space-y-6">
-                <h1 class="text-5xl md:text-6xl font-bold bg-gradient-to-r from-blue-400 via-cyan-400 to-teal-400 
-                           bg-clip-text text-transparent">
-                    🔍 Brave Search
+                <h1
+                    class="text-5xl md:text-6xl font-bold text-gradient-rainbow transition-all duration-700 opacity-100 translate-y-0">
+                    <i class="bi bi-search" aria-hidden="true"></i> Brave Search
                 </h1>
                 <p class="text-xl text-gray-300 max-w-3xl mx-auto">
                     Private, independent, and unbiased search powered by Brave.
@@ -47,7 +47,7 @@ const searchSuggestion = (query: string) => {
             <div class="mt-12 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 
                         backdrop-blur-sm border border-blue-500/20 rounded-2xl p-8">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                    <span>💡</span>
+                    <i class="bi bi-lightbulb text-yellow-400" aria-hidden="true"></i>
                     Why Search Privacy Matters
                 </h2>
                 <div class="space-y-4 text-gray-300">
@@ -92,7 +92,7 @@ const searchSuggestion = (query: string) => {
                                    text-white placeholder-gray-400 focus:outline-none focus:border-blue-400
                                    focus:ring-2 focus:ring-blue-400/20 transition-all" />
                         <span class="absolute left-4 top-1/2 -translate-y-1/2 text-2xl">
-                            🔍
+                            <i class="bi bi-search" aria-hidden="true"></i>
                         </span>
                     </div>
 
@@ -169,7 +169,7 @@ const searchSuggestion = (query: string) => {
         <div class="max-w-3xl mx-auto bg-gradient-to-br from-purple-500/10 to-pink-500/10 
                     backdrop-blur-sm border border-purple-500/20 rounded-2xl p-8">
             <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                <span>🎯</span>
+                <i class="bi bi-bullseye" aria-hidden="true"></i>
                 Search Like a Privacy Pro
             </h2>
             <ul class="space-y-3 text-gray-300">
@@ -212,12 +212,12 @@ const searchSuggestion = (query: string) => {
             <div class="flex flex-wrap gap-4 justify-center">
                 <RouterLink to="/privacy">
                     <Button variant="primary" size="lg">
-                        🛡️ Privacy Demos
+                        <i class="bi bi-shield-check" aria-hidden="true"></i> Privacy Demos
                     </Button>
                 </RouterLink>
                 <RouterLink to="/wallet">
                     <Button variant="secondary" size="lg">
-                        💰 Try BAT Wallet
+                        <i class="bi bi-wallet2" aria-hidden="true"></i> Try BAT Wallet
                     </Button>
                 </RouterLink>
             </div>

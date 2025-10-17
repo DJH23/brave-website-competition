@@ -31,9 +31,9 @@ const disconnect = () => {
         <!-- Header Section -->
         <div class="max-w-5xl mx-auto mb-16">
             <div class="text-center space-y-6">
-                <h1 class="text-5xl md:text-6xl font-bold bg-gradient-to-r from-orange-400 via-red-400 to-pink-400 
-                           bg-clip-text text-transparent">
-                    💰 Brave Wallet & BAT
+                <h1
+                    class="text-5xl md:text-6xl font-bold text-gradient-rainbow transition-all duration-700 opacity-100 translate-y-0">
+                    <i class="bi bi-wallet2" aria-hidden="true"></i> Brave Wallet & BAT
                 </h1>
                 <p class="text-xl text-gray-300 max-w-3xl mx-auto">
                     Your gateway to Web3, privacy, and decentralized finance.
@@ -45,7 +45,7 @@ const disconnect = () => {
             <div class="mt-12 bg-gradient-to-br from-orange-500/10 to-red-500/10 
                         backdrop-blur-sm border border-orange-500/20 rounded-2xl p-8">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                    <span>💡</span>
+                    <i class="bi bi-lightbulb text-yellow-400" aria-hidden="true"></i>
                     Why Wallets Matter (Even for Beginners)
                 </h2>
                 <div class="space-y-4 text-gray-300">
@@ -65,7 +65,8 @@ const disconnect = () => {
                         <li><strong>Trade and invest</strong> in the decentralized economy</li>
                     </ul>
                     <p class="text-sm text-gray-400 mt-4">
-                        🔒 <strong>Privacy note:</strong> Brave Wallet is non-custodial, meaning
+                        <i class="bi bi-shield-lock"></i> <strong>Privacy note:</strong> Brave Wallet is non-custodial,
+                        meaning
                         <em>only you</em> have access to your funds. Not even Brave can see your balance.
                     </p>
                 </div>
@@ -91,7 +92,7 @@ const disconnect = () => {
                         and interact with Web3 features.
                     </p>
                     <Button variant="primary" size="lg" @click="connectWallet">
-                        🦁 Connect Wallet
+                        <i class="bi bi-wallet2"></i> Connect Wallet
                     </Button>
                     <p class="text-sm text-gray-400">
                         Don't have Brave?
@@ -147,28 +148,29 @@ const disconnect = () => {
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-orange-400 mb-3">🎁 Earn BAT Free</h3>
+                    <h3 class="text-xl font-bold text-orange-400 mb-3"><i class="bi bi-gift"></i> Earn BAT Free</h3>
                     <p class="text-gray-300">
                         Enable Brave Rewards in your browser settings. You'll earn BAT automatically
                         by viewing privacy-respecting ads. Opt-in only — no ads if you don't want them.
                     </p>
                 </div>
                 <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-purple-400 mb-3">💳 Buy BAT</h3>
+                    <h3 class="text-xl font-bold text-purple-400 mb-3"><i class="bi bi-credit-card"></i> Buy BAT</h3>
                     <p class="text-gray-300">
                         Purchase BAT on major exchanges like Coinbase, Binance, or Gemini.
                         Transfer to your Brave Wallet for full control and privacy.
                     </p>
                 </div>
                 <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-pink-400 mb-3">❤️ Auto-Contribute</h3>
+                    <h3 class="text-xl font-bold text-pink-400 mb-3"><i class="bi bi-heart-fill"></i> Auto-Contribute
+                    </h3>
                     <p class="text-gray-300">
                         Set up monthly auto-contributions to support your favorite sites automatically
                         based on your browsing time. Effortless creator support.
                     </p>
                 </div>
                 <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-blue-400 mb-3">🎯 One-Click Tips</h3>
+                    <h3 class="text-xl font-bold text-blue-400 mb-3"><i class="bi bi-cursor"></i> One-Click Tips</h3>
                     <p class="text-gray-300">
                         Send tips instantly from any Brave-verified site. No forms, no sign-ups.
                         Just click the BAT icon and choose your amount.
@@ -185,12 +187,12 @@ const disconnect = () => {
             <div class="flex flex-wrap gap-4 justify-center">
                 <RouterLink to="/privacy">
                     <Button variant="primary" size="lg">
-                        🛡️ Privacy Demos
+                        <i class="bi bi-shield-check"></i> Privacy Demos
                     </Button>
                 </RouterLink>
                 <RouterLink to="/search">
                     <Button variant="secondary" size="lg">
-                        🔍 Try Brave Search
+                        <i class="bi bi-search"></i> Try Brave Search
                     </Button>
                 </RouterLink>
             </div>

@@ -108,15 +108,17 @@ const onLeave = (el: Element, done: () => void) => {
 
 <template>
     <AnimatedBackground variant="dots" :opacity="0.12" :parallaxFactor="0.2" :zIndex="-1" />
-    <ParticleBackground :parallax-factor="0.01" />
-    <div class="min-h-screen flex flex-col relative z-10 bg-gradient-to-br from-gray-900 via-black to-purple-900/20">
+    <ParticleBackground :parallax-factor="0.035" />
+    <div class="min-h-screen flex flex-col relative z-10">
         <Navigation />
 
         <!-- Router View with GSAP Transitions -->
         <main id="main-content" class="flex-1" role="main">
-            <Transition mode="out-in" :css="false" @before-enter="onBeforeEnter" @enter="onEnter" @leave="onLeave">
-                <RouterView :key="route.path" />
-            </Transition>
+            <RouterView v-slot="{ Component }">
+                <Transition mode="out-in" :css="false" @before-enter="onBeforeEnter" @enter="onEnter" @leave="onLeave">
+                    <component :is="Component" :key="route.path" />
+                </Transition>
+            </RouterView>
         </main>
 
         <!-- Footer -->

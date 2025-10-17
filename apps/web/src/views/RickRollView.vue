@@ -37,16 +37,16 @@ onMounted(() => {
                 enter-to-class="opacity-100 scale-100" leave-active-class="transition-all duration-300 ease-in"
                 leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
                 <div v-if="!videoRevealed" class="text-center space-y-8">
-                    <h1 class="text-5xl md:text-6xl font-bold bg-gradient-to-r from-pink-400 via-purple-400 to-blue-400 
-                               bg-clip-text text-transparent animate-pulse">
-                        🎉 You Found the Secret Feature!
+                    <h1
+                        class="text-5xl md:text-6xl font-bold text-gradient-rainbow transition-all duration-700 opacity-100 translate-y-0 animate-pulse">
+                        <i class="bi bi-gift" aria-hidden="true"></i> You Found the Secret Feature!
                     </h1>
                     <p class="text-xl text-gray-300 max-w-2xl mx-auto">
                         Congratulations, curious explorer! You've discovered the hidden gem of this site.
                         Ready for a surprise?
                     </p>
                     <Button variant="primary" size="lg" @click="revealVideo" class="animate-bounce">
-                        🎵 Reveal the Surprise
+                        <i class="bi bi-music-note-beamed" aria-hidden="true"></i> Reveal the Surprise
                     </Button>
                 </div>
             </Transition>
@@ -58,7 +58,8 @@ onMounted(() => {
                     <!-- Header -->
                     <div class="text-center space-y-4">
                         <h1 class="text-4xl md:text-5xl font-bold text-white">
-                            🎵 Never Gonna Give You Up
+                            <i class="bi bi-music-note-beamed text-purple-400" aria-hidden="true"></i> Never Gonna Give
+                            You Up
                         </h1>
                         <p class="text-xl text-purple-400">
                             Classic internet culture, now with privacy
@@ -80,7 +81,7 @@ onMounted(() => {
                     <div class="bg-gradient-to-br from-purple-500/10 to-pink-500/10 
                                 backdrop-blur-sm border border-purple-500/20 rounded-2xl p-8">
                         <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                            <span>💡</span>
+                            <i class="bi bi-lightbulb text-yellow-400" aria-hidden="true"></i>
                             Even Memes Deserve Privacy
                         </h2>
                         <div class="space-y-4 text-gray-300">
@@ -104,8 +105,8 @@ onMounted(() => {
 
                     <!-- Why This Matters -->
                     <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8">
-                        <h3 class="text-xl font-bold text-white mb-4">
-                            🎭 Creative Freedom Needs Privacy
+                        <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                            <i class="bi bi-palette" aria-hidden="true"></i> Creative Freedom Needs Privacy
                         </h3>
                         <p class="text-gray-300 mb-4">
                             Content creators (yes, even Rick Astley) deserve to share their work

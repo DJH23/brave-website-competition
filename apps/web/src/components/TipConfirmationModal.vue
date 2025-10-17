@@ -137,7 +137,7 @@ const viewOnEtherscan = () => {
                 <!-- Content -->
                 <div class="text-center">
                     <h3 class="text-3xl font-bold mb-2 text-gradient-rainbow">
-                        Tip Sent! 🎉
+                        <i class="bi bi-stars" aria-hidden="true"></i> Tip Sent!
                     </h3>
                     <p class="text-neutral-300 mb-4">
                         Thank you for supporting this project!
