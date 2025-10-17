@@ -2,6 +2,7 @@ import { createApp } from "vue";
 import { VueQueryPlugin } from "@tanstack/vue-query";
 import { createHead } from "@vueuse/head";
 import App from "./App.vue";
+import router from "./router";
 import "./style.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 // @ts-ignore: vue-audio-visual plugin UMD build import for Vite compatibility
@@ -14,6 +15,9 @@ import "v-network-graph/lib/style.css";
 
 const app = createApp(App);
 const head = createHead();
+
+// Setup Vue Router
+app.use(router);
 
 // Setup VueUse Head for SEO
 app.use(head);
