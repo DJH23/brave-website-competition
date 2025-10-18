@@ -1,10 +1,17 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import MusicProductions from '../components/MusicProductions.vue';
-import BATIntegration from '../components/BATIntegration.vue';
 import Button from '../components/Button.vue';
+import { useIntersectionObserver } from '../composables/useIntersectionObserver';
 
 const showTipModal = ref(false);
+
+// Reveal on scroll for main headings
+const musicHubHeadingRef = ref<HTMLElement | null>(null);
+const { hasBeenVisible: musicHubVisible } = useIntersectionObserver(musicHubHeadingRef, { threshold: 0.1, once: true });
+
+const howBatWorksRef = ref<HTMLElement | null>(null);
+const { hasBeenVisible: howBatWorksVisible } = useIntersectionObserver(howBatWorksRef, { threshold: 0.1, once: true });
 </script>
 
 <template>
@@ -12,8 +19,9 @@ const showTipModal = ref(false);
         <!-- Header Section -->
         <div class="max-w-5xl mx-auto mb-16">
             <div class="text-center space-y-6">
-                <h1
-                    class="text-5xl md:text-6xl font-bold text-gradient-rainbow transition-all duration-700 opacity-100 translate-y-0">
+                <h1 ref="musicHubHeadingRef"
+                    class="text-5xl md:text-6xl font-bold text-gradient-rainbow transition-all duration-700"
+                    :class="{ 'opacity-0 translate-y-8': !musicHubVisible, 'opacity-100 translate-y-0': musicHubVisible }">
                     <i class="bi bi-music-note-beamed" aria-hidden="true"></i> Music Hub
                 </h1>
                 <p class="text-xl text-gray-300 max-w-3xl mx-auto">
@@ -64,25 +72,11 @@ const showTipModal = ref(false);
             <MusicProductions />
         </div>
 
-        <!-- BAT Tipping Integration -->
-        <div class="max-w-5xl mx-auto">
-            <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8">
-                <h2
-                    class="text-3xl font-bold text-white mb-6 text-center text-gradient-orange transition-all duration-700 opacity-100 translate-y-0">
-                    <i class="bi bi-coin text-braveOrange" aria-hidden="true"></i> Support with BAT
-                </h2>
-                <p class="text-gray-300 text-center mb-8 max-w-2xl mx-auto">
-                    Love what you hear? Tip directly using Basic Attention Token.
-                    Your support goes straight to the creator — no fees, no tracking, no hassle.
-                </p>
-                <BATIntegration />
-            </div>
-        </div>
-
         <!-- How It Works Section -->
         <div class="max-w-5xl mx-auto mt-16">
-            <h2
-                class="text-3xl font-bold text-white mb-8 text-center text-gradient-purple transition-all duration-700 opacity-100 translate-y-0">
+            <h2 ref="howBatWorksRef"
+                class="text-3xl font-bold text-white mb-8 text-center text-gradient-purple transition-all duration-700"
+                :class="{ 'opacity-0 translate-y-8': !howBatWorksVisible, 'opacity-100 translate-y-0': howBatWorksVisible }">
                 How BAT Tipping Works
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">

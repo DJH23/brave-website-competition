@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useIntersectionObserver } from '../composables/useIntersectionObserver'
 import Card from './Card.vue'
 
 interface FingerprintData {
@@ -13,6 +14,10 @@ interface FingerprintData {
 
 const showComparison = ref(false)
 const selectedItem = ref<FingerprintData | null>(null)
+
+// Reveal on scroll
+const fingerprintHeadingRef = ref<HTMLElement | null>(null)
+const { hasBeenVisible: fingerprintHeadingVisible } = useIntersectionObserver(fingerprintHeadingRef, { threshold: 0.1, once: true })
 
 const fingerprintData: FingerprintData[] = [
     {
@@ -129,7 +134,9 @@ const closeDetail = () => {
 <template>
     <Card variant="highlight">
         <div class="mb-6">
-            <h3 class="text-2xl font-bold mb-2 text-gradient-orange">
+            <h3 ref="fingerprintHeadingRef"
+                class="text-2xl font-bold mb-2 text-gradient-orange transition-all duration-700"
+                :class="{ 'opacity-0 translate-y-8': !fingerprintHeadingVisible, 'opacity-100 translate-y-0': fingerprintHeadingVisible }">
                 <i class="bi bi-person-bounding-box" aria-hidden="true"></i> Fingerprinting Protection Demo
             </h3>
             <p class="text-neutral-300 text-sm">

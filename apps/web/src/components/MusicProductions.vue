@@ -67,7 +67,8 @@ const handleTipArtist = async () => {
                 Music Productions
             </h2>
             <p class="text-neutral-300 mb-8">
-                Premium music creations powered by privacy-first technologies and direct artist support.
+                Explore original music tracks and support BAT-enabled creators as a user. If both you and the creator
+                have BAT set up, you can send tips directly and securely—empowering users to reward creativity.
             </p>
 
             <!-- Music Productions -->

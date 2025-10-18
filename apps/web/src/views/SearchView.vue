@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Button from '../components/Button.vue';
+import { useIntersectionObserver } from '../composables/useIntersectionObserver';
 
 const searchQuery = ref('');
 const isSearching = ref(false);
@@ -26,15 +27,23 @@ const searchSuggestion = (query: string) => {
     searchQuery.value = query;
     handleSearch();
 };
+
+// Reveal on scroll for main headings
+const searchHeadingRef = ref<HTMLElement | null>(null);
+const { hasBeenVisible: searchVisible } = useIntersectionObserver(searchHeadingRef, { threshold: 0.1, once: true });
+
+const trySearchRef = ref<HTMLElement | null>(null);
+const { hasBeenVisible: trySearchVisible } = useIntersectionObserver(trySearchRef, { threshold: 0.1, once: true });
 </script>
 
 <template>
     <div class="min-h-screen px-4 py-12">
         <!-- Header Section -->
         <div class="max-w-5xl mx-auto mb-16">
-            <div class="text-center space-y-6">
-                <h1
-                    class="text-5xl md:text-6xl font-bold text-gradient-rainbow transition-all duration-700 opacity-100 translate-y-0">
+            <div class="text-center space-y-6 mb-8">
+                <h1 ref="searchHeadingRef"
+                    class="text-5xl md:text-6xl font-bold text-gradient-rainbow transition-all duration-700"
+                    :class="{ 'opacity-0 translate-y-8': !searchVisible, 'opacity-100 translate-y-0': searchVisible }">
                     <i class="bi bi-search" aria-hidden="true"></i> Brave Search
                 </h1>
                 <p class="text-xl text-gray-300 max-w-3xl mx-auto">
@@ -43,9 +52,46 @@ const searchSuggestion = (query: string) => {
                 </p>
             </div>
 
+            <!-- Search Demo -->
+            <div class="max-w-3xl mx-auto mb-16">
+                <div class="
+                            backdrop-blur-sm border border-blue-500/30 rounded-2xl p-8">
+                    <h2 ref="trySearchRef"
+                        class="text-2xl font-bold text-white mb-6 text-center transition-all duration-700"
+                        :class="{ 'opacity-0 translate-y-8': !trySearchVisible, 'opacity-100 translate-y-0': trySearchVisible }">
+                        Try Brave Search Now
+                    </h2>
+
+                    <form @submit.prevent="handleSearch" class="space-y-4">
+                        <div class="relative">
+                            <input v-model="searchQuery" type="text" placeholder="Search anything... privately" class="w-full px-6 py-4 pl-12 bg-black/30 border border-white/20 rounded-xl
+                                       text-white placeholder-gray-400 focus:outline-none focus:border-blue-400
+                                       focus:ring-2 focus:ring-blue-400/20 transition-all" />
+                            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-2xl">
+                                <i class="bi bi-search" aria-hidden="true"></i>
+                            </span>
+                        </div>
+
+                        <Button type="submit" variant="primary" size="lg" class="w-full">
+                            Search on Brave (opens in new tab)
+                        </Button>
+                    </form>
+
+                    <div class="mt-6">
+                        <p class="text-sm text-gray-400 mb-3 text-center">Quick suggestions:</p>
+                        <div class="flex flex-wrap gap-2 justify-center">
+                            <button v-for="query in quickSearches" :key="query" @click="searchSuggestion(query)" class="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 
+                                       rounded-lg text-sm text-gray-300 hover:text-white transition-all">
+                                {{ query }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Why This Matters -->
             <div class="mt-12 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 
-                        backdrop-blur-sm border border-blue-500/20 rounded-2xl p-8">
+            backdrop-blur-sm border border-blue-500/20 rounded-2xl p-8">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
                     <i class="bi bi-lightbulb text-yellow-400" aria-hidden="true"></i>
                     Why Search Privacy Matters
@@ -78,40 +124,6 @@ const searchSuggestion = (query: string) => {
             </div>
         </div>
 
-        <!-- Search Demo -->
-        <div class="max-w-3xl mx-auto mb-16">
-            <div class="bg-gradient-to-br from-blue-500/20 to-purple-500/20 
-                        backdrop-blur-sm border border-blue-500/30 rounded-2xl p-8">
-                <h2 class="text-2xl font-bold text-white mb-6 text-center">
-                    Try Brave Search Now
-                </h2>
-
-                <form @submit.prevent="handleSearch" class="space-y-4">
-                    <div class="relative">
-                        <input v-model="searchQuery" type="text" placeholder="Search anything... privately" class="w-full px-6 py-4 pl-12 bg-black/30 border border-white/20 rounded-xl
-                                   text-white placeholder-gray-400 focus:outline-none focus:border-blue-400
-                                   focus:ring-2 focus:ring-blue-400/20 transition-all" />
-                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-2xl">
-                            <i class="bi bi-search" aria-hidden="true"></i>
-                        </span>
-                    </div>
-
-                    <Button type="submit" variant="primary" size="lg" class="w-full">
-                        Search on Brave (opens in new tab)
-                    </Button>
-                </form>
-
-                <div class="mt-6">
-                    <p class="text-sm text-gray-400 mb-3 text-center">Quick suggestions:</p>
-                    <div class="flex flex-wrap gap-2 justify-center">
-                        <button v-for="query in quickSearches" :key="query" @click="searchSuggestion(query)" class="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 
-                                   rounded-lg text-sm text-gray-300 hover:text-white transition-all">
-                            {{ query }}
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- Comparison: Brave Search vs Others -->
         <div class="max-w-5xl mx-auto mb-16">
