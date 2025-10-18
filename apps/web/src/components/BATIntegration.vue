@@ -2,6 +2,7 @@
 import { ref, watch, computed } from "vue";
 import { useWallet } from "../composables/useWallet";
 import { useBATPrice } from "../composables/useBATPrice";
+import { useIntersectionObserver } from "../composables/useIntersectionObserver";
 import Card from "./Card.vue";
 import Button from "./Button.vue";
 import BATPriceTicker from "./BATPriceTicker.vue";
@@ -30,6 +31,10 @@ const searchQuery = ref("");
 const searchResults = ref<any[]>([]);
 const searchLoading = ref(false);
 const searchError = ref("");
+
+// Reveal on scroll
+const batHeadingRef = ref<HTMLElement | null>(null);
+const { hasBeenVisible: batHeadingVisible } = useIntersectionObserver(batHeadingRef, { threshold: 0.1, once: true });
 
 watch(isConnected, async (connected) => {
     if (connected) {
@@ -103,7 +108,8 @@ const searchBrave = async () => {
 
     <section class="py-12 px-6">
         <div class="max-w-7xl mx-auto">
-            <h2 class="text-4xl font-bold mb-4 animate-fade-in text-gradient-rainbow">
+            <h2 ref="batHeadingRef" class="text-4xl font-bold mb-4 text-gradient-rainbow transition-all duration-700"
+                :class="{ 'opacity-0 translate-y-8': !batHeadingVisible, 'opacity-100 translate-y-0': batHeadingVisible }">
                 BAT & Brave Wallet Integration
             </h2>
             <p class="text-neutral-300 mb-8">
@@ -275,33 +281,6 @@ const searchBrave = async () => {
                 </Card>
             </div>
 
-            <div class="mt-16">
-                <Card title="Brave Search Demo" variant="highlight">
-                    <h3 class="text-lg font-semibold mb-2 text-gradient-blue">Try Brave Search</h3>
-                    <p class="text-sm text-neutral-400 mb-4">
-                        Brave Search is a privacy-first search engine. This demo uses the Brave Search API.
-                    </p>
-                    <form @submit.prevent="searchBrave">
-                        <div class="flex gap-2 mb-4">
-                            <input v-model="searchQuery" type="text" placeholder="Search Brave..."
-                                class="px-3 py-2 rounded-lg bg-neutral-800 text-white border border-neutral-700 w-full focus:border-bravePurple focus:outline-none" />
-                            <Button variant="primary" size="sm" type="submit" :disabled="searchLoading">
-                                {{ searchLoading ? '...' : 'Search' }}
-                            </Button>
-                        </div>
-                    </form>
-                    <div v-if="searchLoading" class="text-neutral-400">Searching...</div>
-                    <ul v-if="searchResults.length" class="mt-4 space-y-2">
-                        <li v-for="result in searchResults" :key="result.url"
-                            class="p-3 rounded bg-neutral-900 border border-neutral-800 hover:border-bravePurple/50 transition-colors">
-                            <a :href="result.url" target="_blank" rel="noopener noreferrer"
-                                class="text-braveBlue underline hover:text-bravePurple">{{ result.title }}</a>
-                            <div class="text-xs text-neutral-400 mt-1">{{ result.description }}</div>
-                        </li>
-                    </ul>
-                    <div v-if="searchError" class="text-red-400 mt-4">{{ searchError }}</div>
-                </Card>
-            </div>
         </div>
     </section>
 </template>

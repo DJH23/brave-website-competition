@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, reactive } from 'vue'
+import { useIntersectionObserver } from '../composables/useIntersectionObserver'
 import Card from './Card.vue'
 import { defineConfigs } from 'v-network-graph'
 import 'v-network-graph/lib/style.css'
@@ -51,6 +52,10 @@ const trackerPool = [
 
 let animationInterval: number | null = null
 let trackerIndex = 0
+
+// Reveal on scroll
+const trackerHeadingRef = ref<HTMLElement | null>(null)
+const { hasBeenVisible: trackerHeadingVisible } = useIntersectionObserver(trackerHeadingRef, { threshold: 0.1, once: true })
 
 const layouts = ref({
     nodes: Object.fromEntries(Object.keys(nodes).map(id => [id, { x: 0, y: 0 }]))
@@ -176,7 +181,9 @@ onUnmounted(() => {
 <template>
     <Card variant="highlight" class="overflow-hidden">
         <div class="mb-6">
-            <h3 class="text-2xl font-bold mb-2 text-gradient-rainbow">
+            <h3 ref="trackerHeadingRef"
+                class="text-2xl font-bold mb-2 text-gradient-rainbow transition-all duration-700"
+                :class="{ 'opacity-0 translate-y-8': !trackerHeadingVisible, 'opacity-100 translate-y-0': trackerHeadingVisible }">
                 <i class="bi bi-diagram-3" aria-hidden="true"></i> Real-Time Tracker Network
             </h3>
             <p class="text-neutral-300 text-sm">

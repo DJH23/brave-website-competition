@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, nextTick } from "vue";
+import { useIntersectionObserver } from "../composables/useIntersectionObserver";
 import Card from "./Card.vue";
 import Button from "./Button.vue";
 import TrackerNetworkVisualization from "./TrackerNetworkVisualization.vue";
@@ -40,6 +41,13 @@ const trackerNetworkRef = ref<HTMLElement | null>(null);
 const privacyScoreRef = ref<HTMLElement | null>(null);
 const fingerprintingRef = ref<HTMLElement | null>(null);
 
+// Reveal on scroll
+const privacyDemosHeadingRef = ref<HTMLElement | null>(null);
+const { hasBeenVisible: privacyDemosVisible } = useIntersectionObserver(privacyDemosHeadingRef, { threshold: 0.1, once: true });
+
+const liveDemoHeadingRef = ref<HTMLElement | null>(null);
+const { hasBeenVisible: liveDemoVisible } = useIntersectionObserver(liveDemoHeadingRef, { threshold: 0.1, once: true });
+
 const startDemo = () => {
     showDemo.value = true;
     // Simulate blocking activity
@@ -66,7 +74,11 @@ const scrollToDemo = async (refName: string) => {
 <template>
     <section class="py-12 px-6" aria-labelledby="privacy-demos-heading">
         <div class="max-w-7xl mx-auto">
-            <h2 id="privacy-demos-heading" class="text-4xl font-bold mb-4 animate-fade-in">Privacy Demos</h2>
+            <h2 id="privacy-demos-heading" ref="privacyDemosHeadingRef"
+                class="text-4xl font-bold mb-4 transition-all duration-700"
+                :class="{ 'opacity-0 translate-y-8': !privacyDemosVisible, 'opacity-100 translate-y-0': privacyDemosVisible }">
+                Privacy Demos
+            </h2>
             <p class="text-neutral-300 mb-8">
                 Interactive demonstrations of privacy-first web technologies and
                 tracking protection.
@@ -79,7 +91,7 @@ const scrollToDemo = async (refName: string) => {
                     <div class="flex gap-4 mb-4 text-sm" role="list" aria-label="Demo statistics">
                         <div v-for="(value, key) in demo.stats" :key="key" class="flex flex-col" role="listitem">
                             <span class="text-bravePurple font-semibold" :aria-label="`${key}: ${value}`">{{ value
-                            }}</span>
+                                }}</span>
                             <span class="text-neutral-500 capitalize" aria-hidden="true">{{ key }}</span>
                         </div>
                     </div>
@@ -90,7 +102,9 @@ const scrollToDemo = async (refName: string) => {
 
             <!-- Live Demo Section -->
             <Card variant="highlight" aria-labelledby="live-demo-heading">
-                <h3 id="live-demo-heading" class="text-2xl font-semibold mb-4">
+                <h3 id="live-demo-heading" ref="liveDemoHeadingRef"
+                    class="text-2xl font-semibold mb-4 transition-all duration-700"
+                    :class="{ 'opacity-0 translate-y-8': !liveDemoVisible, 'opacity-100 translate-y-0': liveDemoVisible }">
                     Live Tracker Blocking Demo
                 </h3>
                 <p class="text-neutral-300 mb-6">

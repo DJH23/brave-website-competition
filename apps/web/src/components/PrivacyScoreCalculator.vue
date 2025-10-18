@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
+import { useIntersectionObserver } from '../composables/useIntersectionObserver'
 import { use } from 'echarts/core'
 import { CanvasRenderer } from 'echarts/renderers'
 import { GaugeChart, BarChart } from 'echarts/charts'
@@ -34,6 +35,10 @@ interface PrivacyMetrics {
 
 const animatedScore = ref(0)
 const targetScore = ref(0)
+
+// Reveal on scroll
+const privacyScoreHeadingRef = ref<HTMLElement | null>(null)
+const { hasBeenVisible: privacyScoreHeadingVisible } = useIntersectionObserver(privacyScoreHeadingRef, { threshold: 0.1, once: true })
 
 const metrics = ref<PrivacyMetrics>({
     trackersBlocked: 0,
@@ -274,7 +279,9 @@ onMounted(() => {
 <template>
     <Card variant="highlight">
         <div class="mb-6">
-            <h3 class="text-2xl font-bold mb-2 text-gradient-purple">
+            <h3 ref="privacyScoreHeadingRef"
+                class="text-2xl font-bold mb-2 text-gradient-purple transition-all duration-700"
+                :class="{ 'opacity-0 translate-y-8': !privacyScoreHeadingVisible, 'opacity-100 translate-y-0': privacyScoreHeadingVisible }">
                 📊 Privacy Score Calculator
             </h3>
             <p class="text-neutral-300 text-sm">

@@ -5,11 +5,21 @@ import Button from '../components/Button.vue';
 import Card from '../components/Card.vue';
 import { useIntersectionObserver } from '../composables/useIntersectionObserver';
 
+// Reveal on scroll for sections
 const portfolioRef = ref<HTMLElement | null>(null);
 const { hasBeenVisible } = useIntersectionObserver(portfolioRef, {
     threshold: 0.1,
     once: true
 });
+
+const heroHeadingRef = ref<HTMLElement | null>(null);
+const { hasBeenVisible: heroVisible } = useIntersectionObserver(heroHeadingRef, { threshold: 0.1, once: true });
+
+const whyMattersRef = ref<HTMLElement | null>(null);
+const { hasBeenVisible: whyMattersVisible } = useIntersectionObserver(whyMattersRef, { threshold: 0.1, once: true });
+
+const exploreHubRef = ref<HTMLElement | null>(null);
+const { hasBeenVisible: exploreHubVisible } = useIntersectionObserver(exploreHubRef, { threshold: 0.1, once: true });
 
 const features = [
     {
@@ -82,18 +92,22 @@ const openProjectLink = (link: string) => {
             <div class="max-w-5xl mx-auto text-center space-y-8">
                 <!-- Logo/Title -->
                 <div class="space-y-4">
-                    <h1
-                        class="text-5xl md:text-7xl font-bold text-gradient-rainbow transition-all duration-700 opacity-100 translate-y-0">
+                    <h1 ref="heroHeadingRef"
+                        class="text-5xl md:text-7xl font-bold text-gradient-rainbow transition-all duration-700"
+                        :class="{ 'opacity-0 translate-y-8': !heroVisible, 'opacity-100 translate-y-0': heroVisible }">
                         Privacy-First Creator Hub
                     </h1>
                     <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
                         Built with <span class="text-orange-400 font-semibold">Brave</span> and
                         <span class="text-purple-400 font-semibold">BAT</span> —
-                        Where privacy meets creativity
+                        Empowering users to support BAT-enabled creators directly. When both you and the creator have
+                        BAT set up, you can tip and support privacy-first creativity.
                     </p>
                 </div> <!-- Why This Matters Section -->
                 <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 max-w-2xl mx-auto">
-                    <h2 class="text-2xl font-bold text-white mb-4 flex items-center justify-center gap-2">
+                    <h2 ref="whyMattersRef"
+                        class="text-2xl font-bold text-white mb-4 flex items-center justify-center gap-2 transition-all duration-700"
+                        :class="{ 'opacity-0 translate-y-8': !whyMattersVisible, 'opacity-100 translate-y-0': whyMattersVisible }">
                         <i class="bi bi-lightbulb text-yellow-400" aria-hidden="true"></i>
                         Why This Matters
                     </h2>
@@ -101,8 +115,9 @@ const openProjectLink = (link: string) => {
                         Your online activity shouldn't be a product. This hub demonstrates how
                         <strong class="text-orange-400">Brave Browser</strong> and
                         <strong class="text-purple-400">Basic Attention Token (BAT)</strong>
-                        empower creators and users with true privacy, direct monetization, and control
-                        over personal data. No middlemen. No surveillance. Just freedom.
+                        empower users to support creators directly—when both have BAT enabled. You can tip your favorite
+                        creators with BAT, all while keeping your data private and secure. No middlemen. No
+                        surveillance. Just freedom.
                     </p>
                 </div> <!-- CTA Buttons -->
                 <div class="flex flex-wrap gap-4 justify-center">
@@ -128,8 +143,9 @@ const openProjectLink = (link: string) => {
         <!-- Features Grid -->
         <section class="px-4 py-20">
             <div class="max-w-7xl mx-auto">
-                <h2
-                    class="text-4xl font-bold text-center mb-4 text-gradient-rainbow transition-all duration-700 opacity-100 translate-y-0">
+                <h2 ref="exploreHubRef"
+                    class="text-4xl font-bold text-center mb-4 text-gradient-rainbow transition-all duration-700"
+                    :class="{ 'opacity-0 translate-y-8': !exploreHubVisible, 'opacity-100 translate-y-0': exploreHubVisible }">
                     Explore the Hub
                 </h2>
                 <p class="text-gray-400 text-center mb-12 text-lg">
@@ -201,36 +217,7 @@ const openProjectLink = (link: string) => {
             </div>
         </section>
 
-        <!-- Quick Stats / Info Section -->
-        <section class="px-4 py-20 bg-gradient-to-b from-transparent to-purple-900/20">
-            <div class="max-w-5xl mx-auto">
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-                    <div class="space-y-2">
-                        <div class="text-4xl font-bold text-purple-400">100%</div>
-                        <div class="text-gray-300">Privacy Protected</div>
-                    </div>
-                    <div class="space-y-2">
-                        <div class="text-4xl font-bold text-orange-400">0</div>
-                        <div class="text-gray-300">Trackers Allowed</div>
-                    </div>
-                    <div class="space-y-2">
-                        <div class="text-4xl font-bold text-pink-400">∞</div>
-                        <div class="text-gray-300">Creative Freedom</div>
-                    </div>
-                </div>
 
-                <!-- Easter Egg Hint -->
-                <div class="mt-16 text-center">
-                    <p class="text-gray-500 text-sm">
-                        Psst... looking for something special? Try the
-                        <RouterLink to="/surprise" class="text-purple-400 hover:text-purple-300 underline">
-                            surprise feature
-                        </RouterLink>
-                        🎉
-                    </p>
-                </div>
-            </div>
-        </section>
     </div>
 </template>
 

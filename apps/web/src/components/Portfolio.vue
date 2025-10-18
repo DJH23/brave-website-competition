@@ -14,6 +14,18 @@ const { hasBeenVisible } = useIntersectionObserver(sectionRef, {
     once: true
 });
 
+const devProjectsHeadingRef = ref<HTMLElement | null>(null);
+const { hasBeenVisible: devProjectsVisible } = useIntersectionObserver(devProjectsHeadingRef, {
+    threshold: 0.1,
+    once: true
+});
+
+const musicHeadingRef = ref<HTMLElement | null>(null);
+const { hasBeenVisible: musicHeadingVisible } = useIntersectionObserver(musicHeadingRef, {
+    threshold: 0.1,
+    once: true
+});
+
 const projects = ref([
     {
         title: "Privacy-First Analytics",
@@ -101,8 +113,9 @@ const handleTipArtist = async () => {
 
             <!-- Development Projects -->
             <div class="mb-12">
-                <h3 id="dev-projects-heading"
-                    class="text-2xl font-semibold mb-6 flex items-center gap-2 text-gradient-purple">
+                <h3 ref="devProjectsHeadingRef" id="dev-projects-heading"
+                    class="text-2xl font-semibold mb-6 flex items-center gap-2 text-gradient-purple transition-all duration-700"
+                    :class="{ 'opacity-0 translate-y-8': !devProjectsVisible, 'opacity-100 translate-y-0': devProjectsVisible }">
                     <i class="bi bi-laptop text-bravePurple" aria-hidden="true"></i> Development Projects
                 </h3>
                 <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" role="list"
@@ -125,7 +138,9 @@ const handleTipArtist = async () => {
 
             <!-- Music Productions -->
             <div>
-                <h3 id="music-heading" class="text-2xl font-semibold mb-6 flex items-center gap-2 text-gradient-orange">
+                <h3 ref="musicHeadingRef" id="music-heading"
+                    class="text-2xl font-semibold mb-6 flex items-center gap-2 text-gradient-orange transition-all duration-700"
+                    :class="{ 'opacity-0 translate-y-8': !musicHeadingVisible, 'opacity-100 translate-y-0': musicHeadingVisible }">
                     <i class="bi bi-music-note-beamed text-braveOrange" aria-hidden="true"></i> Music Productions
                 </h3>
 

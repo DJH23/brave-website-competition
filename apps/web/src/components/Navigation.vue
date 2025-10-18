@@ -1,22 +1,31 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { RouterLink, useRoute } from 'vue-router';
 import BATLogo3DAsync from './BATLogo3DAsync.vue';
 
 const route = useRoute();
 const mobileMenuOpen = ref(false);
+const navLoaded = ref(false);
 
 const navItems = [
     { path: '/', label: 'Home', icon: 'bi-house-door', tooltip: 'Back to home' },
     { path: '/music', label: 'Music', icon: 'bi-music-note-beamed', tooltip: 'Music productions' },
     { path: '/wallet', label: 'Wallet', icon: 'bi-wallet2', tooltip: 'BAT & Brave Wallet' },
     { path: '/search', label: 'Search', icon: 'bi-search', tooltip: 'Private search' },
-    { path: '/privacy', label: 'Privacy', icon: 'bi-shield-check', tooltip: 'Privacy demos' }
+    { path: '/privacy', label: 'Privacy', icon: 'bi-shield-check', tooltip: 'Privacy demos' },
+    { path: '/surprise', label: 'Bonus Feature', icon: 'bi-gift', tooltip: 'Bonus Feature' }
 ];
 
 const toggleMobileMenu = () => {
     mobileMenuOpen.value = !mobileMenuOpen.value;
 };
+
+onMounted(() => {
+    // Trigger animation after a short delay
+    setTimeout(() => {
+        navLoaded.value = true;
+    }, 100);
+});
 </script>
 
 <template>
@@ -33,16 +42,18 @@ const toggleMobileMenu = () => {
                         </template>
                     </Suspense>
                     <span class="text-xl font-bold bg-gradient-to-r from-purple-400 to-orange-400 
-                                 bg-clip-text text-transparent hidden sm:block">
+                                 bg-clip-text text-transparent hidden sm:block transition-all duration-700"
+                        :class="{ 'opacity-0 -translate-x-4': !navLoaded, 'opacity-100 translate-x-0': navLoaded }">
                         Privacy Hub
                     </span>
                 </RouterLink>
 
                 <!-- Desktop Navigation -->
                 <div class="hidden md:flex items-center gap-1">
-                    <RouterLink v-for="item in navItems" :key="item.path" :to="item.path" class="group relative px-4 py-2 rounded-lg transition-all duration-200
+                    <RouterLink v-for="(item, index) in navItems" :key="item.path" :to="item.path" class="group relative px-4 py-2 rounded-lg transition-all duration-200
                                hover:bg-white/10"
-                        :class="route.path === item.path ? 'bg-white/10 text-white' : 'text-gray-300'">
+                        :class="route.path === item.path ? 'bg-white/10 text-white' : 'text-gray-300'"
+                        :style="{ transitionDelay: `${index * 50}ms` }">
                         <!-- Tooltip -->
                         <div class="absolute -bottom-12 left-1/2 -translate-x-1/2 px-3 py-1 
                                     bg-black/90 text-white text-sm rounded-lg whitespace-nowrap
@@ -53,7 +64,8 @@ const toggleMobileMenu = () => {
                                         bg-black/90 rotate-45"></div>
                         </div>
 
-                        <span class="flex items-center gap-2">
+                        <span class="flex items-center gap-2 transition-all duration-700"
+                            :class="{ 'opacity-0 translate-y-2': !navLoaded, 'opacity-100 translate-y-0': navLoaded }">
                             <i :class="['bi', item.icon, 'text-lg']" aria-hidden="true"></i>
                             <span class="font-medium">{{ item.label }}</span>
                         </span>

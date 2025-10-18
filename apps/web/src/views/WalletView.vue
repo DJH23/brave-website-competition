@@ -5,6 +5,7 @@ import BATPriceTicker from '../components/BATPriceTicker.vue';
 import Button from '../components/Button.vue';
 import { useWallet } from '../composables/useWallet';
 import { useWeb3Modal } from '@web3modal/ethers/vue';
+import { useIntersectionObserver } from '../composables/useIntersectionObserver';
 
 const { isConnected, address, batBalance, connectWallet, fetchBATBalance } = useWallet();
 const { open } = useWeb3Modal();
@@ -24,6 +25,13 @@ watch(isConnected, (connected) => {
 const disconnect = () => {
     open({ view: 'Account' });
 };
+
+// Reveal on scroll for main headings
+const walletHeadingRef = ref<HTMLElement | null>(null);
+const { hasBeenVisible: walletVisible } = useIntersectionObserver(walletHeadingRef, { threshold: 0.1, once: true });
+
+const batTippingRef = ref<HTMLElement | null>(null);
+const { hasBeenVisible: batTippingVisible } = useIntersectionObserver(batTippingRef, { threshold: 0.1, once: true });
 </script>
 
 <template>
@@ -31,8 +39,9 @@ const disconnect = () => {
         <!-- Header Section -->
         <div class="max-w-5xl mx-auto mb-16">
             <div class="text-center space-y-6">
-                <h1
-                    class="text-5xl md:text-6xl font-bold text-gradient-rainbow transition-all duration-700 opacity-100 translate-y-0">
+                <h1 ref="walletHeadingRef"
+                    class="text-5xl md:text-6xl font-bold text-gradient-rainbow transition-all duration-700"
+                    :class="{ 'opacity-0 translate-y-8': !walletVisible, 'opacity-100 translate-y-0': walletVisible }">
                     <i class="bi bi-wallet2" aria-hidden="true"></i> Brave Wallet & BAT
                 </h1>
                 <p class="text-xl text-gray-300 max-w-3xl mx-auto">
@@ -80,7 +89,7 @@ const disconnect = () => {
 
         <!-- Wallet Connection Card -->
         <div class="max-w-3xl mx-auto mb-16">
-            <div class="bg-gradient-to-br from-orange-500/20 to-purple-500/20 
+            <div class="
                         backdrop-blur-sm border border-orange-500/30 rounded-2xl p-8">
                 <h2 class="text-2xl font-bold text-white mb-6 text-center">
                     Connect Your Brave Wallet
@@ -131,7 +140,9 @@ const disconnect = () => {
         <!-- BAT Tipping Demo -->
         <div class="max-w-5xl mx-auto mb-16">
             <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8">
-                <h2 class="text-3xl font-bold text-white mb-6 text-center">
+                <h2 ref="batTippingRef"
+                    class="text-3xl font-bold text-white mb-6 text-center transition-all duration-700"
+                    :class="{ 'opacity-0 translate-y-8': !batTippingVisible, 'opacity-100 translate-y-0': batTippingVisible }">
                     Try BAT Tipping
                 </h2>
                 <p class="text-gray-300 text-center mb-8 max-w-2xl mx-auto">

@@ -1,6 +1,15 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import PrivacyDemos from '../components/PrivacyDemos.vue';
 import Button from '../components/Button.vue';
+import { useIntersectionObserver } from '../composables/useIntersectionObserver';
+
+// Reveal on scroll for main headings
+const privacyDemoHeadingRef = ref<HTMLElement | null>(null);
+const { hasBeenVisible: privacyDemoVisible } = useIntersectionObserver(privacyDemoHeadingRef, { threshold: 0.1, once: true });
+
+const howBraveProtectsRef = ref<HTMLElement | null>(null);
+const { hasBeenVisible: howBraveProtectsVisible } = useIntersectionObserver(howBraveProtectsRef, { threshold: 0.1, once: true });
 </script>
 
 <template>
@@ -8,8 +17,9 @@ import Button from '../components/Button.vue';
         <!-- Header Section -->
         <div class="max-w-5xl mx-auto mb-16">
             <div class="text-center space-y-6">
-                <h1
-                    class="text-5xl md:text-6xl font-bold text-gradient-rainbow transition-all duration-700 opacity-100 translate-y-0">
+                <h1 ref="privacyDemoHeadingRef"
+                    class="text-5xl md:text-6xl font-bold text-gradient-rainbow transition-all duration-700"
+                    :class="{ 'opacity-0 translate-y-8': !privacyDemoVisible, 'opacity-100 translate-y-0': privacyDemoVisible }">
                     <i class="bi bi-shield-check" aria-hidden="true"></i> Privacy Demos
                 </h1>
                 <p class="text-xl text-gray-300 max-w-3xl mx-auto">
@@ -66,7 +76,9 @@ import Button from '../components/Button.vue';
 
         <!-- How Brave Protects You -->
         <div class="max-w-5xl mx-auto mt-16">
-            <h2 class="text-3xl font-bold text-white mb-8 text-center">
+            <h2 ref="howBraveProtectsRef"
+                class="text-3xl font-bold text-white mb-8 text-center transition-all duration-700"
+                :class="{ 'opacity-0 translate-y-8': !howBraveProtectsVisible, 'opacity-100 translate-y-0': howBraveProtectsVisible }">
                 How Brave Protects You
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
