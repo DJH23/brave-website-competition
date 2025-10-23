@@ -50,8 +50,7 @@ const { hasBeenVisible: memesPrivacyVisible } = useIntersectionObserver(memesPri
                 </div>
 
                 <!-- The Message -->
-                <div class="bg-gradient-to-br from-purple-500/10 to-pink-500/10 
-                                backdrop-blur-sm border border-purple-500/20 rounded-2xl p-8">
+                <div class="glass rounded-2xl p-8">
                     <h2 ref="memesPrivacyRef"
                         class="text-2xl font-bold text-white mb-4 flex items-center gap-2 transition-all duration-700"
                         :class="{ 'opacity-0 translate-y-8': !memesPrivacyVisible, 'opacity-100 translate-y-0': memesPrivacyVisible }">
@@ -64,13 +63,13 @@ const { hasBeenVisible: memesPrivacyVisible } = useIntersectionObserver(memesPri
                             one of the internet's most beloved traditions. But here's the twist:
                         </p>
                         <p>
-                            That video is embedded using <strong class="text-purple-400">
+                            That video is embedded using <strong class="text-bravePurple">
                                 youtube-nocookie.com</strong>, which means YouTube isn't tracking you
                             while you enjoy this classic banger. No cookies, no profiling,
                             just pure nostalgic entertainment.
                         </p>
                         <p>
-                            This is the <strong class="text-orange-400">Brave Browser philosophy</strong>
+                            This is the <strong class="text-braveOrange">Brave Browser philosophy</strong>
                             in action: <strong>You can enjoy the web without being the product</strong>.
                             Watch videos, browse memes, explore content — all while staying private.
                         </p>
@@ -78,7 +77,7 @@ const { hasBeenVisible: memesPrivacyVisible } = useIntersectionObserver(memesPri
                 </div>
 
                 <!-- Why This Matters -->
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8">
+                <div class="glass rounded-2xl p-8">
                     <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
                         <i class="bi bi-palette" aria-hidden="true"></i> Creative Freedom Needs Privacy
                     </h3>
@@ -97,21 +96,18 @@ const { hasBeenVisible: memesPrivacyVisible } = useIntersectionObserver(memesPri
 
                 <!-- Fun Stats -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="
-                                    backdrop-blur-sm border border-pink-500/30 rounded-xl p-6 text-center">
+                    <div class="glass rounded-xl p-6 text-center">
                         <div class="text-4xl font-bold text-pink-400 mb-2">1.4B+</div>
                         <div class="text-gray-300">Views on YouTube</div>
                         <div class="text-sm text-gray-400 mt-2">Rick Astley is eternal</div>
                     </div>
-                    <div class="
-                                    backdrop-blur-sm border border-purple-500/30 rounded-xl p-6 text-center">
-                        <div class="text-4xl font-bold text-purple-400 mb-2">1987</div>
+                    <div class="glass rounded-xl p-6 text-center">
+                        <div class="text-4xl font-bold text-bravePurple mb-2">1987</div>
                         <div class="text-gray-300">Original Release</div>
                         <div class="text-sm text-gray-400 mt-2">A timeless classic</div>
                     </div>
-                    <div class="bg-gradient-to-br from-blue-500/20 to-cyan-500/20 
-                                    backdrop-blur-sm border border-blue-500/30 rounded-xl p-6 text-center">
-                        <div class="text-4xl font-bold text-blue-400 mb-2">0</div>
+                    <div class="glass rounded-xl p-6 text-center">
+                        <div class="text-4xl font-bold text-braveBlue mb-2">0</div>
                         <div class="text-gray-300">Trackers Here</div>
                         <div class="text-sm text-gray-400 mt-2">Privacy-first entertainment</div>
                     </div>
@@ -137,13 +133,13 @@ const { hasBeenVisible: memesPrivacyVisible } = useIntersectionObserver(memesPri
                 <!-- Easter Egg Credits -->
                 <div class="text-center text-sm text-gray-500 mt-12">
                     <p>
-                        You're <strong class="text-purple-400">Never Gonna Give Up</strong>
+                        You're <strong class="text-bravePurple">Never Gonna Give Up</strong>
                         on privacy, right? 😉
                     </p>
                     <p class="mt-2">
                         Thanks for exploring this hub. Now go download
                         <a href="https://brave.com/download/" target="_blank" rel="noopener noreferrer"
-                            class="text-orange-400 hover:text-orange-300 underline">
+                            class="text-braveOrange hover:text-orange-300 underline">
                             Brave Browser
                         </a>
                     </p>

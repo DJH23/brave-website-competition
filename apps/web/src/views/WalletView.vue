@@ -51,20 +51,19 @@ const { hasBeenVisible: batTippingVisible } = useIntersectionObserver(batTipping
             </div>
 
             <!-- Why This Matters -->
-            <div class="mt-12 bg-gradient-to-br from-orange-500/10 to-red-500/10 
-                        backdrop-blur-sm border border-orange-500/20 rounded-2xl p-8">
+            <div class="mt-12 glass rounded-2xl p-8">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
                     <i class="bi bi-lightbulb text-yellow-400" aria-hidden="true"></i>
                     Why Wallets Matter (Even for Beginners)
                 </h2>
                 <div class="space-y-4 text-gray-300">
                     <p>
-                        Think of a <strong class="text-orange-400">crypto wallet</strong> like your
+                        Think of a <strong class="text-braveOrange">crypto wallet</strong> like your
                         own personal bank — except <strong>you're in complete control</strong>.
                         No company can freeze your account, track your purchases, or take a cut.
                     </p>
                     <p>
-                        <strong class="text-purple-400">Basic Attention Token (BAT)</strong> is a
+                        <strong class="text-bravePurple">Basic Attention Token (BAT)</strong> is a
                         cryptocurrency built for the internet economy. Use it to:
                     </p>
                     <ul class="list-disc list-inside space-y-2 ml-4">
@@ -89,8 +88,7 @@ const { hasBeenVisible: batTippingVisible } = useIntersectionObserver(batTipping
 
         <!-- Wallet Connection Card -->
         <div class="max-w-3xl mx-auto mb-16">
-            <div class="
-                        backdrop-blur-sm border border-orange-500/30 rounded-2xl p-8">
+            <div class="glass rounded-2xl p-8">
                 <h2 class="text-2xl font-bold text-white mb-6 text-center">
                     Connect Your Brave Wallet
                 </h2>
@@ -106,7 +104,7 @@ const { hasBeenVisible: batTippingVisible } = useIntersectionObserver(batTipping
                     <p class="text-sm text-gray-400">
                         Don't have Brave?
                         <a href="https://brave.com/download/" target="_blank" rel="noopener noreferrer"
-                            class="text-orange-400 hover:text-orange-300 underline">
+                            class="text-braveOrange hover:text-orange-300 underline">
                             Download it here
                         </a>
                     </p>
@@ -139,7 +137,7 @@ const { hasBeenVisible: batTippingVisible } = useIntersectionObserver(batTipping
 
         <!-- BAT Tipping Demo -->
         <div class="max-w-5xl mx-auto mb-16">
-            <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8">
+            <div class="glass rounded-2xl p-8">
                 <h2 ref="batTippingRef"
                     class="text-3xl font-bold text-white mb-6 text-center transition-all duration-700"
                     :class="{ 'opacity-0 translate-y-8': !batTippingVisible, 'opacity-100 translate-y-0': batTippingVisible }">
@@ -158,21 +156,21 @@ const { hasBeenVisible: batTippingVisible } = useIntersectionObserver(batTipping
                 Getting Started with BAT
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-orange-400 mb-3"><i class="bi bi-gift"></i> Earn BAT Free</h3>
+                <div class="glass rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-braveOrange mb-3"><i class="bi bi-gift"></i> Earn BAT Free</h3>
                     <p class="text-gray-300">
                         Enable Brave Rewards in your browser settings. You'll earn BAT automatically
                         by viewing privacy-respecting ads. Opt-in only — no ads if you don't want them.
                     </p>
                 </div>
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-purple-400 mb-3"><i class="bi bi-credit-card"></i> Buy BAT</h3>
+                <div class="glass rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-bravePurple mb-3"><i class="bi bi-credit-card"></i> Buy BAT</h3>
                     <p class="text-gray-300">
                         Purchase BAT on major exchanges like Coinbase, Binance, or Gemini.
                         Transfer to your Brave Wallet for full control and privacy.
                     </p>
                 </div>
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+                <div class="glass rounded-xl p-6">
                     <h3 class="text-xl font-bold text-pink-400 mb-3"><i class="bi bi-heart-fill"></i> Auto-Contribute
                     </h3>
                     <p class="text-gray-300">
@@ -180,8 +178,8 @@ const { hasBeenVisible: batTippingVisible } = useIntersectionObserver(batTipping
                         based on your browsing time. Effortless creator support.
                     </p>
                 </div>
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-blue-400 mb-3"><i class="bi bi-cursor"></i> One-Click Tips</h3>
+                <div class="glass rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-braveBlue mb-3"><i class="bi bi-cursor"></i> One-Click Tips</h3>
                     <p class="text-gray-300">
                         Send tips instantly from any Brave-verified site. No forms, no sign-ups.
                         Just click the BAT icon and choose your amount.

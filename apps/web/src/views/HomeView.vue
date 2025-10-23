@@ -28,7 +28,7 @@ const features = [
         description: 'Explore premium music productions with BAT-powered tipping for creators',
         route: '/music',
         color: 'from-purple-500 to-pink-500',
-        iconColor: 'text-purple-400'
+        iconColor: 'text-bravePurple'
     },
     {
         icon: 'bi-wallet2',
@@ -36,7 +36,7 @@ const features = [
         description: 'Connect your wallet, manage BAT tokens, and support creators directly',
         route: '/wallet',
         color: 'from-orange-500 to-red-500',
-        iconColor: 'text-orange-400'
+        iconColor: 'text-braveOrange'
     },
     {
         icon: 'bi-search',
@@ -44,7 +44,7 @@ const features = [
         description: 'Experience private, unbiased search without tracking or profiling',
         route: '/search',
         color: 'from-blue-500 to-cyan-500',
-        iconColor: 'text-blue-400'
+        iconColor: 'text-braveBlue'
     },
     {
         icon: 'bi-shield-check',
@@ -98,13 +98,13 @@ const openProjectLink = (link: string) => {
                         Privacy-First Creator Hub
                     </h1>
                     <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
-                        Built with <span class="text-orange-400 font-semibold">Brave</span> and
-                        <span class="text-purple-400 font-semibold">BAT</span> —
+                        Built with <span class="text-braveOrange font-semibold">Brave</span> and
+                        <span class="text-bravePurple font-semibold">BAT</span> —
                         Empowering users to support BAT-enabled creators directly. When both you and the creator have
                         BAT set up, you can tip and support privacy-first creativity.
                     </p>
                 </div> <!-- Why This Matters Section -->
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 max-w-2xl mx-auto">
+                <div class="glass rounded-2xl p-8 max-w-2xl mx-auto">
                     <h2 ref="whyMattersRef"
                         class="text-2xl font-bold text-white mb-4 flex items-center justify-center gap-2 transition-all duration-700"
                         :class="{ 'opacity-0 translate-y-8': !whyMattersVisible, 'opacity-100 translate-y-0': whyMattersVisible }">
@@ -153,12 +153,12 @@ const openProjectLink = (link: string) => {
                 </p>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <RouterLink v-for="feature in features" :key="feature.route" :to="feature.route" class="group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 
-                               hover:bg-white/10 hover:border-white/20 transition-all duration-300 
+                    <RouterLink v-for="feature in features" :key="feature.route" :to="feature.route" class="group relative glass rounded-2xl p-8 
+                               transition-all duration-300 
                                hover:scale-105 hover:shadow-2xl">
                         <!-- Gradient Overlay -->
-                        <div class="absolute inset-0 rounded-2xl bg-gradient-to-br opacity-0 
-                                   group-hover:opacity-10 transition-opacity duration-300" :class="feature.color">
+                        <div class="absolute inset-0 rounded-2xl bg-brave-gradient opacity-0 
+                                   group-hover:opacity-10 transition-opacity duration-300">
                         </div>
 
                         <!-- Content -->

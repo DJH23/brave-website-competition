@@ -108,7 +108,7 @@ const getProtectionColor = (level: string) => {
     switch (level) {
         case 'high': return 'text-green-400'
         case 'medium': return 'text-yellow-400'
-        case 'low': return 'text-orange-400'
+        case 'low': return 'text-braveOrange'
         default: return 'text-neutral-400'
     }
 }

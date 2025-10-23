@@ -31,35 +31,34 @@ const { hasBeenVisible: howBatWorksVisible } = useIntersectionObserver(howBatWor
             </div>
 
             <!-- Why This Matters -->
-            <div class="mt-12 bg-gradient-to-br from-purple-500/10 to-pink-500/10 
-                        backdrop-blur-sm border border-purple-500/20 rounded-2xl p-8">
+            <div class="mt-12 glass rounded-2xl p-8">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
                     <i class="bi bi-lightbulb text-yellow-400" aria-hidden="true"></i>
                     Why This Matters for Creators
                 </h2>
                 <div class="space-y-4 text-gray-300">
                     <p>
-                        <strong class="text-purple-400">Traditional music platforms</strong> take
+                        <strong class="text-bravePurple">Traditional music platforms</strong> take
                         30-50% of your earnings, track your listeners, and sell their data.
                         Your fans become products.
                     </p>
                     <p>
-                        With <strong class="text-orange-400">BAT (Basic Attention Token)</strong>,
+                        With <strong class="text-braveOrange">BAT (Basic Attention Token)</strong>,
                         fans can tip you directly through Brave Browser — no account required,
                         no corporate middleman, and <strong>zero tracking</strong>.
                         You keep more. Fans stay private. Everyone wins.
                     </p>
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-                        <div class="bg-white/5 rounded-lg p-4 text-center">
+                        <div class="glass rounded-lg p-4 text-center">
                             <div class="text-3xl font-bold text-green-400">95%+</div>
                             <div class="text-sm text-gray-400">You keep</div>
                         </div>
-                        <div class="bg-white/5 rounded-lg p-4 text-center">
-                            <div class="text-3xl font-bold text-purple-400">0</div>
+                        <div class="glass rounded-lg p-4 text-center">
+                            <div class="text-3xl font-bold text-bravePurple">0</div>
                             <div class="text-sm text-gray-400">Data collected</div>
                         </div>
-                        <div class="bg-white/5 rounded-lg p-4 text-center">
-                            <div class="text-3xl font-bold text-orange-400">Direct</div>
+                        <div class="glass rounded-lg p-4 text-center">
+                            <div class="text-3xl font-bold text-braveOrange">Direct</div>
                             <div class="text-sm text-gray-400">Fan support</div>
                         </div>
                     </div>
@@ -80,21 +79,21 @@ const { hasBeenVisible: howBatWorksVisible } = useIntersectionObserver(howBatWor
                 How BAT Tipping Works
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 text-center">
+                <div class="glass rounded-xl p-6 text-center">
                     <div class="text-4xl mb-4"><i class="bi bi-1-circle text-bravePurple" aria-hidden="true"></i></div>
                     <h3 class="text-xl font-bold text-white mb-2">Get Brave Browser</h3>
                     <p class="text-gray-400">
                         Download Brave (free) with built-in privacy protection and BAT wallet
                     </p>
                 </div>
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 text-center">
+                <div class="glass rounded-xl p-6 text-center">
                     <div class="text-4xl mb-4"><i class="bi bi-2-circle text-braveOrange" aria-hidden="true"></i></div>
                     <h3 class="text-xl font-bold text-white mb-2">Earn or Buy BAT</h3>
                     <p class="text-gray-400">
                         Earn BAT by viewing privacy-respecting ads, or buy BAT on exchanges
                     </p>
                 </div>
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6 text-center">
+                <div class="glass rounded-xl p-6 text-center">
                     <div class="text-4xl mb-4"><i class="bi bi-3-circle text-braveBlue" aria-hidden="true"></i></div>
                     <h3 class="text-xl font-bold text-white mb-2">Tip Creators</h3>
                     <p class="text-gray-400">

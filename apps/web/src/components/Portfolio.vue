@@ -159,14 +159,14 @@ const handleTipArtist = async () => {
                     </div>
 
                     <!-- Tip Artist Section (Bottom Left) -->
-                    <div class="flex items-start gap-4 pt-4 border-t border-neutral-700">
+                    <div class="flex items-start gap-4 pt-4 border-t border-white/10">
                         <div class="flex flex-col gap-3">
                             <p class="text-sm text-neutral-400">
                                 Support the artist with a tip
                             </p>
                             <div class="flex items-center gap-3">
                                 <!-- Tip Amount Controls -->
-                                <div class="flex items-center gap-2 bg-neutral-800/80 rounded-lg p-2">
+                                <div class="flex items-center gap-2 glass rounded-lg p-2">
                                     <Button size="sm" variant="ghost" @click="decrementTip"
                                         aria-label="Decrease tip amount">
                                         <i class="bi bi-dash-lg text-xl" aria-hidden="true"></i>

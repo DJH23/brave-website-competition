@@ -29,8 +29,7 @@ const { hasBeenVisible: howBraveProtectsVisible } = useIntersectionObserver(howB
             </div>
 
             <!-- Why This Matters -->
-            <div class="mt-12 bg-gradient-to-br from-green-500/10 to-cyan-500/10 
-                        backdrop-blur-sm border border-green-500/20 rounded-2xl p-8">
+            <div class="mt-12 glass rounded-2xl p-8">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
                     <i class="bi bi-lightbulb text-yellow-400" aria-hidden="true"></i>
                     Why Privacy Matters (Yes, Even for You)
@@ -82,7 +81,7 @@ const { hasBeenVisible: howBraveProtectsVisible } = useIntersectionObserver(howB
                 How Brave Protects You
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
+                <div class="glass rounded-xl p-6">
                     <h3 class="text-xl font-bold text-green-400 mb-3 flex items-center gap-2">
                         <i class="bi bi-shield-slash" aria-hidden="true"></i> Aggressive Tracker Blocking
                     </h3>
@@ -91,8 +90,8 @@ const { hasBeenVisible: howBraveProtectsVisible } = useIntersectionObserver(howB
                         scripts before they load. Websites load faster and your data stays private.
                     </p>
                 </div>
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-blue-400 mb-3 flex items-center gap-2">
+                <div class="glass rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-braveBlue mb-3 flex items-center gap-2">
                         <i class="bi bi-lock" aria-hidden="true"></i> HTTPS Everywhere
                     </h3>
                     <p class="text-gray-300">
@@ -100,8 +99,8 @@ const { hasBeenVisible: howBraveProtectsVisible } = useIntersectionObserver(howB
                         from eavesdropping and man-in-the-middle attacks.
                     </p>
                 </div>
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-purple-400 mb-3 flex items-center gap-2">
+                <div class="glass rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-bravePurple mb-3 flex items-center gap-2">
                         <i class="bi bi-shield" aria-hidden="true"></i> Fingerprinting Protection
                     </h3>
                     <p class="text-gray-300">
@@ -109,8 +108,8 @@ const { hasBeenVisible: howBraveProtectsVisible } = useIntersectionObserver(howB
                         and tracking you across the web, even without cookies.
                     </p>
                 </div>
-                <div class="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-orange-400 mb-3 flex items-center gap-2">
+                <div class="glass rounded-xl p-6">
+                    <h3 class="text-xl font-bold text-braveOrange mb-3 flex items-center gap-2">
                         <i class="bi bi-code-slash" aria-hidden="true"></i> Script Blocking
                     </h3>
                     <p class="text-gray-300">
@@ -122,8 +121,7 @@ const { hasBeenVisible: howBraveProtectsVisible } = useIntersectionObserver(howB
         </div>
 
         <!-- Privacy Tips -->
-        <div class="max-w-3xl mx-auto mt-16 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 
-                    backdrop-blur-sm border border-yellow-500/20 rounded-2xl p-8">
+        <div class="max-w-3xl mx-auto mt-16 glass rounded-2xl p-8">
             <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
                 <i class="bi bi-lightning-charge" aria-hidden="true"></i>
                 Level Up Your Privacy Game

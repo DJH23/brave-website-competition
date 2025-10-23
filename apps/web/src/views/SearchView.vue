@@ -54,8 +54,7 @@ const { hasBeenVisible: trySearchVisible } = useIntersectionObserver(trySearchRe
 
             <!-- Search Demo -->
             <div class="max-w-3xl mx-auto mb-16">
-                <div class="
-                            backdrop-blur-sm border border-blue-500/30 rounded-2xl p-8">
+                <div class="glass rounded-2xl p-8">
                     <h2 ref="trySearchRef"
                         class="text-2xl font-bold text-white mb-6 text-center transition-all duration-700"
                         :class="{ 'opacity-0 translate-y-8': !trySearchVisible, 'opacity-100 translate-y-0': trySearchVisible }">
@@ -80,8 +79,8 @@ const { hasBeenVisible: trySearchVisible } = useIntersectionObserver(trySearchRe
                     <div class="mt-6">
                         <p class="text-sm text-gray-400 mb-3 text-center">Quick suggestions:</p>
                         <div class="flex flex-wrap gap-2 justify-center">
-                            <button v-for="query in quickSearches" :key="query" @click="searchSuggestion(query)" class="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 
-                                       rounded-lg text-sm text-gray-300 hover:text-white transition-all">
+                            <button v-for="query in quickSearches" :key="query" @click="searchSuggestion(query)"
+                                class="px-4 py-2 glass rounded-lg text-sm text-gray-300 hover:text-white transition-all">
                                 {{ query }}
                             </button>
                         </div>
@@ -90,8 +89,7 @@ const { hasBeenVisible: trySearchVisible } = useIntersectionObserver(trySearchRe
             </div>
 
             <!-- Why This Matters -->
-            <div class="mt-12 bg-gradient-to-br from-blue-500/10 to-cyan-500/10 
-            backdrop-blur-sm border border-blue-500/20 rounded-2xl p-8">
+            <div class="mt-12 glass rounded-2xl p-8">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
                     <i class="bi bi-lightbulb text-yellow-400" aria-hidden="true"></i>
                     Why Search Privacy Matters
@@ -132,11 +130,11 @@ const { hasBeenVisible: trySearchVisible } = useIntersectionObserver(trySearchRe
             </h2>
 
             <div class="overflow-x-auto">
-                <table class="w-full bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl">
+                <table class="w-full glass rounded-xl">
                     <thead class="bg-white/5">
                         <tr>
                             <th class="px-6 py-4 text-left text-gray-300">Feature</th>
-                            <th class="px-6 py-4 text-center text-blue-400 font-bold">Brave Search</th>
+                            <th class="px-6 py-4 text-center text-braveBlue font-bold">Brave Search</th>
                             <th class="px-6 py-4 text-center text-gray-400">Google</th>
                             <th class="px-6 py-4 text-center text-gray-400">DuckDuckGo</th>
                         </tr>

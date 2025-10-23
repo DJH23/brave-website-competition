@@ -132,8 +132,7 @@ const searchBrave = async () => {
 
             <div v-if="showWalletInfo" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center"
                 @click.self="showWalletInfo = false">
-                <div
-                    class="bg-neutral-900 rounded-xl p-8 max-w-md w-full border border-bravePurple shadow-2xl relative">
+                <div class="glass-strong rounded-xl p-8 max-w-md w-full border border-bravePurple shadow-2xl relative">
                     <button class="absolute top-3 right-3 text-neutral-400 hover:text-white text-2xl leading-none"
                         @click="showWalletInfo = false" aria-label="Close info">
                         ×
@@ -190,7 +189,7 @@ const searchBrave = async () => {
                             </div>
                         </div>
 
-                        <div class="p-3 bg-neutral-900/50 rounded-lg border border-neutral-800">
+                        <div class="p-3 glass rounded-lg">
                             <div class="text-xs text-neutral-400 mb-1">Connected Address</div>
                             <div class="font-mono text-xs text-neutral-300 truncate">
                                 {{ address }}
@@ -227,7 +226,7 @@ const searchBrave = async () => {
                                 class="w-full px-4 py-2 bg-neutral-900 border border-neutral-700 rounded-lg text-white focus:border-bravePurple focus:outline-none" />
                         </div>
 
-                        <div class="p-4 bg-neutral-900/50 rounded-lg border border-neutral-800">
+                        <div class="p-4 glass rounded-lg">
                             <div class="flex justify-between mb-2">
                                 <span class="text-sm">You're sending</span>
                                 <span class="font-semibold">{{ tipAmount }} BAT</span>

@@ -143,7 +143,7 @@ const viewOnEtherscan = () => {
                         Thank you for supporting this project!
                     </p>
 
-                    <div class="bg-neutral-900/50 rounded-xl p-4 mb-6 border border-neutral-800">
+                    <div class="glass rounded-xl p-4 mb-6">
                         <div class="text-sm text-neutral-400 mb-1">Amount Sent</div>
                         <div class="text-3xl font-bold text-braveOrange">
                             {{ tipAmount }} BAT
