@@ -63,9 +63,9 @@ const { hasBeenVisible: trySearchVisible } = useIntersectionObserver(trySearchRe
 
                     <form @submit.prevent="handleSearch" class="space-y-4">
                         <div class="relative">
-                            <input v-model="searchQuery" type="text" placeholder="Search anything... privately" class="w-full px-6 py-4 pl-12 bg-black/30 border border-white/20 rounded-xl
-                                       text-white placeholder-gray-400 focus:outline-none focus:border-blue-400
-                                       focus:ring-2 focus:ring-blue-400/20 transition-all" />
+                            <input v-model="searchQuery" type="text" placeholder="Search anything... privately" class="w-full px-6 py-4 pl-12 bg-neutral-900 border border-neutral-700 rounded-xl
+                                       text-white placeholder-gray-400 focus:outline-none focus:border-bravePurple
+                                       focus:ring-2 focus:ring-bravePurple/20 transition-all" />
                             <span class="absolute left-4 top-1/2 -translate-y-1/2 text-2xl">
                                 <i class="bi bi-search" aria-hidden="true"></i>
                             </span>
@@ -91,12 +91,12 @@ const { hasBeenVisible: trySearchVisible } = useIntersectionObserver(trySearchRe
             <!-- Why This Matters -->
             <div class="mt-12 glass rounded-2xl p-8">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                    <i class="bi bi-lightbulb text-yellow-400" aria-hidden="true"></i>
+                    <i class="bi bi-lightbulb text-braveOrange" aria-hidden="true"></i>
                     Why Search Privacy Matters
                 </h2>
                 <div class="space-y-4 text-gray-300">
                     <p>
-                        <strong class="text-red-400">Google knows everything you search for.</strong>
+                        <strong class="text-braveOrange">Google knows everything you search for.</strong>
                         Every question you ask, every health concern, every embarrassing query —
                         it's all stored, analyzed, and used to build a detailed profile of you.
                     </p>
@@ -110,7 +110,7 @@ const { hasBeenVisible: trySearchVisible } = useIntersectionObserver(trySearchRe
                         <li>Relationship problems or dating advice</li>
                     </ul>
                     <p class="mt-4">
-                        <strong class="text-blue-400">Brave Search is different:</strong> Your searches
+                        <strong class="text-braveBlue">Brave Search is different:</strong> Your searches
                         are <strong>completely anonymous</strong>. Brave doesn't store your IP address,
                         doesn't build a profile, and doesn't sell your data. Ever.
                     </p>
@@ -176,36 +176,35 @@ const { hasBeenVisible: trySearchVisible } = useIntersectionObserver(trySearchRe
         </div>
 
         <!-- Privacy Tips -->
-        <div class="max-w-3xl mx-auto bg-gradient-to-br from-purple-500/10 to-pink-500/10 
-                    backdrop-blur-sm border border-purple-500/20 rounded-2xl p-8">
+        <div class="max-w-3xl mx-auto glass-strong rounded-2xl p-8 border border-bravePurple/30">
             <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
                 <i class="bi bi-bullseye" aria-hidden="true"></i>
                 Search Like a Privacy Pro
             </h2>
             <ul class="space-y-3 text-gray-300">
                 <li class="flex items-start gap-3">
-                    <span class="text-blue-400 text-xl shrink-0">1.</span>
+                    <span class="text-braveBlue text-xl shrink-0">1.</span>
                     <span>
                         <strong>Set Brave Search as your default</strong> in browser settings —
                         privacy becomes automatic
                     </span>
                 </li>
                 <li class="flex items-start gap-3">
-                    <span class="text-blue-400 text-xl shrink-0">2.</span>
+                    <span class="text-braveBlue text-xl shrink-0">2.</span>
                     <span>
                         <strong>Use "Goggles"</strong> to customize your search results —
                         unique to Brave Search, lets you rank sources
                     </span>
                 </li>
                 <li class="flex items-start gap-3">
-                    <span class="text-blue-400 text-xl shrink-0">3.</span>
+                    <span class="text-braveBlue text-xl shrink-0">3.</span>
                     <span>
                         <strong>Try "Anonymous Local Results"</strong> — get local business info
                         without revealing your location
                     </span>
                 </li>
                 <li class="flex items-start gap-3">
-                    <span class="text-blue-400 text-xl shrink-0">4.</span>
+                    <span class="text-braveBlue text-xl shrink-0">4.</span>
                     <span>
                         <strong>Disable JavaScript in Shields</strong> for ultra-private searching
                         (may break some features)
