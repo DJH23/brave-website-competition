@@ -26,6 +26,16 @@ const brandColors = [
 let currentOffset = 0;
 let targetOffset = 0;
 const EASE_FACTOR = 0.1; // Lower = smoother/slower, higher = snappier
+// Group-based speed boost configuration
+const GROUP_COUNT = 4; // number of particle groups that can boost independently
+const MAX_ACTIVE_GROUPS = 2; // limit simultaneous boosts
+type GroupBoost = { active: boolean; timeLeft: number; cooldown: number; multiplier: number };
+let groupBoosts: GroupBoost[] = Array.from({ length: GROUP_COUNT }, () => ({
+    active: false,
+    timeLeft: 0,
+    cooldown: Math.floor(180 + Math.random() * 360), // 3-9s before first boost
+    multiplier: 1
+}));
 
 class Particle {
     x: number;
@@ -40,6 +50,14 @@ class Particle {
     colorProgress: number; // 0-1, progress to next color
     colorSpeed: number; // How fast to transition
     z: number; // NEW: depth in [0..1], 0 = near, 1 = far
+    // Pulse state (for occasional soft glow/pulse)
+    pulseActive: boolean;
+    pulseProgress: number; // 0..1 for one pulse cycle
+    pulseSpeed: number; // speed of pulse progress per frame
+    pulseAmp: number; // amplitude of pulse effect (size/alpha)
+    pulseCooldown: number; // frames until next possible pulse
+    // Group-based speed behavior
+    groupId: number;
 
     constructor(width: number, height: number) {
         this.x = Math.random() * width;
@@ -54,16 +72,26 @@ class Particle {
         this.baseVx = ((Math.random() - 0.5) * 0.15) * speedScale;
         this.baseVy = ((Math.random() - 0.5) * 0.15) * speedScale;
         // Slightly reduce max size (was 1..3 -> now ~1..2.6 before scaling)
-        this.size = (Math.random() * 1.6 + 1.0) * sizeScale;
+        this.size = (Math.random() * 1.3 + 1.0) * sizeScale;
 
         // Start at random color with random progress
         this.colorIndex = Math.floor(Math.random() * brandColors.length);
         this.colorProgress = Math.random();
         this.colorSpeed = 0.001 + Math.random() * 0.002;
         this.color = { ...brandColors[this.colorIndex] };
+
+        // Initialize pulse
+        this.pulseActive = false;
+        this.pulseProgress = 0;
+        this.pulseSpeed = 0.006 + Math.random() * 0.01; // ~1-3s per pulse
+        this.pulseAmp = 0.18 + Math.random() * 0.14; // slightly stronger amplitude
+        this.pulseCooldown = Math.floor(240 + Math.random() * 600); // 4-10s
+
+        // Assign particle to a random group for coordinated boosts
+        this.groupId = Math.floor(Math.random() * GROUP_COUNT);
     }
 
-    update(width: number, height: number, mouseX: number, mouseY: number) {
+    update(width: number, height: number, mouseX: number, mouseY: number, speedMultiplier: number) {
         // Color morphing - lerp between current and next color
         this.colorProgress += this.colorSpeed;
         if (this.colorProgress >= 1) {
@@ -89,8 +117,9 @@ class Particle {
             this.vy -= (dy / dist) * force * 0.2;
         }
 
-        this.x += this.vx;
-        this.y += this.vy;
+        // Apply movement with optional group-based speed multiplier
+        this.x += this.vx * speedMultiplier;
+        this.y += this.vy * speedMultiplier;
 
         // Boundary check with wrapping for seamless drift
         if (this.x < 0) this.x = width;
@@ -102,29 +131,60 @@ class Particle {
         this.vx *= 0.98;
         this.vy *= 0.98;
 
-        // Add back the ambient drift to maintain continuous movement
-        this.vx += this.baseVx * 0.02;
-        this.vy += this.baseVy * 0.02;
+        // Add back the ambient drift to maintain continuous movement (boost aware)
+        this.vx += this.baseVx * 0.02 * speedMultiplier;
+        this.vy += this.baseVy * 0.02 * speedMultiplier;
+
+        // Occasional soft pulse logic
+        if (this.pulseActive) {
+            this.pulseProgress += this.pulseSpeed;
+            if (this.pulseProgress >= 1) {
+                this.pulseActive = false;
+            }
+        } else {
+            this.pulseCooldown -= 1;
+            if (this.pulseCooldown <= 0) {
+                this.pulseActive = true;
+                this.pulseProgress = 0;
+                // Randomize next pulse window and parameters for variation
+                this.pulseCooldown = Math.floor(240 + Math.random() * 600);
+                this.pulseSpeed = 0.006 + Math.random() * 0.01; // keep slower pulse on retrigger
+                this.pulseAmp = 0.12 + Math.random() * 0.1;
+            }
+        }
     }
 
     draw(ctx: CanvasRenderingContext2D) {
         // Depth-based alpha and optional blur
-        const alpha = 0.28 + 0.5 * (1 - this.z); // far dimmer, near brighter
+        const alpha = 0.34 + 0.5 * (1 - this.z); // increased base brightness
         ctx.save();
         ctx.globalAlpha = alpha;
 
         // Only blur the farthest particles to suggest depth-of-field
-        if (this.z > 0.75) {
-            const blurPx = Math.round((this.z - 0.75) * 8); // 0..2px
-            ctx.filter = `blur(${blurPx}px)`;
-        } else {
-            ctx.filter = 'none';
-        }
+        const baseBlur = this.z > 0.75 ? Math.round((this.z - 0.75) * 8) : 0; // 0..2px
+        ctx.filter = baseBlur > 0 ? `blur(${baseBlur}px)` : 'none';
+
+        // Pulse modulation (soft, occasional)
+        const pulseFactor = this.pulseActive ? Math.sin(this.pulseProgress * Math.PI) : 0; // 0..1..0
+        const sizeMultiplier = 1 + this.pulseAmp * pulseFactor;
+        const effectiveSize = this.size * sizeMultiplier;
+        const extraAlpha = 0.25 * this.pulseAmp * pulseFactor; // more noticeable brightening
+        ctx.globalAlpha = Math.min(1, alpha + extraAlpha);
 
         ctx.fillStyle = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b})`;
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.arc(this.x, this.y, effectiveSize, 0, Math.PI * 2);
         ctx.fill();
+
+        // Soft glow during pulse
+        if (pulseFactor > 0.1) {
+            const glowAlpha = 0.10 * pulseFactor; // stronger glow
+            ctx.globalAlpha = glowAlpha;
+            ctx.filter = `blur(${baseBlur + 6}px)`; // more blur for glow
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, effectiveSize * 2.0, 0, Math.PI * 2); // larger glow radius
+            ctx.fill();
+        }
 
         ctx.restore();
     }
@@ -195,9 +255,31 @@ onMounted(() => {
         if (!canvas.value || !ctx) return;
         ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
 
+        // Update group boost timers and possibly start new boosts
+        let activeGroups = groupBoosts.filter(g => g.active).length;
+        for (let i = 0; i < groupBoosts.length; i++) {
+            const g = groupBoosts[i];
+            if (g.active) {
+                g.timeLeft -= 1;
+                if (g.timeLeft <= 0) {
+                    g.active = false;
+                    g.cooldown = Math.floor(300 + Math.random() * 600); // 5-15s until next
+                }
+            } else {
+                g.cooldown -= 1;
+                if (g.cooldown <= 0 && activeGroups < MAX_ACTIVE_GROUPS) {
+                    g.active = true;
+                    g.timeLeft = Math.floor(180 + Math.random() * 240); // 3-7s boost
+                    g.multiplier = 1.3 + Math.random() * 0.4; // 1.3x - 1.7x speed
+                    activeGroups += 1;
+                }
+            }
+        }
+
         // Update all particles first
         particles.forEach(p => {
-            p.update(canvas.value!.width, canvas.value!.height, mouse.x, mouse.y);
+            const m = groupBoosts[p.groupId]?.active ? groupBoosts[p.groupId].multiplier : 1;
+            p.update(canvas.value!.width, canvas.value!.height, mouse.x, mouse.y, m);
         });
 
         // Sort by depth (far to near = painter's algorithm)
@@ -225,14 +307,17 @@ onMounted(() => {
                     const g = Math.floor((p1.color.g + p2.color.g) / 2);
                     const b = Math.floor((p1.color.b + p2.color.b) / 2);
 
-                    // Depth-aware alpha: nearer connections more opaque
-                    const baseAlpha = 0.2 * (1 - dist / maxDist);
-                    const depthAlpha = baseAlpha * (0.5 + 0.5 * (1 - avgZ));
+                    // Depth-aware alpha: increase visibility and add a floor
+                    const baseAlpha = 0.3 * (1 - dist / maxDist); // was 0.2
+                    const depthMix = 0.4 + 0.2 * (1 - avgZ); // slightly higher base for far lines
+                    let depthAlpha = baseAlpha * depthMix;
+                    depthAlpha = Math.max(0.06, depthAlpha); // ensure minimally visible
 
                     ctx.save();
                     ctx.globalAlpha = depthAlpha;
                     ctx.strokeStyle = `rgb(${r}, ${g}, ${b})`;
-                    ctx.lineWidth = 1;
+                    // Slightly thicker for nearer pairs
+                    ctx.lineWidth = 1 + 0.6 * (1 - avgZ);
                     ctx.beginPath();
                     ctx.moveTo(p1.x, p1.y);
                     ctx.lineTo(p2.x, p2.y);
