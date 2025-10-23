@@ -29,7 +29,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
+    <nav class="fixed top-0 left-0 right-0 z-50 glass-strong border-b border-white/10">
         <div class="w-full px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <!-- Logo and Brand -->
@@ -38,7 +38,7 @@ onMounted(() => {
                     <Suspense>
                         <BATLogo3DAsync />
                         <template #fallback>
-                            <div class="w-12 h-12 bg-bravePurple/20 rounded-lg animate-pulse"></div>
+                            <div class="w-12 h-12 bg-purple-500/20 rounded-lg animate-pulse"></div>
                         </template>
                     </Suspense>
                     <span class="text-xl font-bold bg-gradient-to-r from-bravePurple to-braveOrange 
@@ -97,7 +97,7 @@ onMounted(() => {
             enter-from-class="opacity-0 -translate-y-4" enter-to-class="opacity-100 translate-y-0"
             leave-active-class="transition-all duration-200 ease-in" leave-from-class="opacity-100 translate-y-0"
             leave-to-class="opacity-0 -translate-y-4">
-            <div v-if="mobileMenuOpen" class="md:hidden border-t border-white/10 glass">
+            <div v-if="mobileMenuOpen" class="md:hidden border-t border-white/10 glass-strong">
                 <div class="px-4 py-4 space-y-2">
                     <RouterLink v-for="item in navItems" :key="item.path" :to="item.path"
                         @click="mobileMenuOpen = false"
