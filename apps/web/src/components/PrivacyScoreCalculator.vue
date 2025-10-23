@@ -325,7 +325,7 @@ onMounted(() => {
             </div>
             <div class="glass p-3 rounded-lg">
                 <div class="text-xs text-neutral-400 mb-1"><i class="bi-cookie"></i> Cookies</div>
-                <div class="text-lg font-bold text-blue-400">{{ metrics.cookiesBlocked.toLocaleString() }}</div>
+                <div class="text-lg font-bold text-braveBlue">{{ metrics.cookiesBlocked.toLocaleString() }}</div>
             </div>
             <div class="glass p-3 rounded-lg">
                 <div class="text-xs text-neutral-400 mb-1"><i class="bi-file-earmark-code"></i> Scripts</div>

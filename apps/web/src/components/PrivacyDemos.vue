@@ -91,7 +91,7 @@ const scrollToDemo = async (refName: string) => {
                     <div class="flex gap-4 mb-4 text-sm" role="list" aria-label="Demo statistics">
                         <div v-for="(value, key) in demo.stats" :key="key" class="flex flex-col" role="listitem">
                             <span class="text-bravePurple font-semibold" :aria-label="`${key}: ${value}`">{{ value
-                                }}</span>
+                            }}</span>
                             <span class="text-neutral-500 capitalize" aria-hidden="true">{{ key }}</span>
                         </div>
                     </div>
@@ -118,8 +118,8 @@ const scrollToDemo = async (refName: string) => {
                     </Button>
                 </div>
 
-                <div v-else class="p-6 bg-neutral-950/50 rounded-lg border border-bravePurple/30" role="region"
-                    aria-live="polite" aria-atomic="true">
+                <div v-else class="p-6 glass rounded-lg border border-bravePurple/30" role="region" aria-live="polite"
+                    aria-atomic="true">
                     <div class="flex items-center justify-between mb-6">
                         <div>
                             <div class="text-4xl font-bold text-bravePurple" aria-label="Trackers blocked count">

@@ -101,7 +101,7 @@ watch(() => props.src, (newSrc) => {
 </script>
 
 <template>
-    <div class="p-4 bg-neutral-900/60 rounded-lg shadow">
+    <div class="p-4 glass rounded-lg">
         <!-- Header with title and duration -->
         <div class="flex items-center justify-between mb-3">
             <div>

@@ -29,7 +29,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <nav class="fixed top-0 left-0 right-0 z-50 backdrop-blur-lg border-b border-white/10">
+    <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
         <div class="w-full px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <!-- Logo and Brand -->
@@ -38,10 +38,10 @@ onMounted(() => {
                     <Suspense>
                         <BATLogo3DAsync />
                         <template #fallback>
-                            <div class="w-12 h-12 bg-purple-500/20 rounded-lg animate-pulse"></div>
+                            <div class="w-12 h-12 bg-bravePurple/20 rounded-lg animate-pulse"></div>
                         </template>
                     </Suspense>
-                    <span class="text-xl font-bold bg-gradient-to-r from-purple-400 to-orange-400 
+                    <span class="text-xl font-bold bg-gradient-to-r from-bravePurple to-braveOrange 
                                  bg-clip-text text-transparent hidden sm:block transition-all duration-700"
                         :class="{ 'opacity-0 -translate-x-4': !navLoaded, 'opacity-100 translate-x-0': navLoaded }">
                         Privacy Hub
@@ -72,7 +72,7 @@ onMounted(() => {
 
                         <!-- Active Indicator -->
                         <div v-if="route.path === item.path" class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 
-                                   bg-gradient-to-r from-purple-400 to-orange-400 rounded-full"></div>
+                                   bg-gradient-to-r from-bravePurple to-braveOrange rounded-full"></div>
                     </RouterLink>
                 </div>
 
@@ -97,7 +97,7 @@ onMounted(() => {
             enter-from-class="opacity-0 -translate-y-4" enter-to-class="opacity-100 translate-y-0"
             leave-active-class="transition-all duration-200 ease-in" leave-from-class="opacity-100 translate-y-0"
             leave-to-class="opacity-0 -translate-y-4">
-            <div v-if="mobileMenuOpen" class="md:hidden border-t border-white/10 bg-black/95 backdrop-blur-lg">
+            <div v-if="mobileMenuOpen" class="md:hidden border-t border-white/10 glass">
                 <div class="px-4 py-4 space-y-2">
                     <RouterLink v-for="item in navItems" :key="item.path" :to="item.path"
                         @click="mobileMenuOpen = false"
@@ -109,7 +109,7 @@ onMounted(() => {
                             <div class="font-medium">{{ item.label }}</div>
                             <div class="text-sm text-gray-400">{{ item.tooltip }}</div>
                         </div>
-                        <svg v-if="route.path === item.path" class="w-5 h-5 text-purple-400" fill="currentColor"
+                        <svg v-if="route.path === item.path" class="w-5 h-5 text-bravePurple" fill="currentColor"
                             viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
