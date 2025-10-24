@@ -168,7 +168,7 @@ class Particle {
         const pulseFactor = this.pulseActive ? Math.sin(this.pulseProgress * Math.PI) : 0; // 0..1..0
         const sizeMultiplier = 1 + this.pulseAmp * pulseFactor;
         const effectiveSize = this.size * sizeMultiplier;
-        const extraAlpha = 0.25 * this.pulseAmp * pulseFactor; // more noticeable brightening
+        const extraAlpha = 0.8 * this.pulseAmp * pulseFactor; // more noticeable brightening
         ctx.globalAlpha = Math.min(1, alpha + extraAlpha);
 
         ctx.fillStyle = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b})`;

@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import { RouterLink } from 'vue-router';
 import Button from '../components/Button.vue';
 import Card from '../components/Card.vue';
+import BraveFlowChart from '../components/BraveFlowChart.vue';
 import { useIntersectionObserver } from '../composables/useIntersectionObserver';
 
 // Reveal on scroll for sections
@@ -83,6 +84,7 @@ const projects = ref([
 const openProjectLink = (link: string) => {
     window.open(link, '_blank');
 };
+
 </script>
 
 <template>
@@ -135,6 +137,75 @@ const openProjectLink = (link: string) => {
                 <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
                     <div class="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center p-2">
                         <div class="w-1 h-3 bg-white/50 rounded-full"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brave + BAT Flow (Setup • Users • Creators) -->
+        <section class="px-4 py-20">
+            <div class="max-w-7xl mx-auto space-y-10">
+                <h2 class="text-4xl font-bold text-center text-gradient-rainbow">Brave + BAT: Setup and Journeys</h2>
+                <!-- Visual Flow - transparent container for floating effect -->
+                <div class="py-8">
+                    <BraveFlowChart />
+                </div>
+
+                <!-- Two-column layout: Setup on left, Users & Creators on right -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Setup -->
+                    <div class="glass rounded-2xl p-6 space-y-4">
+                        <h3 class="text-2xl font-semibold text-white">Setup</h3>
+                        <ul class="list-disc list-inside text-neutral-300 space-y-2">
+                            <li>Enable Brave Rewards to earn BAT and send contributions; manage ads and tipping
+                                settings.</li>
+                            <li>Choose payout: connect a custodial account (Uphold, Gemini, bitFlyer) or link a
+                                self‑custody address (ETH/SOL).</li>
+                            <li>Get BAT via privacy‑preserving ads or by adding funds to tip creators directly.</li>
+                        </ul>
+                        <RouterLink to="/wallet">
+                            <Button variant="primary"><i class="bi bi-gear-wide-connected" aria-hidden="true"></i> Open
+                                Brave Rewards</Button>
+                        </RouterLink>
+                    </div>
+
+                    <!-- Users (supporters) on top, Creators below -->
+                    <div class="space-y-8">
+                        <!-- Users lane -->
+                        <div class="glass rounded-2xl p-6 space-y-4">
+                            <h3 class="text-2xl font-semibold text-white">Users (supporters)</h3>
+                            <ul class="list-disc list-inside text-neutral-300 space-y-2">
+                                <li>Find verified creators: look for the blue “Verified Creator” check in the URL bar
+                                    panel.</li>
+                                <li>Tip on‑demand: send one‑time BAT tips from the page contribution panel.</li>
+                                <li>Set recurring tip: enable monthly contributions (requires custodial‑connected
+                                    Rewards).</li>
+                                <li>Auto‑contribute: distribute BAT by attention across sites and channels you visit.
+                                </li>
+                                <li>Privacy: ads and rewards keep personal data on‑device—no browsing history leaves the
+                                    browser.</li>
+                            </ul>
+                            <RouterLink to="/search">
+                                <Button variant="secondary"><i class="bi bi-search" aria-hidden="true"></i> Find
+                                    Verified Creators</Button>
+                            </RouterLink>
+                        </div>
+
+                        <!-- Creators lane -->
+                        <div class="glass rounded-2xl p-6 space-y-4">
+                            <h3 class="text-2xl font-semibold text-white">Creators</h3>
+                            <ul class="list-disc list-inside text-neutral-300 space-y-2">
+                                <li>Join Brave Creators to receive tips and show as verified to Rewards users.</li>
+                                <li>Verify site/channel so supporters see the blue check and can tip confidently.</li>
+                                <li>Connect payout: custodial (Uphold, Gemini, bitFlyer) or self‑custody ETH/SOL address
+                                    as supported.</li>
+                                <li>Receive tips, recurring contributions, and auto‑contributions once verified.</li>
+                            </ul>
+                            <RouterLink to="/wallet">
+                                <Button variant="primary"><i class="bi bi-person-check" aria-hidden="true"></i> Become a
+                                    Verified Creator</Button>
+                            </RouterLink>
+                        </div>
                     </div>
                 </div>
             </div>
