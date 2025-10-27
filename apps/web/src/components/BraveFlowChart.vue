@@ -93,6 +93,7 @@ function handleNodeHoverLeave() {
 }
 
 function openNodeModal(node: FlowNode) {
+    console.log('Opening modal for node:', node.id, 'CTAs:', node.ctas);
     selectedNode.value = node;
     modalOpen.value = true;
 }
@@ -105,11 +106,6 @@ function closeModal() {
 // Check if a node or edge is active (part of hovered path)
 function isNodeActive(nodeId: string): boolean {
     return activePath.value.has(nodeId);
-}
-
-function isEdgeActive(edgeId: string): boolean {
-    // During hover, no edges should be active - they should all be muted
-    return false;
 }
 
 // Keyboard navigation
@@ -429,35 +425,46 @@ onBeforeUnmount(() => {
                 <div class="w-full flex justify-center">
                     <div ref="setupContainer"
                         class="glass rounded-2xl p-6 flex flex-col items-center gap-4 w-[520px] h-[480px]">
-                        <h3 class="text-white text-[20px] font-semibold">Setup</h3>
+                        <h3 class="text-white text-[20px] font-semibold flex items-center gap-2">
+                            <i class="bi bi-gear-fill text-gradient-rainbow"></i>
+                            Setup
+                        </h3>
                         <div class="flex-1 flex flex-col gap-4 w-full justify-between">
                             <div ref="n0" data-node-id="n0" tabindex="0"
-                                :class="['glass-strong rounded-xl px-4 py-3 w-full text-center cursor-pointer transition-all duration-300', { 'node-muted': hoveredNodeId && !isNodeActive('n0'), 'node-active': isNodeActive('n0') }]"
+                                :class="['glass-strong rounded-xl px-4 py-3 w-full text-center cursor-pointer transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('n0'), 'node-active': isNodeActive('n0') }]"
                                 :style="getNodeStyle('n0')" @mouseenter="handleNodeHoverEnter('n0')"
                                 @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('n0')" @blur="handleNodeBlur"
                                 @click="handleNodeClick('n0')">
+                                <i
+                                    class="bi bi-info-circle-fill absolute top-2 right-2 text-xs opacity-40 group-hover:opacity-100 transition-opacity"></i>
                                 Set up Brave + BAT
                             </div>
                             <div ref="n1" data-node-id="n1" tabindex="0"
-                                :class="['glass-strong rounded-xl px-4 py-3 w-full text-center cursor-pointer transition-all duration-300', { 'node-muted': hoveredNodeId && !isNodeActive('n1'), 'node-active': isNodeActive('n1') }]"
+                                :class="['glass-strong rounded-xl px-4 py-3 w-full text-center cursor-pointer transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('n1'), 'node-active': isNodeActive('n1') }]"
                                 :style="getNodeStyle('n1')" @mouseenter="handleNodeHoverEnter('n1')"
                                 @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('n1')" @blur="handleNodeBlur"
                                 @click="handleNodeClick('n1')">
+                                <i
+                                    class="bi bi-info-circle-fill absolute top-2 right-2 text-xs opacity-40 group-hover:opacity-100 transition-opacity"></i>
                                 Enable Brave Rewards
                             </div>
                             <div ref="n2" data-node-id="n2" tabindex="0"
-                                :class="['glass-strong rounded-xl px-4 py-3 w-full text-center cursor-pointer transition-all duration-300', { 'node-muted': hoveredNodeId && !isNodeActive('n2'), 'node-active': isNodeActive('n2') }]"
+                                :class="['glass-strong rounded-xl px-4 py-3 w-full text-center cursor-pointer transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('n2'), 'node-active': isNodeActive('n2') }]"
                                 :style="getNodeStyle('n2')" @mouseenter="handleNodeHoverEnter('n2')"
                                 @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('n2')" @blur="handleNodeBlur"
                                 @click="handleNodeClick('n2')">
+                                <i
+                                    class="bi bi-info-circle-fill absolute top-2 right-2 text-xs opacity-40 group-hover:opacity-100 transition-opacity"></i>
                                 <div>Choose payout: Custodial</div>
                                 <div>or Self‑custody</div>
                             </div>
                             <div ref="n3" data-node-id="n3" tabindex="0"
-                                :class="['glass-strong rounded-xl px-4 py-3 w-full text-center cursor-pointer transition-all duration-300', { 'node-muted': hoveredNodeId && !isNodeActive('n3'), 'node-active': isNodeActive('n3') }]"
+                                :class="['glass-strong rounded-xl px-4 py-3 w-full text-center cursor-pointer transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('n3'), 'node-active': isNodeActive('n3') }]"
                                 :style="getNodeStyle('n3')" @mouseenter="handleNodeHoverEnter('n3')"
                                 @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('n3')" @blur="handleNodeBlur"
                                 @click="handleNodeClick('n3')">
+                                <i
+                                    class="bi bi-info-circle-fill absolute top-2 right-2 text-xs opacity-40 group-hover:opacity-100 transition-opacity"></i>
                                 Get BAT: Earn via ads or add funds
                             </div>
                         </div>
@@ -468,37 +475,57 @@ onBeforeUnmount(() => {
                 <div class="grid gap-8 grid-cols-1 lg:grid-cols-2 place-items-center">
                     <!-- Users lane -->
                     <div ref="usersContainer" class="glass rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[480px]">
-                        <h3 class="text-white text-[20px] font-semibold text-center">Users</h3>
+                        <h3
+                            class="text-white text-[20px] font-semibold text-center flex items-center justify-center gap-2">
+                            <i class="bi bi-people-fill text-gradient-rainbow"></i>
+                            Users
+                        </h3>
                         <div class="flex-1 flex flex-col gap-4 justify-between">
                             <div ref="u1Card" data-node-id="u1" tabindex="0"
-                                :class="['glass-strong rounded-xl px-4 py-3 text-center cursor-pointer transition-all duration-300', { 'node-muted': hoveredNodeId && !isNodeActive('u1'), 'node-active': isNodeActive('u1') }]"
+                                :class="['glass-strong rounded-xl px-4 py-3 text-center cursor-pointer transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('u1'), 'node-active': isNodeActive('u1') }]"
                                 :style="getNodeStyle('u1')" @mouseenter="handleNodeHoverEnter('u1')"
                                 @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('u1')" @blur="handleNodeBlur"
                                 @click="handleNodeClick('u1')">
+                                <i
+                                    class="bi bi-info-circle-fill absolute top-2 right-2 text-xs opacity-40 group-hover:opacity-100 transition-opacity"></i>
                                 Find verified creators – blue check in URL bar
                             </div>
                             <div ref="uRow" class="flex gap-3">
                                 <div ref="u2Card" data-node-id="u2" tabindex="0"
-                                    :class="['glass-strong rounded-xl px-3 py-3 text-center cursor-pointer select-none transition-all duration-300', { 'node-muted': hoveredNodeId && !isNodeActive('u2'), 'node-active': isNodeActive('u2') }]"
+                                    :class="['glass-strong rounded-xl px-3 py-3 text-center cursor-pointer select-none transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('u2'), 'node-active': isNodeActive('u2') }]"
                                     :style="getNodeStyle('u2')" @mouseenter="handleNodeHoverEnter('u2')"
                                     @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('u2')"
-                                    @blur="handleNodeBlur" @click="handleNodeClick('u2')">Tip on‑demand</div>
+                                    @blur="handleNodeBlur" @click="handleNodeClick('u2')">
+                                    <i
+                                        class="bi bi-info-circle-fill absolute top-1 right-1 text-xs opacity-40 group-hover:opacity-100 transition-opacity"></i>
+                                    Tip on‑demand
+                                </div>
                                 <div ref="u3Card" data-node-id="u3" tabindex="0"
-                                    :class="['glass-strong rounded-xl px-3 py-3 text-center cursor-pointer select-none transition-all duration-300', { 'node-muted': hoveredNodeId && !isNodeActive('u3'), 'node-active': isNodeActive('u3') }]"
+                                    :class="['glass-strong rounded-xl px-3 py-3 text-center cursor-pointer select-none transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('u3'), 'node-active': isNodeActive('u3') }]"
                                     :style="getNodeStyle('u3')" @mouseenter="handleNodeHoverEnter('u3')"
                                     @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('u3')"
-                                    @blur="handleNodeBlur" @click="handleNodeClick('u3')">Set recurring tip</div>
+                                    @blur="handleNodeBlur" @click="handleNodeClick('u3')">
+                                    <i
+                                        class="bi bi-info-circle-fill absolute top-1 right-1 text-xs opacity-40 group-hover:opacity-100 transition-opacity"></i>
+                                    Set recurring tip
+                                </div>
                                 <div ref="u4Card" data-node-id="u4" tabindex="0"
-                                    :class="['glass-strong rounded-xl px-3 py-3 text-center cursor-pointer select-none transition-all duration-300', { 'node-muted': hoveredNodeId && !isNodeActive('u4'), 'node-active': isNodeActive('u4') }]"
+                                    :class="['glass-strong rounded-xl px-3 py-3 text-center cursor-pointer select-none transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('u4'), 'node-active': isNodeActive('u4') }]"
                                     :style="getNodeStyle('u4')" @mouseenter="handleNodeHoverEnter('u4')"
                                     @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('u4')"
-                                    @blur="handleNodeBlur" @click="handleNodeClick('u4')">Auto‑contribute</div>
+                                    @blur="handleNodeBlur" @click="handleNodeClick('u4')">
+                                    <i
+                                        class="bi bi-info-circle-fill absolute top-1 right-1 text-xs opacity-40 group-hover:opacity-100 transition-opacity"></i>
+                                    Auto‑contribute
+                                </div>
                             </div>
                             <div ref="u5" data-node-id="u5" tabindex="0"
-                                :class="['glass-strong rounded-xl px-4 py-3 text-center cursor-pointer transition-all duration-300', { 'node-muted': hoveredNodeId && !isNodeActive('u5'), 'node-active': isNodeActive('u5') }]"
+                                :class="['glass-strong rounded-xl px-4 py-3 text-center cursor-pointer transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('u5'), 'node-active': isNodeActive('u5') }]"
                                 :style="getNodeStyle('u5')" @mouseenter="handleNodeHoverEnter('u5')"
                                 @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('u5')" @blur="handleNodeBlur"
                                 @click="handleNodeClick('u5')">
+                                <i
+                                    class="bi bi-info-circle-fill absolute top-2 right-2 text-xs opacity-40 group-hover:opacity-100 transition-opacity"></i>
                                 Privacy‑preserving ads; no personal data leaves browser
                             </div>
                         </div>
@@ -506,34 +533,46 @@ onBeforeUnmount(() => {
 
                     <!-- Creators lane -->
                     <div ref="creatorsContainer" class="glass rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[480px]">
-                        <h3 class="text-white text-[20px] font-semibold text-center">Creators</h3>
+                        <h3
+                            class="text-white text-[20px] font-semibold text-center flex items-center justify-center gap-2">
+                            <i class="bi bi-palette-fill text-gradient-rainbow"></i>
+                            Creators
+                        </h3>
                         <div class="flex-1 flex flex-col gap-4 justify-between">
                             <div ref="c1Card" data-node-id="c1" tabindex="0"
-                                :class="['glass-strong rounded-xl px-4 py-3 text-center cursor-pointer select-none transition-all duration-300', { 'node-muted': hoveredNodeId && !isNodeActive('c1'), 'node-active': isNodeActive('c1') }]"
+                                :class="['glass-strong rounded-xl px-4 py-3 text-center cursor-pointer select-none transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('c1'), 'node-active': isNodeActive('c1') }]"
                                 :style="getNodeStyle('c1')" @mouseenter="handleNodeHoverEnter('c1')"
                                 @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('c1')" @blur="handleNodeBlur"
                                 @click="handleNodeClick('c1')">
+                                <i
+                                    class="bi bi-info-circle-fill absolute top-2 right-2 text-xs opacity-40 group-hover:opacity-100 transition-opacity"></i>
                                 Join Brave Creators
                             </div>
                             <div ref="c2Card" data-node-id="c2" tabindex="0"
-                                :class="['glass-strong rounded-xl px-4 py-3 text-center cursor-pointer select-none transition-all duration-300', { 'node-muted': hoveredNodeId && !isNodeActive('c2'), 'node-active': isNodeActive('c2') }]"
+                                :class="['glass-strong rounded-xl px-4 py-3 text-center cursor-pointer select-none transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('c2'), 'node-active': isNodeActive('c2') }]"
                                 :style="getNodeStyle('c2')" @mouseenter="handleNodeHoverEnter('c2')"
                                 @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('c2')" @blur="handleNodeBlur"
                                 @click="handleNodeClick('c2')">
+                                <i
+                                    class="bi bi-info-circle-fill absolute top-2 right-2 text-xs opacity-40 group-hover:opacity-100 transition-opacity"></i>
                                 Verify site/channel
                             </div>
                             <div ref="c3Card" data-node-id="c3" tabindex="0"
-                                :class="['glass-strong rounded-xl px-4 py-3 text-center cursor-pointer select-none transition-all duration-300', { 'node-muted': hoveredNodeId && !isNodeActive('c3'), 'node-active': isNodeActive('c3') }]"
+                                :class="['glass-strong rounded-xl px-4 py-3 text-center cursor-pointer select-none transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('c3'), 'node-active': isNodeActive('c3') }]"
                                 :style="getNodeStyle('c3')" @mouseenter="handleNodeHoverEnter('c3')"
                                 @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('c3')" @blur="handleNodeBlur"
                                 @click="handleNodeClick('c3')">
+                                <i
+                                    class="bi bi-info-circle-fill absolute top-2 right-2 text-xs opacity-40 group-hover:opacity-100 transition-opacity"></i>
                                 Connect payout: Uphold/Gemini/bitFlyer or ETH/SOL
                             </div>
                             <div ref="c4Card" data-node-id="c4" tabindex="0"
-                                :class="['glass-strong rounded-xl px-4 py-3 text-center cursor-pointer select-none transition-all duration-300', { 'node-muted': hoveredNodeId && !isNodeActive('c4'), 'node-active': isNodeActive('c4') }]"
+                                :class="['glass-strong rounded-xl px-4 py-3 text-center cursor-pointer select-none transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('c4'), 'node-active': isNodeActive('c4') }]"
                                 :style="getNodeStyle('c4')" @mouseenter="handleNodeHoverEnter('c4')"
                                 @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('c4')" @blur="handleNodeBlur"
                                 @click="handleNodeClick('c4')">
+                                <i
+                                    class="bi bi-info-circle-fill absolute top-2 right-2 text-xs opacity-40 group-hover:opacity-100 transition-opacity"></i>
                                 Receive BAT tips and contributions
                             </div>
                         </div>
@@ -544,9 +583,7 @@ onBeforeUnmount(() => {
 
         <!-- BaseModal for node details -->
         <BaseModal v-if="selectedNode" :open="modalOpen" :title="selectedNode.whyMatters"
-            :bullets="selectedNode.bullets"
-            :primary-cta="{ label: selectedNode.ctas[0]?.label || 'Learn More', route: selectedNode.ctas[0]?.route || '/' }"
-            @close="closeModal">
+            :bullets="selectedNode.bullets" :ctas="selectedNode.ctas" @close="closeModal">
             <div class="flex items-center gap-3 mb-4">
                 <i :class="['text-3xl', selectedNode.icon, 'text-gradient-rainbow']"></i>
                 <h3 class="text-xl font-semibold text-white">{{ selectedNode.label }}</h3>

@@ -2,14 +2,18 @@
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { useRouter } from 'vue-router';
 
+export interface NodeCTA {
+    label: string;
+    route?: string;
+    href?: string;
+    variant?: "primary" | "secondary" | "ghost";
+}
+
 export interface ModalProps {
     open: boolean;
     title: string;
     bullets?: string[];
-    primaryCta?: {
-        label: string;
-        route: string;
-    };
+    ctas?: NodeCTA[];
     imageUrl?: string;
     videoUrl?: string;
 }
@@ -28,10 +32,25 @@ function handleClose() {
     emit('close');
 }
 
-function handlePrimaryCta() {
-    if (props.primaryCta?.route) {
-        router.push(props.primaryCta.route);
+function handleCta(cta: NodeCTA) {
+    if (cta.route) {
+        router.push(cta.route);
         handleClose();
+    } else if (cta.href) {
+        window.open(cta.href, '_blank', 'noopener,noreferrer');
+    }
+}
+
+function getCtaClasses(variant: string = 'primary') {
+    const baseClasses = 'px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105';
+
+    if (variant === 'primary') {
+        return `${baseClasses} text-white bg-gradient-to-r from-brand-orange via-brand-pink to-brand-purple hover:shadow-glow`;
+    } else if (variant === 'secondary') {
+        return `${baseClasses} text-white glass-strong border border-white/20 hover:bg-white/10`;
+    } else {
+        // ghost
+        return `${baseClasses} text-text-300 hover:text-text-100 hover:bg-white/5`;
     }
 }
 
@@ -74,6 +93,9 @@ watch(
     () => props.open,
     (isOpen) => {
         if (isOpen) {
+            // Debug: Log CTAs to verify they're being passed
+            console.log('Modal opened with CTAs:', props.ctas);
+
             // Focus first focusable element when modal opens
             setTimeout(() => {
                 const focusableElements = modalRef.value?.querySelectorAll(
@@ -146,12 +168,24 @@ onBeforeUnmount(() => {
                         <slot></slot>
                     </div>
 
-                    <!-- Primary CTA -->
-                    <div v-if="primaryCta" class="flex gap-4">
-                        <button @click="handlePrimaryCta"
-                            class="px-6 py-3 rounded-xl font-semibold text-white bg-gradient-to-r from-brand-orange via-brand-pink to-brand-purple hover:shadow-glow transition-all duration-300 hover:scale-105">
-                            {{ primaryCta.label }}
-                        </button>
+                    <!-- CTAs -->
+                    <div v-if="ctas && ctas.length > 0" class="flex flex-wrap gap-3 mb-4">
+                        <template v-for="(cta, idx) in ctas" :key="idx">
+                            <!-- External link -->
+                            <a v-if="cta.href" :href="cta.href" target="_blank" rel="noopener noreferrer"
+                                :class="getCtaClasses(cta.variant)" class="inline-flex items-center">
+                                {{ cta.label }}
+                                <i class="bi bi-box-arrow-up-right ml-2 text-sm opacity-70"></i>
+                            </a>
+                            <!-- Internal route -->
+                            <button v-else @click="handleCta(cta)" :class="getCtaClasses(cta.variant)">
+                                {{ cta.label }}
+                            </button>
+                        </template>
+                    </div>
+
+                    <!-- Close button -->
+                    <div class="flex gap-4">
                         <button @click="handleClose"
                             class="px-6 py-3 rounded-xl font-semibold text-text-100 glass-strong hover:bg-white/10 transition-colors duration-300">
                             Close
@@ -164,6 +198,12 @@ onBeforeUnmount(() => {
 </template>
 
 <style scoped>
+/* Remove default link styling */
+a {
+    text-decoration: none;
+    cursor: pointer;
+}
+
 .modal-fade-enter-active,
 .modal-fade-leave-active {
     transition: opacity var(--dur-med) var(--ease-standard);
