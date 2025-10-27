@@ -49,6 +49,11 @@ const handleNodeClick = (id: string) => {
 const wrap = ref<HTMLElement | null>(null);
 const svg = ref<SVGSVGElement | null>(null);
 
+// Container refs for cross-lane connectors
+const setupContainer = ref<HTMLElement | null>(null);
+const usersContainer = ref<HTMLElement | null>(null);
+const creatorsContainer = ref<HTMLElement | null>(null);
+
 // Node anchors
 // Setup nodes
 const n0 = ref<HTMLElement | null>(null);
@@ -99,6 +104,10 @@ function quadPath(a: { x: number; y: number }, b: { x: number; y: number }, bend
     return `M ${a.x} ${a.y} Q ${cx} ${cy} ${b.x} ${b.y}`;
 }
 
+function straightPath(a: { x: number; y: number }, b: { x: number; y: number }) {
+    return `M ${a.x} ${a.y} L ${b.x} ${b.y}`;
+}
+
 function layoutEdges() {
     if (!wrap.value) return;
     const box = wrap.value.getBoundingClientRect();
@@ -107,15 +116,15 @@ function layoutEdges() {
 
     const list: Edge[] = [];
 
-    // Cross edges from last setup to first users/creators
-    if (n3.value && u1Card.value) {
-        const a = anchor(n3.value, box, 'bottom');
-        const b = anchor(u1Card.value, box, 'top');
+    // Cross edges from bottom of Setup container to top of Users/Creators containers
+    if (setupContainer.value && usersContainer.value) {
+        const a = anchor(setupContainer.value, box, 'bottom');
+        const b = anchor(usersContainer.value, box, 'top');
         if (a && b) list.push({ id: 'setup->users', d: quadPath(a, b, 60) });
     }
-    if (n3.value && c1Card.value) {
-        const a = anchor(n3.value, box, 'bottom');
-        const b = anchor(c1Card.value, box, 'top');
+    if (setupContainer.value && creatorsContainer.value) {
+        const a = anchor(setupContainer.value, box, 'bottom');
+        const b = anchor(creatorsContainer.value, box, 'top');
         if (a && b) list.push({ id: 'setup->creators', d: quadPath(a, b, 60) });
     }
 
@@ -137,35 +146,40 @@ function layoutEdges() {
     }
 
     // Internal vertical edges: Users (connect grandchildren)
+    // Straight lines from u1Card to the three cards below it
     if (u1Card.value && u2Card.value) {
         const a = anchor(u1Card.value, box, 'bottom');
         const b = anchor(u2Card.value, box, 'top');
-        if (a && b) list.push({ id: 'users-u1-u2', d: quadPath(a, b, 30) });
+        if (a && b) list.push({ id: 'users-u1-u2', d: straightPath(a, b) });
     }
     if (u1Card.value && u3Card.value) {
         const a = anchor(u1Card.value, box, 'bottom');
         const b = anchor(u3Card.value, box, 'top');
-        if (a && b) list.push({ id: 'users-u1-u3', d: quadPath(a, b, 30) });
+        if (a && b) list.push({ id: 'users-u1-u3', d: straightPath(a, b) });
     }
     if (u1Card.value && u4Card.value) {
         const a = anchor(u1Card.value, box, 'bottom');
         const b = anchor(u4Card.value, box, 'top');
-        if (a && b) list.push({ id: 'users-u1-u4', d: quadPath(a, b, 30) });
+        if (a && b) list.push({ id: 'users-u1-u4', d: straightPath(a, b) });
     }
+    // Straight lines from the three cards to u5 (keep same x coordinate for straight down)
     if (u2Card.value && u5.value) {
         const a = anchor(u2Card.value, box, 'bottom');
-        const b = anchor(u5.value, box, 'top');
-        if (a && b) list.push({ id: 'users-u2-u5', d: quadPath(a, b, 30) });
+        const u5Rect = u5.value.getBoundingClientRect();
+        const b = { x: a.x, y: u5Rect.top - box.top }; // Same x as starting point
+        list.push({ id: 'users-u2-u5', d: straightPath(a, b) });
     }
     if (u3Card.value && u5.value) {
         const a = anchor(u3Card.value, box, 'bottom');
-        const b = anchor(u5.value, box, 'top');
-        if (a && b) list.push({ id: 'users-u3-u5', d: quadPath(a, b, 30) });
+        const u5Rect = u5.value.getBoundingClientRect();
+        const b = { x: a.x, y: u5Rect.top - box.top }; // Same x as starting point
+        list.push({ id: 'users-u3-u5', d: straightPath(a, b) });
     }
     if (u4Card.value && u5.value) {
         const a = anchor(u4Card.value, box, 'bottom');
-        const b = anchor(u5.value, box, 'top');
-        if (a && b) list.push({ id: 'users-u4-u5', d: quadPath(a, b, 30) });
+        const u5Rect = u5.value.getBoundingClientRect();
+        const b = { x: a.x, y: u5Rect.top - box.top }; // Same x as starting point
+        list.push({ id: 'users-u4-u5', d: straightPath(a, b) });
     }
 
     // Internal vertical edges: Creators
@@ -194,6 +208,7 @@ onMounted(async () => {
     ro = new ResizeObserver(() => layoutEdges());
     [
         wrap.value,
+        setupContainer.value, usersContainer.value, creatorsContainer.value,
         n0.value, n1.value, n2.value, n3.value,
         u1Card.value, u2Card.value, u3Card.value, u4Card.value, uRow.value, u5.value,
         c1Card.value, c2Card.value, c3Card.value, c4Card.value,
@@ -226,10 +241,11 @@ onBeforeUnmount(() => {
         <!-- Content laid out with Flex/Grid so it reflows naturally -->
         <div
             class="w-full overflow-x-auto overflow-y-visible pb-4 scrollbar-thin scrollbar-thumb-purple-500/30 scrollbar-track-transparent">
-            <div class="flex flex-col gap-8">
+            <div class="flex flex-col gap-24 lg:gap-26">
                 <!-- Row 1: Setup centered -->
                 <div class="w-full flex justify-center">
-                    <div class="glass rounded-2xl p-6 flex flex-col items-center gap-4 w-[520px] h-[360px]">
+                    <div ref="setupContainer"
+                        class="glass rounded-2xl p-6 flex flex-col items-center gap-4 w-[520px] h-[480px]">
                         <h3 class="text-white text-[20px] font-semibold">Setup</h3>
                         <div class="flex-1 flex flex-col gap-4 w-full justify-between">
                             <div ref="n0" class="glass-strong rounded-xl px-4 py-3 w-full text-center">Set up Brave +
@@ -250,7 +266,7 @@ onBeforeUnmount(() => {
                 <!-- Row 2: Users and Creators adjacent -->
                 <div class="grid gap-8 grid-cols-1 lg:grid-cols-2 place-items-center">
                     <!-- Users lane -->
-                    <div class="glass rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[360px]">
+                    <div ref="usersContainer" class="glass rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[480px]">
                         <h3 class="text-white text-[20px] font-semibold text-center">Users</h3>
                         <div class="flex-1 flex flex-col gap-4 justify-between">
                             <div ref="u1Card" class="glass-strong rounded-xl px-4 py-3 text-center">Find verified
@@ -277,7 +293,7 @@ onBeforeUnmount(() => {
                     </div>
 
                     <!-- Creators lane -->
-                    <div class="glass rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[360px]">
+                    <div ref="creatorsContainer" class="glass rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[480px]">
                         <h3 class="text-white text-[20px] font-semibold text-center">Creators</h3>
                         <div class="flex-1 flex flex-col gap-4 justify-between">
                             <div ref="c1Card"
