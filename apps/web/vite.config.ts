@@ -96,12 +96,7 @@ export default defineConfig({
           three: ["three"],
           anime: ["animejs"],
           wavesurfer: ["wavesurfer.js"],
-          web3: [
-            "@web3modal/wagmi",
-            "viem",
-            "@wagmi/core",
-            "@wagmi/connectors",
-          ],
+          web3: ["@web3modal/ethers", "ethers"],
         },
         // Optimize asset file names
         assetFileNames: (assetInfo) => {

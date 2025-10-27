@@ -56,6 +56,13 @@ class Particle {
     pulseSpeed: number; // speed of pulse progress per frame
     pulseAmp: number; // amplitude of pulse effect (size/alpha)
     pulseCooldown: number; // frames until next possible pulse
+    // Sparkle state (brief star-like twinkle drawn above lines)
+    sparkleActive: boolean;
+    sparkleProgress: number; // 0..1 for one sparkle cycle
+    sparkleSpeed: number; // speed of sparkle progress per frame
+    sparkleCooldown: number; // frames until next sparkle can start
+    sparkleRotation: number; // radians, base orientation
+    sparkleAmp: number; // size multiplier for sparkle
     // Group-based speed behavior
     groupId: number;
 
@@ -86,6 +93,14 @@ class Particle {
         this.pulseSpeed = 0.006 + Math.random() * 0.01; // ~1-3s per pulse
         this.pulseAmp = 0.18 + Math.random() * 0.14; // slightly stronger amplitude
         this.pulseCooldown = Math.floor(240 + Math.random() * 600); // 4-10s
+
+        // Initialize sparkle (occasional short, bright star)
+        this.sparkleActive = false;
+        this.sparkleProgress = 0;
+        this.sparkleSpeed = 0.05 + Math.random() * 0.05; // ~0.5-1s sparkle duration
+        this.sparkleCooldown = Math.floor(900 + Math.random() * 1500); // 15-40s longer cooldown
+        this.sparkleRotation = Math.random() * Math.PI;
+        this.sparkleAmp = 0.5 + Math.random() * 0.6; // smaller size multiplier
 
         // Assign particle to a random group for coordinated boosts
         this.groupId = Math.floor(Math.random() * GROUP_COUNT);
@@ -152,6 +167,25 @@ class Particle {
                 this.pulseAmp = 0.12 + Math.random() * 0.1;
             }
         }
+
+        // Sparkle logic (prefer nearer particles; brief, bright twinkle)
+        if (this.sparkleActive) {
+            this.sparkleProgress += this.sparkleSpeed;
+            this.sparkleRotation += 0.02; // gentle rotation during sparkle
+            if (this.sparkleProgress >= 1) {
+                this.sparkleActive = false;
+                this.sparkleProgress = 0;
+                this.sparkleCooldown = Math.floor(900 + Math.random() * 1500); // 15-40s
+            }
+        } else {
+            this.sparkleCooldown -= 1;
+            if (this.sparkleCooldown <= 0 && this.z < 0.7 && Math.random() < 0.12) {
+                this.sparkleActive = true;
+                this.sparkleProgress = 0;
+                this.sparkleRotation = Math.random() * Math.PI;
+                this.sparkleAmp = 0.5 + Math.random() * 0.6; // smaller
+            }
+        }
     }
 
     draw(ctx: CanvasRenderingContext2D) {
@@ -185,6 +219,46 @@ class Particle {
             ctx.arc(this.x, this.y, effectiveSize * 2.0, 0, Math.PI * 2); // larger glow radius
             ctx.fill();
         }
+
+        ctx.restore();
+    }
+
+    drawSparkle(ctx: CanvasRenderingContext2D) {
+        if (!this.sparkleActive) return;
+        const t = Math.sin(this.sparkleProgress * Math.PI); // 0..1..0
+        const intensity = 0.35 + 0.65 * t;
+        const depthScale = 0.8 + 0.6 * (1 - this.z);
+        const base = (this.size * 1.5 + 0.8) * this.sparkleAmp * depthScale; // smaller base
+
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate(this.sparkleRotation);
+        ctx.globalAlpha = Math.min(1, intensity);
+        const color = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b})`;
+        ctx.strokeStyle = color;
+        ctx.fillStyle = color;
+        ctx.globalCompositeOperation = 'lighter';
+
+        // Main cross
+        ctx.lineWidth = 0.8 + 0.8 * (1 - this.z);
+        ctx.beginPath();
+        ctx.moveTo(-base, 0); ctx.lineTo(base, 0);
+        ctx.moveTo(0, -base); ctx.lineTo(0, base);
+        ctx.stroke();
+
+        // Diagonal cross (smaller)
+        ctx.globalAlpha *= 0.8;
+        ctx.rotate(Math.PI / 4);
+        ctx.beginPath();
+        ctx.moveTo(-base * 0.6, 0); ctx.lineTo(base * 0.6, 0);
+        ctx.moveTo(0, -base * 0.6); ctx.lineTo(0, base * 0.6);
+        ctx.stroke();
+
+        // Central glow
+        ctx.globalAlpha = 0.5 * t;
+        ctx.beginPath();
+        ctx.arc(0, 0, Math.max(1.2, this.size * 0.9), 0, Math.PI * 2);
+        ctx.fill();
 
         ctx.restore();
     }
@@ -326,6 +400,9 @@ onMounted(() => {
                 }
             });
         });
+
+        // Sparkles drawn above lines for visibility
+        particles.forEach(p => p.drawSparkle(ctx));
 
         animationId = requestAnimationFrame(animate);
     };
