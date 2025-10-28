@@ -125,7 +125,7 @@ const onLeave = (el: Element, done: () => void) => {
         <footer role="contentinfo"
             class="p-6 text-neutral-400 text-sm border-t border-neutral-800/50 mt-12 bg-neutral-950/50">
             <div class="max-w-7xl mx-auto">
-                <div class="grid md:grid-cols-3 gap-8 mb-8">
+                <div class="grid md:grid-cols-3 gap-8">
                     <!-- Project Info -->
                     <div>
                         <h3 class="text-white font-semibold mb-3">Privacy-First Creator Hub</h3>
@@ -188,12 +188,11 @@ const onLeave = (el: Element, done: () => void) => {
                             <li>Vite + TypeScript</li>
                             <li>TailwindCSS + Three.js</li>
                             <li>NestJS API</li>
-                            <li>GitHub Actions (CI/CD)</li>
                         </ul>
                     </div>
                 </div>
 
-                <div class="pt-6 border-t border-neutral-800/50 text-center">
+                <div class="pt-6 text-center">
                     <span>© 2025 • Built for Brave Website Challenge</span>
                 </div>
             </div>

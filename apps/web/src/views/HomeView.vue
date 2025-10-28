@@ -12,12 +12,14 @@ const { hasBeenVisible: heroVisible } = useIntersectionObserver(heroHeadingRef, 
 const exploreHubRef = ref<HTMLElement | null>(null);
 const { hasBeenVisible: exploreHubVisible } = useIntersectionObserver(exploreHubRef, { threshold: 0.1, once: true });
 
-// Smooth scroll to features section with offset for navbar
+// Smooth scroll to features section with offset for navbar and extra padding
 const scrollToFeatures = () => {
     if (exploreHubRef.value) {
-        const navbarHeight = 96; // 80px navbar + 16px buffer
+        const navbarHeight = 80; // Navbar height
+        const extraPadding = 64; // Additional padding above the heading
+        const totalOffset = navbarHeight + extraPadding;
         const elementPosition = exploreHubRef.value.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.scrollY - navbarHeight;
+        const offsetPosition = elementPosition + window.scrollY - totalOffset;
 
         window.scrollTo({
             top: offsetPosition,
@@ -119,7 +121,7 @@ const features = [
                 </div>
             </div>
         </section> <!-- Features Grid -->
-        <section class="px-4 py-20 pt-28 scroll-mt-32">
+        <section class="px-4 py-20">
             <div class="max-w-7xl mx-auto">
                 <h2 ref="exploreHubRef"
                     class="text-4xl font-bold text-center mb-4 text-gradient-rainbow transition-all duration-700"
