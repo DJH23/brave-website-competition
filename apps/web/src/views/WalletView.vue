@@ -2,6 +2,7 @@
 import { ref, computed, watch } from 'vue';
 import BATIntegration from '../components/BATIntegration.vue';
 import BATPriceTicker from '../components/BATPriceTicker.vue';
+import BraveFlowChart from '../components/BraveFlowChart.vue';
 import Button from '../components/Button.vue';
 import { useWallet } from '../composables/useWallet';
 import { useWeb3Modal } from '@web3modal/ethers/vue';
@@ -133,6 +134,19 @@ const { hasBeenVisible: batTippingVisible } = useIntersectionObserver(batTipping
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- BAT Ecosystem Flow -->
+        <div class="max-w-7xl mx-auto mb-16">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gradient-rainbow mb-4">
+                    Complete BAT Ecosystem Guide
+                </h2>
+                <p class="text-gray-300 text-lg max-w-3xl mx-auto">
+                    Explore the complete journey for both users and creators in the Brave Rewards ecosystem
+                </p>
+            </div>
+            <BraveFlowChart />
         </div>
 
         <!-- BAT Tipping Demo -->
