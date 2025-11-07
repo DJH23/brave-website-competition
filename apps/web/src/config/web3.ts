@@ -13,28 +13,32 @@ export const BAT_TOKEN_ABI = [
   "function approve(address spender, uint256 amount) returns (bool)",
 ];
 
-// Project ID from WalletConnect Cloud (you'll need to get your own)
+// Recipient address for tips (replace with your actual address)
+export const TIP_RECIPIENT_ADDRESS =
+  "0x0000000000000000000000000000000000000000";
+
+// Project ID from WalletConnect Cloud
 const projectId = "df3ca29aad8ad7e6d5fde6193a7cb6c0";
 
 // Metadata for your dApp
 const metadata = {
   name: "Privacy-First Creator Hub",
   description: "Brave-inspired creator platform with BAT tipping",
-  url: "https://djh23.brave", // Your Brave domain for payments/tips
+  url: "https://djh23.brave",
   icons: ["https://djh23.brave/logo.svg"],
 };
 
 // Create Web3Modal configuration
 const ethersConfig = defaultConfig({
   metadata,
-  enableEIP6963: true, // Enable EIP-6963 for better wallet discovery
-  enableInjected: true, // Enable injected wallets (Brave Wallet, MetaMask)
+  enableEIP6963: true,
+  enableInjected: true,
   enableCoinbase: false,
-  rpcUrl: "https://eth.llamarpc.com", // Free Ethereum RPC
-  defaultChainId: 1, // Ethereum Mainnet
+  rpcUrl: "https://eth.llamarpc.com",
+  defaultChainId: 1,
 });
 
-// Create the modal
+// Create and export the modal instance
 export const web3Modal = createWeb3Modal({
   ethersConfig,
   chains: [
@@ -47,14 +51,10 @@ export const web3Modal = createWeb3Modal({
     },
   ],
   projectId,
-  enableAnalytics: false, // Privacy-first!
+  enableAnalytics: false,
   themeMode: "dark",
   themeVariables: {
     "--w3m-accent": "#7C3AED",
     "--w3m-border-radius-master": "8px",
   },
 });
-
-// Recipient address for tips (replace with your actual address)
-export const TIP_RECIPIENT_ADDRESS =
-  "0x0000000000000000000000000000000000000000";

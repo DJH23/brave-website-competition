@@ -16,15 +16,14 @@ const shortenAddress = computed(() => {
     return `${address.value.slice(0, 6)}...${address.value.slice(-4)}`;
 });
 
-// Fetch balance when connected
 watch(isConnected, (connected) => {
     if (connected) {
         fetchBATBalance();
     }
 });
 
-const disconnect = () => {
-    open({ view: 'Account' });
+const disconnect = async () => {
+    await open({ view: 'Account' });
 };
 
 // Reveal on scroll for main headings

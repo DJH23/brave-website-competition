@@ -8,10 +8,10 @@ const mobileMenuOpen = ref(false);
 const navLoaded = ref(false);
 
 const navItems = [
-    { path: '/', label: 'Home', icon: 'bi-house-door', tooltip: 'Back to home' },
-    { path: '/music', label: 'Music', icon: 'bi-music-note-beamed', tooltip: 'Music productions' },
-    { path: '/wallet', label: 'Wallet', icon: 'bi-wallet2', tooltip: 'BAT & Brave Wallet' },
-    { path: '/surprise', label: 'Bonus Feature', icon: 'bi-gift', tooltip: 'Bonus Feature' }
+    { path: '/', label: 'Home', icon: 'bi-house-door', tooltip: 'Back to home', color: 'text-bravePink', bgColor: 'bg-bravePink' },
+    { path: '/music', label: 'Creator Hub', icon: 'bi-music-note-beamed', tooltip: 'Creator Hub', color: 'text-braveOrange', bgColor: 'bg-braveOrange' },
+    { path: '/wallet', label: 'BAT & Wallet Guide', icon: 'bi-wallet2', tooltip: 'BAT & Brave Wallet', color: 'text-braveBlue', bgColor: 'bg-braveBlue' },
+    { path: '/surprise', label: 'Bonus Feature', icon: 'bi-gift', tooltip: 'Bonus Feature', color: 'text-bravePurple', bgColor: 'bg-bravePurple' }
 ];
 
 const toggleMobileMenu = () => {
@@ -27,7 +27,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <nav class="fixed top-0 left-0 right-0 z-50 glass-strong border-b border-white/10">
+    <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
         <div class="w-full px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-20">
                 <!-- Logo and Brand -->
@@ -64,13 +64,14 @@ onMounted(() => {
 
                         <span class="flex items-center gap-2 transition-all duration-700"
                             :class="{ 'opacity-0 translate-y-2': !navLoaded, 'opacity-100 translate-y-0': navLoaded }">
-                            <i :class="['bi', item.icon, 'text-lg']" aria-hidden="true"></i>
+                            <i :class="['bi', item.icon, 'text-lg', item.color]" aria-hidden="true"></i>
                             <span class="font-medium">{{ item.label }}</span>
                         </span>
 
                         <!-- Active Indicator -->
-                        <div v-if="route.path === item.path" class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 
-                                   bg-gradient-to-r from-bravePurple to-braveOrange rounded-full"></div>
+                        <div v-if="route.path === item.path" :key="route.path"
+                            class="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-0.5 rounded-full origin-left animate-slide-in"
+                            :class="item.bgColor"></div>
                     </RouterLink>
                 </div>
 
@@ -102,7 +103,7 @@ onMounted(() => {
                         class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors" :class="route.path === item.path
                             ? 'bg-white/10 text-white'
                             : 'text-gray-300 hover:bg-white/5'">
-                        <i :class="['bi', item.icon, 'text-2xl']" aria-hidden="true"></i>
+                        <i :class="['bi', item.icon, 'text-2xl', item.color]" aria-hidden="true"></i>
                         <div class="flex-1">
                             <div class="font-medium">{{ item.label }}</div>
                             <div class="text-sm text-gray-400">{{ item.tooltip }}</div>
@@ -127,5 +128,22 @@ onMounted(() => {
 /* Add smooth hover effects */
 a {
     position: relative;
+}
+
+/* Active indicator slide-in animation */
+@keyframes slide-in {
+    from {
+        transform: translateX(-50%) scaleX(0);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(-50%) scaleX(1);
+        opacity: 1;
+    }
+}
+
+.animate-slide-in {
+    animation: slide-in 600ms cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 </style>

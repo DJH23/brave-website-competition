@@ -12,10 +12,12 @@ export default {
         braveOrange: "#FB542B",
         bravePurple: "#7C3AED",
         braveBlue: "#0EA5E9",
+        bravePink: "#FF2DA1",
         brand: {
           orange: "#FB542B",
           purple: "#7C3AED",
           blue: "#0EA5E9",
+          pink: "#FF2DA1",
         },
       },
       fontFamily: {

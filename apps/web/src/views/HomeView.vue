@@ -36,7 +36,7 @@ const features = [
         exploreColor: 'text-braveOrange',
         glowColor: '#FB542B',
         route: '/music',
-        description: 'Original music production and waveform visualization featuring interactive tipping with BAT.'
+        description: 'Explore original music tracks featuring interactive tipping with BAT.'
     },
     {
         title: 'BAT & Wallet Guide',
@@ -95,8 +95,9 @@ const handleCardMouseLeave = (event: MouseEvent) => {
                         :class="{ 'opacity-0 translate-y-8': !heroVisible, 'opacity-100 translate-y-0': heroVisible }">
                         Privacy-First Creator Showcase
                     </h1>
+                    <div class="h-4 md:h-2"></div>
                     <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
-                        Demoing how <span class="text-braveOrange font-semibold">Brave Browser</span> and
+                        Illustrating how <span class="text-braveOrange font-semibold">Brave Browser</span> and
                         <span class="text-bravePurple font-semibold">BAT</span> enable direct creator support
                         without surveillance or middlemen.
                     </p>

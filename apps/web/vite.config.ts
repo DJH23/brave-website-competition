@@ -93,11 +93,19 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ["vue"],
+          vendor: ["vue", "vue-router"],
+          gsap: ["gsap"],
           three: ["three"],
           anime: ["animejs"],
           wavesurfer: ["wavesurfer.js"],
           web3: ["@web3modal/ethers", "ethers"],
+          viz: [
+            "d3-force",
+            "vue-d3-network",
+            "v-network-graph",
+            "echarts",
+            "vue-echarts",
+          ],
         },
         // Optimize asset file names
         assetFileNames: (assetInfo) => {

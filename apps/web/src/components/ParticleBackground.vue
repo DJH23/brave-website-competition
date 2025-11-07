@@ -14,6 +14,10 @@ let animationId = 0;
 let particles: Particle[] = [];
 let mouse = { x: 0, y: 0 };
 let parallaxRaf = 0;
+// Performance tuning
+const FPS_CAP = 45; // limit max frames per second to reduce GPU load
+const FRAME_DURATION = 1000 / FPS_CAP;
+let lastTime = performance.now();
 
 // Brand colors from single source of truth
 const brandColors = [
@@ -90,7 +94,7 @@ class Particle {
         // Initialize pulse
         this.pulseActive = false;
         this.pulseProgress = 0;
-        this.pulseSpeed = 0.006 + Math.random() * 0.01; // ~1-3s per pulse
+        this.pulseSpeed = 0.006 + Math.random() * 0.05; // ~1-3s per pulse
         this.pulseAmp = 0.18 + Math.random() * 0.14; // slightly stronger amplitude
         this.pulseCooldown = Math.floor(240 + Math.random() * 600); // 4-10s
 
@@ -147,8 +151,8 @@ class Particle {
         this.vy *= 0.98;
 
         // Add back the ambient drift to maintain continuous movement (boost aware)
-        this.vx += this.baseVx * 0.02 * speedMultiplier;
-        this.vy += this.baseVy * 0.02 * speedMultiplier;
+        this.vx += this.baseVx * 0.05 * speedMultiplier;
+        this.vy += this.baseVy * 0.05 * speedMultiplier;
 
         // Occasional soft pulse logic
         if (this.pulseActive) {
@@ -202,7 +206,7 @@ class Particle {
         const pulseFactor = this.pulseActive ? Math.sin(this.pulseProgress * Math.PI) : 0; // 0..1..0
         const sizeMultiplier = 1 + this.pulseAmp * pulseFactor;
         const effectiveSize = this.size * sizeMultiplier;
-        const extraAlpha = 0.8 * this.pulseAmp * pulseFactor; // more noticeable brightening
+        const extraAlpha = 1 * this.pulseAmp * pulseFactor; // more noticeable brightening
         ctx.globalAlpha = Math.min(1, alpha + extraAlpha);
 
         ctx.fillStyle = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b})`;
@@ -278,7 +282,8 @@ onMounted(() => {
     window.addEventListener('resize', resize);
 
     // Create particles
-    const particleCount = Math.floor((canvas.value.width * canvas.value.height) / 10000);
+    // Reduce particle density (was area/10000)
+    const particleCount = Math.floor((canvas.value.width * canvas.value.height) / 14000);
     for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle(canvas.value.width, canvas.value.height));
     }
@@ -325,7 +330,13 @@ onMounted(() => {
     }
 
     // Animation loop
-    const animate = () => {
+    const animate = (time: number) => {
+        const delta = time - lastTime;
+        if (delta < FRAME_DURATION) {
+            animationId = requestAnimationFrame(animate);
+            return; // skip this frame to cap FPS
+        }
+        lastTime = time;
         if (!canvas.value || !ctx) return;
         ctx.clearRect(0, 0, canvas.value.width, canvas.value.height);
 
@@ -364,33 +375,36 @@ onMounted(() => {
             p.draw(ctx);
         });
 
-        // Draw connections
+        // Draw connections (optimized: fewer pair checks and avoid sqrt)
         particles.forEach((p1, i) => {
-            particles.slice(i + 1).forEach(p2 => {
+            // Skip half the particles to reduce O(n^2) work ~50%
+            if (i % 2 !== 0) return;
+            for (let j = i + 1; j < particles.length; j += 2) {
+                const p2 = particles[j];
                 const dx = p1.x - p2.x;
                 const dy = p1.y - p2.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
+                const distSq = dx * dx + dy * dy;
 
                 // Depth-aware connection distance
                 const avgZ = (p1.z + p2.z) / 2;
                 const maxDist = 150 * (0.5 + 0.5 * (1 - avgZ)); // nearer particles connect farther
+                const maxDistSq = maxDist * maxDist;
 
-                if (dist < maxDist) {
+                if (distSq < maxDistSq) {
                     // Blend colors between connected particles
                     const r = Math.floor((p1.color.r + p2.color.r) / 2);
                     const g = Math.floor((p1.color.g + p2.color.g) / 2);
                     const b = Math.floor((p1.color.b + p2.color.b) / 2);
 
-                    // Depth-aware alpha: increase visibility and add a floor
-                    const baseAlpha = 0.3 * (1 - dist / maxDist); // was 0.2
-                    const depthMix = 0.4 + 0.2 * (1 - avgZ); // slightly higher base for far lines
+                    // Depth-aware alpha without sqrt
+                    const baseAlpha = 0.3 * (1 - distSq / maxDistSq);
+                    const depthMix = 0.4 + 0.2 * (1 - avgZ);
                     let depthAlpha = baseAlpha * depthMix;
-                    depthAlpha = Math.max(0.06, depthAlpha); // ensure minimally visible
+                    depthAlpha = Math.max(0.06, depthAlpha);
 
                     ctx.save();
                     ctx.globalAlpha = depthAlpha;
                     ctx.strokeStyle = `rgb(${r}, ${g}, ${b})`;
-                    // Slightly thicker for nearer pairs
                     ctx.lineWidth = 1 + 0.6 * (1 - avgZ);
                     ctx.beginPath();
                     ctx.moveTo(p1.x, p1.y);
@@ -398,7 +412,7 @@ onMounted(() => {
                     ctx.stroke();
                     ctx.restore();
                 }
-            });
+            }
         });
 
         // Sparkles drawn above lines for visibility
@@ -406,7 +420,7 @@ onMounted(() => {
 
         animationId = requestAnimationFrame(animate);
     };
-    animate();
+    animationId = requestAnimationFrame(animate);
 
     onBeforeUnmount(() => {
         cancelAnimationFrame(animationId);
