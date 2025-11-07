@@ -11,8 +11,6 @@ const navItems = [
     { path: '/', label: 'Home', icon: 'bi-house-door', tooltip: 'Back to home' },
     { path: '/music', label: 'Music', icon: 'bi-music-note-beamed', tooltip: 'Music productions' },
     { path: '/wallet', label: 'Wallet', icon: 'bi-wallet2', tooltip: 'BAT & Brave Wallet' },
-    { path: '/search', label: 'Search', icon: 'bi-search', tooltip: 'Private search' },
-    { path: '/privacy', label: 'Privacy', icon: 'bi-shield-check', tooltip: 'Privacy demos' },
     { path: '/surprise', label: 'Bonus Feature', icon: 'bi-gift', tooltip: 'Bonus Feature' }
 ];
 
@@ -42,7 +40,7 @@ onMounted(() => {
                         </template>
                     </Suspense>
                     <span class="text-xl font-bold bg-gradient-to-r from-bravePurple to-braveOrange 
-                                 bg-clip-text text-transparent hidden sm:block transition-all duration-700"
+                                 bg-clip-text text-transparent hidden xs:block transition-all duration-700"
                         :class="{ 'opacity-0 -translate-x-4': !navLoaded, 'opacity-100 translate-x-0': navLoaded }">
                         Privacy Hub
                     </span>

@@ -5,6 +5,9 @@ export default {
   darkMode: "class",
   theme: {
     extend: {
+      screens: {
+        xs: "350px",
+      },
       colors: {
         braveOrange: "#FB542B",
         bravePurple: "#7C3AED",
