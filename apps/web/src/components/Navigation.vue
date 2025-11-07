@@ -29,7 +29,7 @@ onMounted(() => {
 <template>
     <nav class="fixed top-0 left-0 right-0 z-50 glass border-b border-white/10">
         <div class="w-full px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
+            <div class="flex items-center justify-between h-[5.5rem]">
                 <!-- Logo and Brand -->
                 <RouterLink to="/" class="flex items-center gap-3 hover:opacity-80 transition-opacity group"
                     @click="mobileMenuOpen = false">
@@ -39,11 +39,11 @@ onMounted(() => {
                             <div class="w-12 h-12 bg-purple-500/20 rounded-lg animate-pulse"></div>
                         </template>
                     </Suspense>
-                    <span class="text-xl font-bold bg-gradient-to-r from-bravePurple to-braveOrange 
+                    <!-- <span class="text-xl font-bold bg-gradient-to-r from-bravePurple to-braveOrange 
                                  bg-clip-text text-transparent hidden xs:block transition-all duration-700"
                         :class="{ 'opacity-0 -translate-x-4': !navLoaded, 'opacity-100 translate-x-0': navLoaded }">
                         Privacy Hub
-                    </span>
+                    </span> -->
                 </RouterLink>
 
                 <!-- Desktop Navigation -->

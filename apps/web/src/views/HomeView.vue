@@ -36,7 +36,7 @@ const features = [
         exploreColor: 'text-braveOrange',
         glowColor: '#FB542B',
         route: '/music',
-        description: 'Explore original music tracks featuring interactive tipping with BAT.'
+        description: 'Explore original music featuring interactive tipping with BAT.'
     },
     {
         title: 'BAT & Wallet Guide',
@@ -54,7 +54,7 @@ const features = [
         exploreColor: 'text-bravePurple',
         glowColor: '#7C3AED',
         route: '/surprise',
-        description: 'A fun bonus—enjoy a surprise easter egg experience.'
+        description: 'Only the Bravest dare to explore the unknown.'
     }
 ];
 
@@ -97,8 +97,8 @@ const handleCardMouseLeave = (event: MouseEvent) => {
                     </h1>
                     <div class="h-4 md:h-2"></div>
                     <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
-                        Illustrating how <span class="text-braveOrange font-semibold">Brave Browser</span> and
-                        <span class="text-bravePurple font-semibold">BAT</span> enable direct creator support
+                        Illustrating how <a href="https://brave.com" target="_blank" rel="noopener noreferrer" class="text-braveOrange font-semibold hover:underline">Brave Browser</a> and
+                        <a href="https://basicattentiontoken.org" target="_blank" rel="noopener noreferrer" class="text-bravePurple font-semibold hover:underline">BAT</a> enable direct creator support
                         without surveillance or middlemen.
                     </p>
                 </div>
