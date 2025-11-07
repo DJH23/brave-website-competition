@@ -97,8 +97,10 @@ const handleCardMouseLeave = (event: MouseEvent) => {
                     </h1>
                     <div class="h-4 md:h-2"></div>
                     <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto">
-                        Illustrating how <a href="https://brave.com" target="_blank" rel="noopener noreferrer" class="text-braveOrange font-semibold hover:underline">Brave Browser</a> and
-                        <a href="https://basicattentiontoken.org" target="_blank" rel="noopener noreferrer" class="text-bravePurple font-semibold hover:underline">BAT</a> enable direct creator support
+                        Illustrating how <a href="https://brave.com" target="_blank" rel="noopener noreferrer"
+                            class="text-braveOrange font-semibold hover:underline">Brave Browser</a> and
+                        <a href="https://basicattentiontoken.org" target="_blank" rel="noopener noreferrer"
+                            class="text-bravePurple font-semibold hover:underline">BAT</a> enable direct creator support
                         without surveillance or middlemen.
                     </p>
                 </div>
