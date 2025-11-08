@@ -34,7 +34,7 @@ onMounted(() => {
                 <RouterLink to="/" class="flex items-center gap-3 hover:opacity-80 transition-opacity group"
                     @click="mobileMenuOpen = false">
                     <Suspense>
-                        <BATLogo3DAsync />
+                        <BATLogo3DAsync :width="100" :height="100" />
                         <template #fallback>
                             <div class="w-12 h-12 bg-purple-500/20 rounded-lg animate-pulse"></div>
                         </template>

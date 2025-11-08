@@ -2,6 +2,16 @@
 import { onMounted, onBeforeUnmount, ref } from 'vue';
 import * as THREE from 'three';
 
+interface Props {
+  width?: number;
+  height?: number;
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  width: 48,
+  height: 48
+});
+
 const canvas = ref<HTMLCanvasElement | null>(null);
 let renderer: THREE.WebGLRenderer | null = null;
 let scene: THREE.Scene;
@@ -110,8 +120,8 @@ const createBATLogo = () => {
 };
 
 onMounted(() => {
-  const width = 100;
-  const height = 100;
+  const width = props.width;
+  const height = props.height;
 
   renderer = new THREE.WebGLRenderer({
     canvas: canvas.value!,
@@ -126,6 +136,12 @@ onMounted(() => {
   camera.position.z = 3;
 
   batGroup = createBATLogo();
+
+  // Randomize initial rotation for variety
+  batGroup.rotation.x = Math.random() * Math.PI * 2;
+  batGroup.rotation.y = Math.random() * Math.PI * 2;
+  batGroup.rotation.z = Math.random() * Math.PI * 2;
+
   scene.add(batGroup);
 
   // Enhanced lighting
@@ -159,7 +175,8 @@ onMounted(() => {
 
 <template>
   <canvas ref="canvas" role="img" aria-label="Animated 3D BAT logo representing Brave's innovative privacy technology"
-    class="hover:shadow-glow-purple transition-shadow animate-fade-in" style="background: transparent; border: none; box-shadow: none; min-width: 64px; min-height: 64px;">
+    class="hover:shadow-glow-purple transition-shadow animate-fade-in"
+    :style="{ background: 'transparent', border: 'none', boxShadow: 'none', width: `${props.width}px`, height: `${props.height}px` }">
   </canvas>
 </template>
 

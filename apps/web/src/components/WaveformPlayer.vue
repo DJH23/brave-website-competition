@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch, Suspense } from 'vue';
 import WaveSurfer from 'wavesurfer.js';
 import Button from './Button.vue';
+import BATLogo3DAsync from './BATLogo3DAsync.vue';
 import { useWallet } from '../composables/useWallet';
 
 const props = defineProps<{
@@ -17,6 +18,7 @@ const wavesurfer = ref<WaveSurfer | null>(null);
 const isPlaying = ref(false);
 const errorMsg = ref<string | null>(null);
 const calculatedDuration = ref<string>('0:00');
+const currentTime = ref<string>('0:00');
 const { connectWallet, isConnected, sendBATTip } = useWallet();
 
 const formatDuration = (seconds: number): string => {
@@ -59,14 +61,12 @@ onMounted(() => {
         wavesurfer.value = WaveSurfer.create({
             container: container.value,
             waveColor: [
-                '#7c3aed',  // purple
-                '#0ea5e9',  // blue
-           
-            ],
-            progressColor: [
-     
                 '#fb542b',  // orange
                 '#fbbf24',  // yellow
+            ],
+            progressColor: [
+                '#7c3aed',  // purple
+                '#0ea5e9',  // blue
             ],
             height: 80,
             barWidth: 2,
@@ -88,7 +88,14 @@ onMounted(() => {
             // Calculate and set the duration when audio is ready
             const duration = wavesurfer.value?.getDuration() || 0;
             calculatedDuration.value = formatDuration(duration);
+            currentTime.value = formatDuration(duration);
             console.log('Audio duration:', calculatedDuration.value);
+        });
+        wavesurfer.value.on('timeupdate', (time: number) => {
+            // Update remaining time as song plays (countdown)
+            const duration = wavesurfer.value?.getDuration() || 0;
+            const remaining = duration - time;
+            currentTime.value = formatDuration(remaining);
         });
     } else {
         console.warn('WaveformPlayer: container ref is null on mount');
@@ -119,12 +126,12 @@ watch(() => props.src, (newSrc) => {
                 <p v-if="genre" class="text-xs text-neutral-400">{{ genre }}</p>
             </div>
             <div class="flex items-center gap-2">
-                <span class="text-xs text-neutral-500">{{ calculatedDuration }}</span>
+                <span class="text-xs text-neutral-500">{{ currentTime }}</span>
             </div>
         </div>
 
         <!-- Play Button, Waveform, and Purchase Button Container -->
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2">
             <!-- Play Button on the left -->
             <Button size="sm" variant="ghost" :aria-label="isPlaying ? `Pause ${title}` : `Play ${title}`" @click="play"
                 class="shrink-0">
@@ -132,13 +139,19 @@ watch(() => props.src, (newSrc) => {
             </Button>
 
             <!-- Waveform fills available width -->
-            <div ref="container" class="flex-1" style="min-height:80px;"></div>
+            <div ref="container" class="flex-1 mr-2" style="min-height:80px;"></div>
 
             <!-- Purchase Button on the right -->
-            <Button v-if="price" variant="primary" size="sm" @click="handlePurchaseTrack"
-                :aria-label="`Purchase ${title} for ${price} BAT`" class="whitespace-nowrap shrink-0">
-                <i class="bi-gem" aria-hidden="true"></i> {{ price }} BAT
-            </Button>
+            <button v-if="price" @click="handlePurchaseTrack" :aria-label="`Purchase ${title} for ${price} BAT`"
+                class="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/20 hover:border-white/40 hover:bg-white/10 transition-all duration-300 hover:scale-105 hover:shadow-lg whitespace-nowrap shrink-0">
+                <Suspense>
+                    <BATLogo3DAsync :width="56" :height="56" />
+                    <template #fallback>
+                        <div class="w-7 h-7 bg-white/10 rounded-lg animate-pulse"></div>
+                    </template>
+                </Suspense>
+                <span class="text-sm font-semibold">{{ price }} BAT</span>
+            </button>
         </div>
 
         <div v-if="errorMsg" class="text-red-500 text-xs mt-2">{{ errorMsg }}</div>

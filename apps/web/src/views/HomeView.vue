@@ -36,7 +36,7 @@ const features = [
         exploreColor: 'text-braveOrange',
         glowColor: '#FB542B',
         route: '/creator-hub',
-        description: 'Explore original music featuring interactive tipping with BAT.'
+        description: 'Explore original music featuring buying and tipping with BAT.'
     },
     {
         title: 'BAT & Wallet Guide',

@@ -76,14 +76,14 @@ class Particle {
 
         this.z = Math.random(); // distribute depths
         const speedScale = 0.4 + 0.6 * (1 - this.z); // near moves more, far less
-        const sizeScale = 0.7 + 0.9 * (1 - this.z); // near larger, far smaller
+        const sizeScale = 0.5 + 0.8 * (1 - this.z); // near larger, far smaller
 
         this.vx = ((Math.random() - 0.5) * 0.5) * speedScale;
         this.vy = ((Math.random() - 0.5) * 0.5) * speedScale;
         this.baseVx = ((Math.random() - 0.5) * 0.15) * speedScale;
         this.baseVy = ((Math.random() - 0.5) * 0.15) * speedScale;
-        // Slightly reduce max size (was 1..3 -> now ~1..2.6 before scaling)
-        this.size = (Math.random() * 1.3 + 1.0) * sizeScale;
+        // Slightly reduce max size further (tighten upper bound a bit)
+        this.size = (Math.random() * 1.5 + 0.9) * sizeScale;
 
         // Start at random color with random progress
         this.colorIndex = Math.floor(Math.random() * brandColors.length);
@@ -102,7 +102,7 @@ class Particle {
         this.sparkleActive = false;
         this.sparkleProgress = 0;
         this.sparkleSpeed = 0.05 + Math.random() * 0.05; // ~0.5-1s sparkle duration
-        this.sparkleCooldown = Math.floor(900 + Math.random() * 1500); // 15-40s longer cooldown
+        this.sparkleCooldown = Math.floor(300 + Math.random() * 600); // 5-15s cooldown (even more frequent)
         this.sparkleRotation = Math.random() * Math.PI;
         this.sparkleAmp = 0.5 + Math.random() * 0.6; // smaller size multiplier
 
@@ -179,11 +179,11 @@ class Particle {
             if (this.sparkleProgress >= 1) {
                 this.sparkleActive = false;
                 this.sparkleProgress = 0;
-                this.sparkleCooldown = Math.floor(900 + Math.random() * 1500); // 15-40s
+                this.sparkleCooldown = Math.floor(300 + Math.random() * 600); // 5-15s
             }
         } else {
             this.sparkleCooldown -= 1;
-            if (this.sparkleCooldown <= 0 && this.z < 0.7 && Math.random() < 0.12) {
+            if (this.sparkleCooldown <= 0 && this.z < 0.7 && Math.random() < 0.28) { // even higher chance to trigger
                 this.sparkleActive = true;
                 this.sparkleProgress = 0;
                 this.sparkleRotation = Math.random() * Math.PI;
@@ -193,8 +193,10 @@ class Particle {
     }
 
     draw(ctx: CanvasRenderingContext2D) {
-        // Depth-based alpha and optional blur
-        const alpha = 0.34 + 0.5 * (1 - this.z); // increased base brightness
+        // Depth-based brightness and alpha (closer = noticeably brighter)
+        const depthFactor = 1 - this.z; // 0 = far, 1 = near
+        // Non-linear mapping to emphasize near brightness
+        const alpha = Math.min(1, 0.18 + 1 * Math.pow(depthFactor, 0.6));
         ctx.save();
         ctx.globalAlpha = alpha;
 
@@ -209,14 +211,25 @@ class Particle {
         const extraAlpha = 1 * this.pulseAmp * pulseFactor; // more noticeable brightening
         ctx.globalAlpha = Math.min(1, alpha + extraAlpha);
 
-        ctx.fillStyle = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b})`;
+        // Brighten color for near particles by mixing with white
+        const brightenMix = 0.12 + 0.38 * Math.pow(depthFactor, 0.8); // 0.12..0.5
+        const r = Math.min(255, Math.round(this.color.r + (255 - this.color.r) * brightenMix));
+        const g = Math.min(255, Math.round(this.color.g + (255 - this.color.g) * brightenMix));
+        const b = Math.min(255, Math.round(this.color.b + (255 - this.color.b) * brightenMix));
+        ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+
+        // Additive blend for very near particles to enhance perceived brightness
+        if (depthFactor > 0.85) {
+            ctx.globalCompositeOperation = 'lighter';
+        }
         ctx.beginPath();
         ctx.arc(this.x, this.y, effectiveSize, 0, Math.PI * 2);
         ctx.fill();
 
         // Soft glow during pulse
         if (pulseFactor > 0.1) {
-            const glowAlpha = 0.10 * pulseFactor; // stronger glow
+            const nearBoost = 0.05 + 0.15 * depthFactor; // closer = stronger glow
+            const glowAlpha = (0.08 + nearBoost) * pulseFactor; // stronger glow
             ctx.globalAlpha = glowAlpha;
             ctx.filter = `blur(${baseBlur + 6}px)`; // more blur for glow
             ctx.beginPath();
@@ -396,16 +409,17 @@ onMounted(() => {
                     const g = Math.floor((p1.color.g + p2.color.g) / 2);
                     const b = Math.floor((p1.color.b + p2.color.b) / 2);
 
-                    // Depth-aware alpha without sqrt
-                    const baseAlpha = 0.3 * (1 - distSq / maxDistSq);
-                    const depthMix = 0.4 + 0.2 * (1 - avgZ);
+                    // Depth-aware alpha without sqrt (slightly stronger)
+                    const baseAlpha = 0.36 * (1 - distSq / maxDistSq); // +20%
+                    const depthMix = 0.45 + 0.25 * (1 - avgZ); // favor nearer pairs slightly more
                     let depthAlpha = baseAlpha * depthMix;
-                    depthAlpha = Math.max(0.06, depthAlpha);
+                    depthAlpha = Math.max(0.085, depthAlpha); // raise minimum visibility
 
                     ctx.save();
                     ctx.globalAlpha = depthAlpha;
                     ctx.strokeStyle = `rgb(${r}, ${g}, ${b})`;
-                    ctx.lineWidth = 1 + 0.6 * (1 - avgZ);
+                    ctx.lineWidth = 1.15 + 0.75 * (1 - avgZ);
+                    ctx.lineCap = 'round';
                     ctx.beginPath();
                     ctx.moveTo(p1.x, p1.y);
                     ctx.lineTo(p2.x, p2.y);
