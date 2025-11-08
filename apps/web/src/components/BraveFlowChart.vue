@@ -196,31 +196,24 @@ const c4Card = ref<HTMLElement | null>(null);
 const boxWidth = ref(1200);
 const boxHeight = ref(800);
 
-// Brand colors from design system
-const brandColors = ['#7C3AED', '#0EA5E9', '#FB542B']; // purple, blue, orange
+// Brand colors from design system - using braveBlue consistently
+const brandColors = ['#0EA5E9']; // braveBlue
 
 // Stable color assignment per edge ID
 function getEdgeColor(edgeId: string): string {
-    // Use edge ID to deterministically pick a color (so it's consistent across re-renders)
-    const hash = edgeId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    return brandColors[hash % brandColors.length];
+    // Always return braveBlue
+    return '#0EA5E9';
 }
 
 // Map color hex to marker name
 function getMarkerName(color: string): string {
-    switch (color) {
-        case '#7C3AED': return 'purple';
-        case '#0EA5E9': return 'blue';
-        case '#FB542B': return 'orange';
-        default: return 'purple';
-    }
+    return 'blue';
 }
 
 // Stable color assignment per node ID (for hover glow effect)
 function getNodeColor(nodeId: string): string {
-    // Use node ID to deterministically pick a color
-    const hash = nodeId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-    return brandColors[hash % brandColors.length];
+    // Always return braveBlue
+    return '#0EA5E9';
 }
 
 // Get RGB values from hex color for box-shadow
@@ -419,14 +412,14 @@ onBeforeUnmount(() => {
 
         <!-- Content laid out with Flex/Grid so it reflows naturally -->
         <div
-            class="w-full overflow-x-auto overflow-y-visible pb-4 scrollbar-thin scrollbar-thumb-purple-500/30 scrollbar-track-transparent">
+            class="w-full overflow-x-auto overflow-y-visible pb-4 scrollbar-thin scrollbar-thumb-blue-500/30 scrollbar-track-transparent">
             <div class="flex flex-col gap-24 lg:gap-26">
                 <!-- Row 1: Setup centered -->
                 <div class="w-full flex justify-center">
                     <div ref="setupContainer"
                         class="glass rounded-2xl p-6 flex flex-col items-center gap-4 w-[520px] h-[480px]">
                         <h3 class="text-white text-[20px] font-semibold flex items-center gap-2">
-                            <i class="bi bi-gear-fill text-gradient-rainbow"></i>
+                            <i class="bi bi-gear-fill text-gradient-blue"></i>
                             Setup
                         </h3>
                         <div class="flex-1 flex flex-col gap-4 w-full justify-between">
@@ -477,7 +470,7 @@ onBeforeUnmount(() => {
                     <div ref="usersContainer" class="glass rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[480px]">
                         <h3
                             class="text-white text-[20px] font-semibold text-center flex items-center justify-center gap-2">
-                            <i class="bi bi-people-fill text-gradient-rainbow"></i>
+                            <i class="bi bi-people-fill text-gradient-blue"></i>
                             Users
                         </h3>
                         <div class="flex-1 flex flex-col gap-4 justify-between">
@@ -535,7 +528,7 @@ onBeforeUnmount(() => {
                     <div ref="creatorsContainer" class="glass rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[480px]">
                         <h3
                             class="text-white text-[20px] font-semibold text-center flex items-center justify-center gap-2">
-                            <i class="bi bi-palette-fill text-gradient-rainbow"></i>
+                            <i class="bi bi-palette-fill text-gradient-blue"></i>
                             Creators
                         </h3>
                         <div class="flex-1 flex flex-col gap-4 justify-between">
@@ -585,7 +578,7 @@ onBeforeUnmount(() => {
         <BaseModal v-if="selectedNode" :open="modalOpen" :title="selectedNode.whyMatters"
             :bullets="selectedNode.bullets" :ctas="selectedNode.ctas" @close="closeModal">
             <div class="flex items-center gap-3 mb-4">
-                <i :class="['text-3xl', selectedNode.icon, 'text-gradient-rainbow']"></i>
+                <i :class="['text-3xl', selectedNode.icon, 'text-gradient-blue']"></i>
                 <h3 class="text-xl font-semibold text-white">{{ selectedNode.label }}</h3>
             </div>
             <p class="text-text-100 mb-4">{{ selectedNode.summary }}</p>
@@ -627,7 +620,7 @@ svg {
 
 .edge-active {
     opacity: 1;
-    filter: drop-shadow(0 0 6px rgba(255, 106, 0, 0.6));
+    filter: drop-shadow(0 0 6px rgba(14, 165, 233, 0.6));
 }
 
 /* Arrow animation - always active on all edges */
@@ -652,12 +645,12 @@ svg path[stroke] {
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: rgba(123, 63, 242, 0.3);
+    background: rgba(14, 165, 233, 0.3);
     border-radius: 4px;
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    background: rgba(123, 63, 242, 0.5);
+    background: rgba(14, 165, 233, 0.5);
 }
 
 /* Custom scrollbar for horizontal overflow */
@@ -670,11 +663,11 @@ svg path[stroke] {
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb {
-    background: rgba(123, 63, 242, 0.3);
+    background: rgba(14, 165, 233, 0.3);
     border-radius: 4px;
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-    background: rgba(123, 63, 242, 0.5);
+    background: rgba(14, 165, 233, 0.5);
 }
 </style>

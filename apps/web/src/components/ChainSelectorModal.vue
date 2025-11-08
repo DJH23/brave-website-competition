@@ -115,6 +115,19 @@ function onCardMouseLeave(event: MouseEvent) {
                             </div>
                         </button>
                     </div>
+
+                    <!-- Get Set Up Link -->
+                    <div class="mt-6 text-center">
+                        <RouterLink to="/wallet"
+                            class="group/link text-sm text-neutral-400 hover:text-braveBlue transition-colors inline-flex items-center gap-1">
+                            <span>Or Get Set Up</span>
+                            <svg class="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-2"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                        </RouterLink>
+                    </div>
                 </div>
             </div>
         </div>
