@@ -2,9 +2,11 @@
 import WaveformPlayer from './WaveformPlayer.vue';
 import SkeletonLoader from './SkeletonLoader.vue';
 import BATLogo3DAsync from './BATLogo3DAsync.vue';
+import TransactionNotification from './TransactionNotification.vue';
+import ChainSelectorModal from './ChainSelectorModal.vue';
 import { ref, Suspense, computed, onMounted, onBeforeUnmount } from "vue";
 import { useIntersectionObserver } from "../composables/useIntersectionObserver";
-import { useMultiChainWallet } from '../composables/useMultiChainWallet';
+import { useMultiChainWallet, type ChainType } from '../composables/useMultiChainWallet';
 import { useBATPrice } from '../composables/useBATPrice';
 
 interface Track {
@@ -42,8 +44,36 @@ const musicTracks = ref<Track[]>([
 ]);
 
 const tipAmount = ref(5); // Default tip amount in BAT
-const { connectWallet, isConnected, sendBATTip } = useMultiChainWallet();
+const { connectWallet, isConnected, sendBATTip, activeChain } = useMultiChainWallet();
 const { batPrice } = useBATPrice();
+
+// Chain selector state for tip button
+const showTipChainSelector = ref(false);
+
+// Notification state
+const notification = ref({
+    show: false,
+    type: 'info' as 'success' | 'error' | 'info',
+    title: '',
+    message: '',
+    txSignature: undefined as string | undefined,
+    chain: undefined as 'ethereum' | 'solana' | undefined,
+});
+
+const showNotification = (type: 'success' | 'error' | 'info', title: string, message: string, txSignature?: string, chain?: ChainType) => {
+    notification.value = {
+        show: true,
+        type,
+        title,
+        message,
+        txSignature,
+        chain: chain === null ? undefined : chain,
+    };
+};
+
+const closeNotification = () => {
+    notification.value.show = false;
+};
 
 // Avoid TS plugin union issues by providing a narrowed list for rendering
 const visibleTracks = computed<Track[]>(() => (hasBeenVisible.value ? musicTracks.value : []));
@@ -105,16 +135,58 @@ const handleTipInput = (event: Event) => {
 
 const handleTipArtist = async () => {
     if (!isConnected.value) {
-        await connectWallet();
-        if (!isConnected.value) return;
+        // Show chain selector modal
+        showTipChainSelector.value = true;
+        return;
     }
 
     try {
-        await sendBATTip(tipAmount.value.toString());
-        alert(`Thank you for tipping ${tipAmount.value} BAT to support the artist!`);
+        const success = await sendBATTip(tipAmount.value.toString());
+        if (success) {
+            showNotification(
+                'success',
+                'Tip Sent! 🎉',
+                `Thank you for tipping ${tipAmount.value} BAT to support the artist!`,
+                undefined,
+                activeChain.value || undefined
+            );
+        } else {
+            showNotification('error', 'Tip Failed', 'Failed to send tip. Please try again.');
+        }
     } catch (error) {
         console.error('Tip failed:', error);
-        alert('Failed to send tip. Please try again.');
+        showNotification('error', 'Tip Failed', 'Failed to send tip. Please try again.');
+    }
+};
+
+const handleTipChainSelected = async (chain: ChainType) => {
+    showTipChainSelector.value = false;
+
+    try {
+        await connectWallet(chain);
+
+        // Wait for reactive state to update
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        if (isConnected.value) {
+            const success = await sendBATTip(tipAmount.value.toString());
+            if (success) {
+                showNotification(
+                    'success',
+                    'Tip Sent! 🎉',
+                    `Thank you for tipping ${tipAmount.value} BAT to support the artist!`,
+                    undefined,
+                    activeChain.value || undefined
+                );
+            } else {
+                showNotification('error', 'Tip Failed', 'Failed to send tip. Please try again.');
+            }
+        } else {
+            showNotification('error', 'Connection Failed', 'Failed to connect wallet. Please try again.');
+        }
+    } catch (error) {
+        console.error('Tip failed:', error);
+        showNotification('error', 'Tip Failed', 'Failed to send tip. Please try again.');
     }
 };
 </script>
@@ -191,6 +263,15 @@ const handleTipArtist = async () => {
             </div>
         </div>
     </section>
+
+    <!-- Chain Selector Modal for Tip (reusable) -->
+    <ChainSelectorModal :show="showTipChainSelector" mode="tip" @close="showTipChainSelector = false"
+        @select="handleTipChainSelected" />
+
+    <!-- Transaction Notification -->
+    <TransactionNotification :show="notification.show" :type="notification.type" :title="notification.title"
+        :message="notification.message" :tx-signature="notification.txSignature" :chain="notification.chain"
+        @close="closeNotification" />
 </template>
 
 <style scoped>
@@ -204,5 +285,17 @@ input[type="number"]::-webkit-outer-spin-button {
 input[type="number"] {
     -moz-appearance: textfield;
     appearance: textfield;
+}
+
+/* Chain selector card with hover glow effect */
+.chain-selector-card {
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, border-color 0.3s ease-out;
+}
+
+.chain-selector-card:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 0 30px color-mix(in srgb, var(--glow-color) 70%, transparent),
+        0 0 60px color-mix(in srgb, var(--glow-color) 40%, transparent),
+        0 15px 50px rgba(0, 0, 0, 0.4);
 }
 </style>

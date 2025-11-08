@@ -3,6 +3,8 @@ import { ref, onMounted, onBeforeUnmount, watch, Suspense } from 'vue';
 import WaveSurfer from 'wavesurfer.js';
 import Button from './Button.vue';
 import BATLogo3DAsync from './BATLogo3DAsync.vue';
+import TransactionNotification from './TransactionNotification.vue';
+import ChainSelectorModal from './ChainSelectorModal.vue';
 import { useMultiChainWallet, type ChainType } from '../composables/useMultiChainWallet';
 import { useAudioManager } from '../composables/useAudioManager';
 
@@ -23,8 +25,45 @@ const selectedChain = ref<ChainType>("ethereum");
 const errorMsg = ref<string | null>(null);
 const calculatedDuration = ref<string>('0:00');
 const currentTime = ref<string>('0:00');
-const { connectWallet, isConnected, sendBATTip } = useMultiChainWallet();
+const { connectWallet, isConnected, sendBATTip, activeChain } = useMultiChainWallet();
 const { registerPlay, unregisterPlay } = useAudioManager();
+
+// Notification state
+const notification = ref({
+    show: false,
+    type: 'info' as 'success' | 'error' | 'info',
+    title: '',
+    message: '',
+    txSignature: undefined as string | undefined,
+    chain: undefined as 'ethereum' | 'solana' | undefined,
+    downloadUrl: undefined as string | undefined,
+    downloadFilename: undefined as string | undefined,
+});
+
+const showNotification = (
+    type: 'success' | 'error' | 'info',
+    title: string,
+    message: string,
+    txSignature?: string,
+    chain?: ChainType,
+    downloadUrl?: string,
+    downloadFilename?: string
+) => {
+    notification.value = {
+        show: true,
+        type,
+        title,
+        message,
+        txSignature,
+        chain: chain === null ? undefined : chain,
+        downloadUrl,
+        downloadFilename,
+    };
+};
+
+const closeNotification = () => {
+    notification.value.show = false;
+};
 
 const formatDuration = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
@@ -41,7 +80,7 @@ const play = () => {
 
 const handlePurchaseTrack = async () => {
     if (!props.price) {
-        alert('This track is not available for purchase.');
+        showNotification('error', 'Not Available', 'This track is not available for purchase.');
         return;
     }
 
@@ -52,11 +91,23 @@ const handlePurchaseTrack = async () => {
     }
 
     try {
-        await sendBATTip(props.price.toString());
-        alert(`Thank you for purchasing "${props.title}" for ${props.price} BAT!`);
+        const success = await sendBATTip(props.price.toString());
+        if (success) {
+            showNotification(
+                'success',
+                'Purchase Successful! 🎉',
+                `Thank you for purchasing "${props.title}" for ${props.price} BAT!`,
+                undefined,
+                activeChain.value || undefined,
+                props.src,
+                `${props.title}.mp3`
+            );
+        } else {
+            showNotification('error', 'Purchase Failed', 'Failed to complete purchase. Please try again.');
+        }
     } catch (error) {
         console.error('Purchase failed:', error);
-        alert('Failed to complete purchase. Please try again.');
+        showNotification('error', 'Purchase Failed', 'Failed to complete purchase. Please try again.');
     }
 };
 
@@ -77,19 +128,27 @@ const handleChainSelected = async (chain: ChainType) => {
             console.log('[WaveformPlayer] price:', props.price);
             const success = await sendBATTip(props.price.toString());
             if (success) {
-                alert(`Thank you for purchasing "${props.title}" for ${props.price} BAT!`);
+                showNotification(
+                    'success',
+                    'Purchase Successful! 🎉',
+                    `Thank you for purchasing "${props.title}" for ${props.price} BAT!`,
+                    undefined,
+                    activeChain.value || undefined,
+                    props.src,
+                    `${props.title}.mp3`
+                );
             } else {
-                alert('Failed to complete purchase. Please try again.');
+                showNotification('error', 'Purchase Failed', 'Failed to complete purchase. Please try again.');
             }
         } else {
             console.warn('[WaveformPlayer] Connection failed or no price set');
             console.warn('[WaveformPlayer] isConnected:', isConnected.value);
             console.warn('[WaveformPlayer] price:', props.price);
-            alert('Connection failed. Please try again.');
+            showNotification('error', 'Connection Failed', 'Failed to connect wallet. Please try again.');
         }
     } catch (error) {
         console.error('Purchase failed:', error);
-        alert('Failed to complete purchase. Please try again.');
+        showNotification('error', 'Purchase Failed', 'Failed to complete purchase. Please try again.');
     }
 };
 
@@ -227,50 +286,16 @@ watch(() => props.src, (newSrc) => {
 
         <div v-if="errorMsg" class="text-red-500 text-xs mt-2">{{ errorMsg }}</div>
 
-        <!-- Chain Selector Modal -->
-        <div v-if="showChainSelector" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center"
-            @click.self="showChainSelector = false">
-            <div
-                class="glass-strong rounded-xl p-8 max-w-md w-full border border-brand-purple shadow-2xl relative animate-fade-in">
-                <button class="absolute top-3 right-3 text-neutral-400 hover:text-white text-2xl leading-none"
-                    @click="showChainSelector = false" aria-label="Close chain selector">
-                    ×
-                </button>
-                <h3 class="text-2xl font-bold mb-4 text-gradient-purple">Choose Blockchain</h3>
-                <p class="text-neutral-300 mb-6">Select which blockchain to use for this purchase:</p>
-
-                <div class="space-y-3">
-                    <button @click="handleChainSelected('ethereum')"
-                        class="w-full p-4 rounded-lg bg-white/5 border border-white/20 hover:border-brand-purple hover:bg-white/10 transition-all duration-300 text-left group">
-                        <div class="flex items-center gap-3">
-                            <div
-                                class="w-10 h-10 rounded-full bg-brand-purple/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                <span class="text-xl">⟠</span>
-                            </div>
-                            <div>
-                                <div class="font-semibold text-white">Ethereum</div>
-                                <div class="text-xs text-neutral-400">ERC-20 BAT Token</div>
-                            </div>
-                        </div>
-                    </button>
-
-                    <button @click="handleChainSelected('solana')"
-                        class="w-full p-4 rounded-lg bg-white/5 border border-white/20 hover:border-brand-purple hover:bg-white/10 transition-all duration-300 text-left group">
-                        <div class="flex items-center gap-3">
-                            <div
-                                class="w-10 h-10 rounded-full bg-brand-pink/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-                                <span class="text-xl">◎</span>
-                            </div>
-                            <div>
-                                <div class="font-semibold text-white">Solana</div>
-                                <div class="text-xs text-neutral-400">SPL BAT Token</div>
-                            </div>
-                        </div>
-                    </button>
-                </div>
-            </div>
-        </div>
+        <!-- Chain Selector Modal (reusable) -->
+        <ChainSelectorModal :show="showChainSelector" mode="purchase" @close="showChainSelector = false"
+            @select="handleChainSelected" />
     </div>
+
+    <!-- Transaction Notification -->
+    <TransactionNotification :show="notification.show" :type="notification.type" :title="notification.title"
+        :message="notification.message" :tx-signature="notification.txSignature" :chain="notification.chain"
+        :download-url="notification.downloadUrl" :download-filename="notification.downloadFilename"
+        @close="closeNotification" />
 </template>
 
 <style scoped>
@@ -292,5 +317,17 @@ watch(() => props.src, (newSrc) => {
 
 .animate-fade-in {
     animation: fade-in 0.2s ease-out;
+}
+
+/* Chain selector card with hover glow effect */
+.chain-selector-card {
+    transition: transform 0.3s ease-out, box-shadow 0.3s ease-out, border-color 0.3s ease-out;
+}
+
+.chain-selector-card:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 0 30px color-mix(in srgb, var(--glow-color) 70%, transparent),
+        0 0 60px color-mix(in srgb, var(--glow-color) 40%, transparent),
+        0 15px 50px rgba(0, 0, 0, 0.4);
 }
 </style>
