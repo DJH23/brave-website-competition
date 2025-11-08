@@ -6,12 +6,126 @@ import { useIntersectionObserver } from '../composables/useIntersectionObserver'
 
 const showTipModal = ref(false);
 
-// Reveal on scroll for main headings
 const musicHubHeadingRef = ref<HTMLElement | null>(null);
 const { hasBeenVisible: musicHubVisible } = useIntersectionObserver(musicHubHeadingRef, { threshold: 0.1, once: true });
 
 const howBatWorksRef = ref<HTMLElement | null>(null);
 const { hasBeenVisible: howBatWorksVisible } = useIntersectionObserver(howBatWorksRef, { threshold: 0.1, once: true });
+
+// "Why This Matters" load transition visibility
+const whyMattersRef = ref<HTMLElement | null>(null);
+const { hasBeenVisible: whyMattersVisible } = useIntersectionObserver(whyMattersRef, { threshold: 0.1, once: true });
+
+// Comparison data (responsive + perspective toggle)
+const perspective = ref<'creators' | 'users'>('creators');
+
+const platforms = [
+    { key: 'bat', label: 'Brave Rewards (BAT)' },
+    { key: 'ads', label: 'Traditional Ads' },
+    { key: 'patreon', label: 'Patreon' },
+    { key: 'yt', label: 'YouTube Memberships' }
+];
+
+type Cell = { text: string; icon?: string; color?: string };
+type Row = { label: string; cells: Cell[] };
+
+const creatorRows: Row[] = [
+    {
+        label: 'Revenue share kept',
+        cells: [
+            { text: '~95%+', icon: 'bi-check-circle-fill', color: 'text-green-400' },
+            { text: '45–70%', icon: 'bi-x-circle-fill', color: 'text-red-400' },
+            { text: '8–12% fees', icon: 'bi-dash-circle', color: 'text-yellow-400' },
+            { text: '~30–45% share', icon: 'bi-dash-circle', color: 'text-yellow-400' }
+        ]
+    },
+    {
+        label: 'Privacy (user tracking)',
+        cells: [
+            { text: 'No tracking', icon: 'bi-check-circle-fill', color: 'text-green-400' },
+            { text: 'Heavy tracking', icon: 'bi-exclamation-triangle-fill', color: 'text-red-400' },
+            { text: 'Account data', icon: 'bi-dash-circle', color: 'text-yellow-400' },
+            { text: 'Platform data', icon: 'bi-dash-circle', color: 'text-yellow-400' }
+        ]
+    },
+    {
+        label: 'Fees / friction',
+        cells: [
+            { text: 'No account needed', icon: 'bi-check-circle-fill', color: 'text-green-400' },
+            { text: 'High platform cut', icon: 'bi-x-circle-fill', color: 'text-red-400' },
+            { text: '% fees + churn', icon: 'bi-dash-circle', color: 'text-yellow-400' },
+            { text: '% share + churn', icon: 'bi-dash-circle', color: 'text-yellow-400' }
+        ]
+    },
+    {
+        label: 'Payout speed',
+        cells: [
+            { text: 'Fast', icon: 'bi-check-circle-fill', color: 'text-green-400' },
+            { text: 'Delayed', icon: 'bi-hourglass-split', color: 'text-gray-400' },
+            { text: 'Monthly cycles', icon: 'bi-hourglass-split', color: 'text-gray-400' },
+            { text: 'Monthly cycles', icon: 'bi-hourglass-split', color: 'text-gray-400' }
+        ]
+    },
+    {
+        label: 'Platform dependence',
+        cells: [
+            { text: 'Open web', icon: 'bi-check-circle-fill', color: 'text-green-400' },
+            { text: 'Algorithmic risk', icon: 'bi-x-circle-fill', color: 'text-red-400' },
+            { text: 'Platform lock‑in', icon: 'bi-dash-circle', color: 'text-yellow-400' },
+            { text: 'Platform lock‑in', icon: 'bi-dash-circle', color: 'text-yellow-400' }
+        ]
+    }
+];
+
+const userRows: Row[] = [
+    {
+        label: 'Privacy protection',
+        cells: [
+            { text: 'No tracking', icon: 'bi-check-circle-fill', color: 'text-green-400' },
+            { text: 'Targeted tracking', icon: 'bi-exclamation-triangle-fill', color: 'text-red-400' },
+            { text: 'Account data', icon: 'bi-dash-circle', color: 'text-yellow-400' },
+            { text: 'Platform data', icon: 'bi-dash-circle', color: 'text-yellow-400' }
+        ]
+    },
+    {
+        label: 'Account required',
+        cells: [
+            { text: 'No', icon: 'bi-check-circle-fill', color: 'text-green-400' },
+            { text: 'N/A', icon: 'bi-x-circle-fill', color: 'text-red-400' },
+            { text: 'Yes', icon: 'bi-dash-circle', color: 'text-yellow-400' },
+            { text: 'Yes', icon: 'bi-dash-circle', color: 'text-yellow-400' }
+        ]
+    },
+    {
+        label: 'Ease to support',
+        cells: [
+            { text: 'One‑click tipping', icon: 'bi-check-circle-fill', color: 'text-green-400' },
+            { text: 'Indirect (ads)', icon: 'bi-x-circle-fill', color: 'text-red-400' },
+            { text: 'Memberships', icon: 'bi-dash-circle', color: 'text-yellow-400' },
+            { text: 'Memberships', icon: 'bi-dash-circle', color: 'text-yellow-400' }
+        ]
+    },
+    {
+        label: 'Ad experience',
+        cells: [
+            { text: 'Opt‑in private ads', icon: 'bi-check-circle-fill', color: 'text-green-400' },
+            { text: 'Targeted invasive ads', icon: 'bi-x-circle-fill', color: 'text-red-400' },
+            { text: 'No ads (paid)', icon: 'bi-dash-circle', color: 'text-yellow-400' },
+            { text: 'Platform promos', icon: 'bi-dash-circle', color: 'text-yellow-400' }
+        ]
+    },
+    {
+        label: 'Costs to user',
+        cells: [
+            { text: 'None for tipping', icon: 'bi-check-circle-fill', color: 'text-green-400' },
+            { text: 'Time/attention', icon: 'bi-dash-circle', color: 'text-yellow-400' },
+            { text: 'Monthly fee', icon: 'bi-dash-circle', color: 'text-yellow-400' },
+            { text: 'Monthly fee', icon: 'bi-dash-circle', color: 'text-yellow-400' }
+        ]
+    }
+];
+
+const currentRows = () => (perspective.value === 'creators' ? creatorRows : userRows);
 </script>
 
 <template>
@@ -20,48 +134,114 @@ const { hasBeenVisible: howBatWorksVisible } = useIntersectionObserver(howBatWor
         <div class="max-w-5xl mx-auto mb-16">
             <div class="text-center space-y-6">
                 <h1 ref="musicHubHeadingRef"
-                    class="text-5xl md:text-6xl font-bold text-gradient-rainbow transition-all duration-700"
+                    class="text-5xl md:text-6xl font-bold text-gradient-orange transition-all duration-700"
                     :class="{ 'opacity-0 translate-y-8': !musicHubVisible, 'opacity-100 translate-y-0': musicHubVisible }">
                     <i class="bi bi-music-note-beamed" aria-hidden="true"></i> Music Hub
                 </h1>
                 <p class="text-xl text-gray-300 max-w-3xl mx-auto">
-                    Premium music productions powered by creativity and privacy.
-                    Support directly with BAT — no middlemen, no tracking.
+                    Tips and purchases paid directly with BAT — no middlemen, no tracking.
                 </p>
             </div>
+        </div>
 
-            <!-- Why This Matters -->
-            <div class="mt-12 glass rounded-2xl p-8">
-                <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                    <i class="bi bi-lightbulb text-yellow-400" aria-hidden="true"></i>
-                    Why This Matters for Creators
-                </h2>
-                <div class="space-y-4 text-gray-300">
-                    <p>
-                        <strong class="text-bravePurple">Traditional music platforms</strong> take
-                        30-50% of your earnings, track your listeners, and sell their data.
-                        Your fans become products.
-                    </p>
-                    <p>
-                        With <strong class="text-braveOrange">BAT (Basic Attention Token)</strong>,
-                        fans can tip you directly through Brave Browser — no account required,
-                        no corporate middleman, and <strong>zero tracking</strong>.
-                        You keep more. Fans stay private. Everyone wins.
-                    </p>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
-                        <div class="glass rounded-lg p-4 text-center">
-                            <div class="text-3xl font-bold text-green-400">95%+</div>
-                            <div class="text-sm text-gray-400">You keep</div>
+        <!-- Why This Matters (Comparison Table) -->
+        <div class="max-w-7xl mx-auto mb-16">
+            <h2 ref="whyMattersRef"
+                class="text-3xl md:text-4xl font-bold mb-8 text-left transition-all duration-700 text-gradient-orange"
+                :class="{ 'opacity-0 translate-y-8': !whyMattersVisible, 'opacity-100 translate-y-0': whyMattersVisible }">
+                Why This Matters
+            </h2>
+            <div class="mt-12 glass rounded-2xl p-6 md:p-8">
+                <!-- Perspective toggle -->
+                <div class="flex items-center justify-center gap-3 mb-6">
+                    <button type="button"
+                        class="px-4 py-2 rounded-lg text-base md:text-lg font-semibold transition-colors inline-flex items-center gap-2 tracking-wide"
+                        :class="perspective === 'creators' ? 'bg-white/15 text-white shadow-sm' : 'text-gray-300 hover:bg-white/5'"
+                        :aria-pressed="perspective === 'creators'" @click="perspective = 'creators'">
+                        <i class="bi bi-music-note-beamed text-braveOrange" aria-hidden="true"></i>
+                        <span>For Creators</span>
+                    </button>
+                    <button type="button"
+                        class="px-4 py-2 rounded-lg text-base md:text-lg font-semibold transition-colors inline-flex items-center gap-2 tracking-wide"
+                        :class="perspective === 'users' ? 'bg-white/15 text-white shadow-sm' : 'text-gray-300 hover:bg-white/5'"
+                        :aria-pressed="perspective === 'users'" @click="perspective = 'users'">
+                        <i class="bi bi-people text-braveOrange" aria-hidden="true"></i>
+                        <span>For Users</span>
+                    </button>
+                </div>
+                <div class="overflow-x-auto overflow-y-hidden">
+                    <Transition name="fade-slide" mode="out-in">
+                        <div :key="perspective">
+                            <!-- Desktop/tablet table -->
+                            <table class="min-w-full text-left text-base hidden md:table">
+                                <caption class="sr-only">Monetization comparison across platforms</caption>
+                                <thead>
+                                    <tr class="text-gray-400">
+                                        <th scope="col" class="py-3 pr-6">Criteria</th>
+                                        <th v-for="p in platforms" :key="p.key" scope="col" class="py-3 pr-6">{{ p.label
+                                        }}</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="align-top">
+                                    <tr v-for="row in currentRows()" :key="row.label" class="border-t border-white/10">
+                                        <th scope="row" class="py-4 pr-6 font-semibold text-white">{{ row.label }}</th>
+                                        <td v-for="(p, idx) in platforms" :key="p.key" class="py-4 pr-6">
+                                            <span class="inline-flex items-center gap-2">
+                                                <i v-if="row.cells[idx]?.icon"
+                                                    :class="['bi', row.cells[idx].icon, row.cells[idx].color]"
+                                                    aria-hidden="true"></i>
+                                                <span>{{ row.cells[idx]?.text }}</span>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                            <!-- Mobile stacked cards -->
+                            <div class="md:hidden space-y-4">
+                                <div v-for="(p, pIdx) in platforms" :key="p.key" class="glass rounded-xl p-4">
+                                    <div class="text-white font-semibold mb-2 flex items-center gap-2 text-base">
+                                        <i v-if="p.key === 'bat'" class="bi bi-shield-check text-braveBlue"
+                                            aria-hidden="true"></i>
+                                        <i v-else-if="p.key === 'ads'" class="bi bi-bullseye text-red-400"
+                                            aria-hidden="true"></i>
+                                        <i v-else-if="p.key === 'patreon'" class="bi bi-people text-braveOrange"
+                                            aria-hidden="true"></i>
+                                        <i v-else class="bi bi-youtube text-bravePink" aria-hidden="true"></i>
+                                        {{ p.label }}
+                                    </div>
+                                    <ul class="space-y-2">
+                                        <li v-for="row in currentRows()" :key="row.label"
+                                            class="flex items-start justify-between gap-3 border-t border-white/5 pt-2 first:border-t-0 first:pt-0">
+                                            <span class="text-gray-400 text-sm">{{ row.label }}</span>
+                                            <span class="text-white inline-flex items-center gap-2 text-base">
+                                                <i v-if="row.cells[pIdx]?.icon"
+                                                    :class="['bi', row.cells[pIdx].icon, row.cells[pIdx].color]"
+                                                    aria-hidden="true"></i>
+                                                <span>{{ row.cells[pIdx]?.text }}</span>
+                                            </span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                        <div class="glass rounded-lg p-4 text-center">
-                            <div class="text-3xl font-bold text-bravePurple">0</div>
-                            <div class="text-sm text-gray-400">Data collected</div>
-                        </div>
-                        <div class="glass rounded-lg p-4 text-center">
-                            <div class="text-3xl font-bold text-braveOrange">Direct</div>
-                            <div class="text-sm text-gray-400">Fan support</div>
-                        </div>
-                    </div>
+                    </Transition>
+                </div>
+
+                <!-- Informative Quote -->
+                <div class="mt-8 pt-8 border-t border-white/10">
+                    <blockquote class="relative px-10 py-8 md:px-12 md:py-8 text-center">
+                        <i class="bi bi-quote text-4xl md:text-6xl text-braveOrange/80 absolute top-4 left-4 md:top-0 md:left-0"
+                            aria-hidden="true"></i>
+                        <p
+                            class="text-lg md:text-xl text-gray-200 italic leading-relaxed max-w-4xl mx-auto relative z-10 px-4">
+                            If both the user and the creator have BAT set up, payments can be sent and received easily,
+                            directly, and
+                            securely, motivating users to reward and creators to create.
+                        </p>
+                        <i class="bi bi-quote text-4xl md:text-6xl text-braveOrange/80 absolute bottom-4 right-4 md:bottom-0 md:right-0 rotate-180"
+                            aria-hidden="true"></i>
+                    </blockquote>
                 </div>
             </div>
         </div>
@@ -71,56 +251,38 @@ const { hasBeenVisible: howBatWorksVisible } = useIntersectionObserver(howBatWor
             <MusicProductions />
         </div>
 
-        <!-- How It Works Section -->
-        <div class="max-w-5xl mx-auto mt-16">
-            <h2 ref="howBatWorksRef"
-                class="text-3xl font-bold text-white mb-8 text-center text-gradient-purple transition-all duration-700"
-                :class="{ 'opacity-0 translate-y-8': !howBatWorksVisible, 'opacity-100 translate-y-0': howBatWorksVisible }">
-                How BAT Tipping Works
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div class="glass rounded-xl p-6 text-center">
-                    <div class="text-4xl mb-4"><i class="bi bi-1-circle text-bravePurple" aria-hidden="true"></i></div>
-                    <h3 class="text-xl font-bold text-white mb-2">Get Brave Browser</h3>
-                    <p class="text-gray-400">
-                        Download Brave (free) with built-in privacy protection and BAT wallet
-                    </p>
-                </div>
-                <div class="glass rounded-xl p-6 text-center">
-                    <div class="text-4xl mb-4"><i class="bi bi-2-circle text-braveOrange" aria-hidden="true"></i></div>
-                    <h3 class="text-xl font-bold text-white mb-2">Earn or Buy BAT</h3>
-                    <p class="text-gray-400">
-                        Earn BAT by viewing privacy-respecting ads, or buy BAT on exchanges
-                    </p>
-                </div>
-                <div class="glass rounded-xl p-6 text-center">
-                    <div class="text-4xl mb-4"><i class="bi bi-3-circle text-braveBlue" aria-hidden="true"></i></div>
-                    <h3 class="text-xl font-bold text-white mb-2">Tip Creators</h3>
-                    <p class="text-gray-400">
-                        One-click tipping directly to creators. Private, fast, and fair.
-                    </p>
-                </div>
-            </div>
-        </div>
-
         <!-- CTA Section -->
         <div class="max-w-3xl mx-auto mt-16 text-center space-y-6">
-            <h3
-                class="text-2xl font-bold text-white text-gradient-rainbow transition-all duration-700 opacity-100 translate-y-0">
-                Ready to explore more privacy features?
+            <h3 class="text-2xl font-bold text-gradient-orange transition-all duration-700 opacity-100 translate-y-0">
+                Ready to explore?
             </h3>
             <div class="flex flex-wrap gap-4 justify-center">
                 <RouterLink to="/wallet">
-                    <Button variant="primary" size="lg">
-                        <i class="bi bi-wallet2" aria-hidden="true"></i> Explore Brave Wallet
-                    </Button>
+                    <button
+                        class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-base transition-all duration-300 bg-braveBlue/20 text-braveBlue border-2 border-braveBlue/40 hover:bg-braveBlue hover:text-white hover:border-braveBlue hover:shadow-lg hover:shadow-braveBlue/30 hover:scale-105">
+                        <i class="bi bi-rocket-takeoff" aria-hidden="true"></i> Getting Set Up
+                    </button>
                 </RouterLink>
-                <RouterLink to="/privacy">
-                    <Button variant="secondary" size="lg">
-                        <i class="bi bi-shield-check" aria-hidden="true"></i> Try Privacy Demos
-                    </Button>
+                <RouterLink to="/surprise">
+                    <button
+                        class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-base transition-all duration-300 bg-bravePurple/20 text-bravePurple border-2 border-bravePurple/40 hover:bg-bravePurple hover:text-white hover:border-bravePurple hover:shadow-lg hover:shadow-bravePurple/30 hover:scale-105">
+                        <i class="bi bi-gift" aria-hidden="true"></i> Bonus Feature
+                    </button>
                 </RouterLink>
             </div>
         </div>
     </div>
 </template>
+
+<style scoped>
+.fade-slide-enter-active,
+.fade-slide-leave-active {
+    transition: opacity 300ms var(--ease-standard, cubic-bezier(.22, .61, .36, 1)), transform 300ms var(--ease-standard, cubic-bezier(.22, .61, .36, 1));
+}
+
+.fade-slide-enter-from,
+.fade-slide-leave-to {
+    opacity: 0;
+    transform: translateY(12px);
+}
+</style>

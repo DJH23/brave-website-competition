@@ -9,7 +9,7 @@ const navLoaded = ref(false);
 
 const navItems = [
     { path: '/', label: 'Home', icon: 'bi-house-door', tooltip: 'Back to home', color: 'text-bravePink', bgColor: 'bg-bravePink' },
-    { path: '/music', label: 'Creator Hub', icon: 'bi-music-note-beamed', tooltip: 'Creator Hub', color: 'text-braveOrange', bgColor: 'bg-braveOrange' },
+    { path: '/creator-hub', label: 'Creator Hub', icon: 'bi-music-note-beamed', tooltip: 'Creator Hub', color: 'text-braveOrange', bgColor: 'bg-braveOrange' },
     { path: '/wallet', label: 'BAT & Wallet Guide', icon: 'bi-wallet2', tooltip: 'BAT & Brave Wallet', color: 'text-braveBlue', bgColor: 'bg-braveBlue' },
     { path: '/surprise', label: 'Bonus Feature', icon: 'bi-gift', tooltip: 'Bonus Feature', color: 'text-bravePurple', bgColor: 'bg-bravePurple' }
 ];
@@ -108,7 +108,7 @@ onMounted(() => {
                             <div class="font-medium">{{ item.label }}</div>
                             <div class="text-sm text-gray-400">{{ item.tooltip }}</div>
                         </div>
-                        <svg v-if="route.path === item.path" class="w-5 h-5 text-bravePurple" fill="currentColor"
+                        <svg v-if="route.path === item.path" :class="['w-5 h-5', item.color]" fill="currentColor"
                             viewBox="0 0 20 20">
                             <path fill-rule="evenodd"
                                 d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"

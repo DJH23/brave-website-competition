@@ -11,11 +11,11 @@ const routes: RouteRecordRaw[] = [
     },
   },
   {
-    path: "/music",
-    name: "Music",
+    path: "/creator-hub",
+    name: "CreatorHub",
     component: () => import("../views/MusicHubView.vue"),
     meta: {
-      title: "Music Hub - Premium Creations",
+      title: "Creator Hub - Premium Creations",
       transition: "slide-left",
     },
   },

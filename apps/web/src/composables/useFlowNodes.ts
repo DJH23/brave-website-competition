@@ -266,11 +266,11 @@ const nodeRegistry = reactive<Record<string, FlowNode>>({
       "Verify your YouTube, Twitch, Twitter, GitHub, or website",
       "Get blue checkmark badge visible to all Brave users",
     ],
-    viewRoute: "/music-hub",
+    viewRoute: "/creator-hub",
     ctas: [
       {
         label: "Creator Dashboard Demo",
-        route: "/music-hub",
+        route: "/creator-hub",
         variant: "primary",
       },
       {
@@ -318,11 +318,11 @@ const nodeRegistry = reactive<Record<string, FlowNode>>({
       "Monthly recurring support from patrons",
       "Auto-contribute from passive users (based on attention)",
     ],
-    viewRoute: "/music-hub",
+    viewRoute: "/creator-hub",
     ctas: [
       {
         label: "View Creator Dashboard",
-        route: "/music-hub",
+        route: "/creator-hub",
         variant: "primary",
       },
     ],

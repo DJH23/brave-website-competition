@@ -58,10 +58,20 @@ onMounted(() => {
         console.log('Creating WaveSurfer instance...');
         wavesurfer.value = WaveSurfer.create({
             container: container.value,
-            waveColor: '#a855f7',
-            progressColor: '#f59e0b',
+            waveColor: [
+                '#7c3aed',  // purple
+                '#0ea5e9',  // blue
+           
+            ],
+            progressColor: [
+     
+                '#fb542b',  // orange
+                '#fbbf24',  // yellow
+            ],
             height: 80,
             barWidth: 2,
+            barGap: 2,
+            barRadius: 2,
             cursorColor: '#fff',
         });
         console.log('Loading audio from:', props.src);
@@ -101,7 +111,7 @@ watch(() => props.src, (newSrc) => {
 </script>
 
 <template>
-    <div class="p-4 glass rounded-lg">
+    <div class="p-4 glass-strong rounded-lg relative">
         <!-- Header with title and duration -->
         <div class="flex items-center justify-between mb-3">
             <div>

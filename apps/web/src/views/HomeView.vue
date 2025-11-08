@@ -35,7 +35,7 @@ const features = [
         iconColor: 'text-braveOrange',
         exploreColor: 'text-braveOrange',
         glowColor: '#FB542B',
-        route: '/music',
+        route: '/creator-hub',
         description: 'Explore original music featuring interactive tipping with BAT.'
     },
     {
