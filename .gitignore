@@ -22,6 +22,11 @@ pnpm-debug.log*
 
 # Misc
 coverage/
+
+# Large audio files (use compressed versions)
+*.wav
+apps/web/public/audio/*.wav
+
 # Logs
 logs
 *.log

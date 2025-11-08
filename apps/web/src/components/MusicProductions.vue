@@ -26,19 +26,19 @@ const musicTracks = ref<Track[]>([
     {
         title: "Bachman",
         genre: "Classical",
-        src: "/audio/Bach_Style.wav",
+        src: "/audio/Bach_Style.mp3",
         price: 10 // Price in BAT
     },
     {
         title: "A Computer Is An Educational Device",
         genre: "Electronica",
-        src: "/audio/A_Computer_Is_An_Educational_Device_Mixdown_3.wav",
+        src: "/audio/A_Computer_Is_An_Educational_Device_Mixdown_3.mp3",
         price: 10 // Price in BAT
     },
     {
         title: "Cygnus",
         genre: "Techno - Melodic",
-        src: "/audio/Cygnus.wav",
+        src: "/audio/Cygnus.mp3",
         price: 10 // Price in BAT
     }
 ]);
