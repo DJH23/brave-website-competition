@@ -3,7 +3,8 @@ import { ref, onMounted, onBeforeUnmount, watch, Suspense } from 'vue';
 import WaveSurfer from 'wavesurfer.js';
 import Button from './Button.vue';
 import BATLogo3DAsync from './BATLogo3DAsync.vue';
-import { useWallet } from '../composables/useWallet';
+import { useMultiChainWallet, type ChainType } from '../composables/useMultiChainWallet';
+import { useAudioManager } from '../composables/useAudioManager';
 
 const props = defineProps<{
     src: string;
@@ -16,10 +17,14 @@ const props = defineProps<{
 const container = ref<HTMLElement | null>(null);
 const wavesurfer = ref<WaveSurfer | null>(null);
 const isPlaying = ref(false);
+const isLoading = ref(true);
+const showChainSelector = ref(false);
+const selectedChain = ref<ChainType>("ethereum");
 const errorMsg = ref<string | null>(null);
 const calculatedDuration = ref<string>('0:00');
 const currentTime = ref<string>('0:00');
-const { connectWallet, isConnected, sendBATTip } = useWallet();
+const { connectWallet, isConnected, sendBATTip } = useMultiChainWallet();
+const { registerPlay, unregisterPlay } = useAudioManager();
 
 const formatDuration = (seconds: number): string => {
     const mins = Math.floor(seconds / 60);
@@ -41,13 +46,47 @@ const handlePurchaseTrack = async () => {
     }
 
     if (!isConnected.value) {
-        await connectWallet();
-        if (!isConnected.value) return;
+        // Show chain selector modal before connecting
+        showChainSelector.value = true;
+        return;
     }
 
     try {
         await sendBATTip(props.price.toString());
         alert(`Thank you for purchasing "${props.title}" for ${props.price} BAT!`);
+    } catch (error) {
+        console.error('Purchase failed:', error);
+        alert('Failed to complete purchase. Please try again.');
+    }
+};
+
+const handleChainSelected = async (chain: ChainType) => {
+    selectedChain.value = chain;
+    showChainSelector.value = false;
+
+    try {
+        await connectWallet(chain);
+
+        // Wait a bit for reactive state to update
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        // Proceed with purchase after connection
+        if (isConnected.value && props.price) {
+            console.log('[WaveformPlayer] Connection successful, proceeding with purchase');
+            console.log('[WaveformPlayer] isConnected:', isConnected.value);
+            console.log('[WaveformPlayer] price:', props.price);
+            const success = await sendBATTip(props.price.toString());
+            if (success) {
+                alert(`Thank you for purchasing "${props.title}" for ${props.price} BAT!`);
+            } else {
+                alert('Failed to complete purchase. Please try again.');
+            }
+        } else {
+            console.warn('[WaveformPlayer] Connection failed or no price set');
+            console.warn('[WaveformPlayer] isConnected:', isConnected.value);
+            console.warn('[WaveformPlayer] price:', props.price);
+            alert('Connection failed. Please try again.');
+        }
     } catch (error) {
         console.error('Purchase failed:', error);
         alert('Failed to complete purchase. Please try again.');
@@ -75,16 +114,34 @@ onMounted(() => {
             cursorColor: '#fff',
         });
         console.log('Loading audio from:', props.src);
-        wavesurfer.value.load(props.src);
-        wavesurfer.value.on('play', () => (isPlaying.value = true));
-        wavesurfer.value.on('pause', () => (isPlaying.value = false));
-        wavesurfer.value.on('finish', () => (isPlaying.value = false));
-        wavesurfer.value.on('error', (e: any) => {
+
+        // Capture the instance for use in event callbacks
+        const ws = wavesurfer.value;
+
+        ws.load(props.src);
+        ws.on('play', () => {
+            isPlaying.value = true;
+            // Register this instance as the active player
+            registerPlay(ws);
+        });
+        ws.on('pause', () => {
+            isPlaying.value = false;
+            // Unregister when paused
+            unregisterPlay(ws);
+        });
+        ws.on('finish', () => {
+            isPlaying.value = false;
+            // Unregister when finished
+            unregisterPlay(ws);
+        });
+        ws.on('error', (e: any) => {
             errorMsg.value = 'Failed to load waveform: ' + (e?.message || 'Unknown error');
+            isLoading.value = false;
             console.error('WaveSurfer error:', e);
         });
         wavesurfer.value.on('ready', () => {
             console.log('WaveSurfer ready for:', props.title);
+            isLoading.value = false;
             // Calculate and set the duration when audio is ready
             const duration = wavesurfer.value?.getDuration() || 0;
             calculatedDuration.value = formatDuration(duration);
@@ -111,6 +168,7 @@ onBeforeUnmount(() => {
 
 watch(() => props.src, (newSrc) => {
     if (wavesurfer.value) {
+        isLoading.value = true;
         wavesurfer.value.load(newSrc);
         isPlaying.value = false;
     }
@@ -139,7 +197,20 @@ watch(() => props.src, (newSrc) => {
             </Button>
 
             <!-- Waveform fills available width -->
-            <div ref="container" class="flex-1 mr-2" style="min-height:80px;"></div>
+            <div class="flex-1 mr-2 relative" style="min-height:80px;">
+                <!-- Loading state -->
+                <div v-if="isLoading"
+                    class="absolute inset-0 flex items-center justify-center bg-white/5 rounded-lg backdrop-blur-sm">
+                    <div class="flex flex-col items-center gap-2">
+                        <div
+                            class="w-8 h-8 border-2 border-brand-orange border-t-transparent rounded-full animate-spin">
+                        </div>
+                        <span class="text-xs text-neutral-400">Loading audio...</span>
+                    </div>
+                </div>
+                <!-- Waveform container -->
+                <div ref="container" class="w-full h-full"></div>
+            </div>
 
             <!-- Purchase Button on the right -->
             <button v-if="price" @click="handlePurchaseTrack" :aria-label="`Purchase ${title} for ${price} BAT`"
@@ -155,11 +226,71 @@ watch(() => props.src, (newSrc) => {
         </div>
 
         <div v-if="errorMsg" class="text-red-500 text-xs mt-2">{{ errorMsg }}</div>
+
+        <!-- Chain Selector Modal -->
+        <div v-if="showChainSelector" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center"
+            @click.self="showChainSelector = false">
+            <div
+                class="glass-strong rounded-xl p-8 max-w-md w-full border border-brand-purple shadow-2xl relative animate-fade-in">
+                <button class="absolute top-3 right-3 text-neutral-400 hover:text-white text-2xl leading-none"
+                    @click="showChainSelector = false" aria-label="Close chain selector">
+                    ×
+                </button>
+                <h3 class="text-2xl font-bold mb-4 text-gradient-purple">Choose Blockchain</h3>
+                <p class="text-neutral-300 mb-6">Select which blockchain to use for this purchase:</p>
+
+                <div class="space-y-3">
+                    <button @click="handleChainSelected('ethereum')"
+                        class="w-full p-4 rounded-lg bg-white/5 border border-white/20 hover:border-brand-purple hover:bg-white/10 transition-all duration-300 text-left group">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-10 h-10 rounded-full bg-brand-purple/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <span class="text-xl">⟠</span>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-white">Ethereum</div>
+                                <div class="text-xs text-neutral-400">ERC-20 BAT Token</div>
+                            </div>
+                        </div>
+                    </button>
+
+                    <button @click="handleChainSelected('solana')"
+                        class="w-full p-4 rounded-lg bg-white/5 border border-white/20 hover:border-brand-purple hover:bg-white/10 transition-all duration-300 text-left group">
+                        <div class="flex items-center gap-3">
+                            <div
+                                class="w-10 h-10 rounded-full bg-brand-pink/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <span class="text-xl">◎</span>
+                            </div>
+                            <div>
+                                <div class="font-semibold text-white">Solana</div>
+                                <div class="text-xs text-neutral-400">SPL BAT Token</div>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <style scoped>
 .wavesurfer {
     width: 100%;
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-fade-in {
+    animation: fade-in 0.2s ease-out;
 }
 </style>

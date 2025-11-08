@@ -7,8 +7,8 @@ import "./style.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 // @ts-ignore: vue-audio-visual plugin UMD build import for Vite compatibility
 
-// Import Web3Modal configuration (initializes the modal)
-import "./config/web3";
+// NOTE: Web3Modal is now lazily initialized in useWallet.ts on first connect
+// This prevents wallet provider injection conflicts at page load
 // Register v-network-graph globally
 import VNetworkGraph from "v-network-graph";
 import "v-network-graph/lib/style.css";

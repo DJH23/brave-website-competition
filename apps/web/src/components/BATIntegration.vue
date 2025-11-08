@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, watch, computed } from "vue";
-import { useWallet } from "../composables/useWallet";
+import { useMultiChainWallet, type ChainType } from "../composables/useMultiChainWallet";
 import { useBATPrice } from "../composables/useBATPrice";
 import { useIntersectionObserver } from "../composables/useIntersectionObserver";
 import Card from "./Card.vue";
@@ -11,14 +11,15 @@ import TipConfirmationModal from "./TipConfirmationModal.vue";
 const {
     address,
     isConnected,
-    isCorrectNetwork,
     batBalance,
     isLoading,
     error,
     connectWallet,
     fetchBATBalance,
-    sendBATTip
-} = useWallet();
+    sendBATTip,
+    activeChain,
+    chainInfo
+} = useMultiChainWallet();
 
 const { batPrice } = useBATPrice();
 
@@ -26,6 +27,9 @@ const tipAmount = ref<string>("1");
 const showWalletInfo = ref(false);
 const showConfirmation = ref(false);
 const lastTransactionHash = ref<string>("");
+
+// Chain selection for connection
+const selectedChain = ref<ChainType>("ethereum");
 
 const searchQuery = ref("");
 const searchResults = ref<any[]>([]);
@@ -58,7 +62,6 @@ const canSendTip = computed(() => {
     const balance = parseFloat(batBalance.value || "0");
     const amount = parseFloat(tipAmount.value || "0");
     return isConnected.value &&
-        isCorrectNetwork.value &&
         balance >= amount &&
         amount > 0 &&
         !isLoading.value;
@@ -104,7 +107,7 @@ const searchBrave = async () => {
 
 <template>
     <TipConfirmationModal :is-open="showConfirmation" :tip-amount="tipAmount" :transaction-hash="lastTransactionHash"
-        @close="showConfirmation = false" />
+        @close="() => { showConfirmation = false }" />
 
     <section class="py-12 px-6">
         <div class="max-w-7xl mx-auto">
@@ -113,7 +116,7 @@ const searchBrave = async () => {
                 BAT & Brave Wallet Integration
             </h2>
             <p class="text-neutral-300 mb-8">
-                Connect your Brave Wallet or MetaMask to tip with real BAT tokens on Ethereum Mainnet.<br>
+                Connect your Brave Wallet, MetaMask (Ethereum), or Phantom (Solana) to tip with real BAT tokens.<br>
                 <a href="https://etherscan.io/token/0x0d8775f648430679a709e98d2b0cb6250d2887ef" target="_blank"
                     rel="noopener noreferrer" class="underline text-braveOrange hover:text-bravePurple">View BAT on
                     Etherscan</a>
@@ -126,15 +129,15 @@ const searchBrave = async () => {
                 <BATPriceTicker />
             </div>
 
-            <Button variant="secondary" size="sm" class="mb-6" @click="showWalletInfo = true">
+            <Button variant="secondary" size="sm" class="mb-6" @click="() => { showWalletInfo = true }">
                 What is Brave Wallet?
             </Button>
 
             <div v-if="showWalletInfo" class="fixed inset-0 bg-black/60 z-50 flex items-center justify-center"
-                @click.self="showWalletInfo = false">
+                @click.self="() => { showWalletInfo = false }">
                 <div class="glass-strong rounded-xl p-8 max-w-md w-full border border-bravePurple shadow-2xl relative">
                     <button class="absolute top-3 right-3 text-neutral-400 hover:text-white text-2xl leading-none"
-                        @click="showWalletInfo = false" aria-label="Close info">
+                        @click="() => { showWalletInfo = false }" aria-label="Close info">
                         ×
                     </button>
                     <h3 class="text-2xl font-bold mb-3 text-gradient-purple">Brave Wallet Features</h3>
@@ -156,29 +159,40 @@ const searchBrave = async () => {
                     <div v-if="!isConnected" class="text-center py-6">
                         <div class="text-6xl mb-4">���</div>
                         <p class="text-neutral-300 mb-6">
-                            Connect your Brave Wallet or MetaMask to start tipping with BAT
+                            Connect your wallet to start tipping with BAT (Ethereum or Solana)
                         </p>
-                        <Button variant="primary" @click="connectWallet" :disabled="isLoading">
-                            {{ isLoading ? '⏳ Connecting...' : '��� Connect Wallet' }}
+                        <!-- Chain selector -->
+                        <div class="inline-flex items-center gap-2 mb-4" role="group" aria-label="Select blockchain">
+                            <button type="button" @click="() => { selectedChain = 'ethereum' }"
+                                :aria-pressed="selectedChain === 'ethereum'"
+                                :class="['px-3 py-1 rounded-md text-sm font-medium', selectedChain === 'ethereum' ? 'bg-white/15 text-white' : 'text-neutral-300 hover:bg-white/5']">
+                                Ethereum
+                            </button>
+                            <button type="button" @click="() => { selectedChain = 'solana' }"
+                                :aria-pressed="selectedChain === 'solana'"
+                                :class="['px-3 py-1 rounded-md text-sm font-medium', selectedChain === 'solana' ? 'bg-white/15 text-white' : 'text-neutral-300 hover:bg-white/5']">
+                                Solana
+                            </button>
+                        </div>
+                        <Button variant="primary"
+                            @click="() => { console.log('[BATIntegration] Connect clicked, chain:', selectedChain); connectWallet(selectedChain); }"
+                            :disabled="isLoading">
+                            {{ isLoading ? '⏳ Connecting...' : `🔗 Connect ${selectedChain === 'solana' ? 'Solana' :
+                            'Ethereum'}` }}
                         </Button>
                         <p class="text-xs text-neutral-500 mt-4">
-                            Real Web3 integration using Web3Modal & ethers.js
+                            {{ selectedChain === 'solana' ? 'Solana via Brave Wallet or Phantom' : 'Ethereum via Web3Modal & ethers.js' }}
                         </p>
                     </div>
 
                     <div v-else class="space-y-4">
-                        <div v-if="!isCorrectNetwork"
-                            class="p-3 bg-yellow-500/10 border border-yellow-500/50 rounded-lg">
-                            <p class="text-yellow-400 text-sm">⚠️ Please switch to Ethereum Mainnet</p>
-                        </div>
-
                         <div v-if="error" class="p-3 bg-red-500/10 border border-red-500/50 rounded-lg">
                             <p class="text-red-400 text-sm">{{ error }}</p>
                         </div>
 
                         <div class="p-4 bg-gradient-to-br from-bravePurple/20 to-braveOrange/20 rounded-lg">
                             <div class="flex items-center justify-between mb-2">
-                                <span class="text-sm text-neutral-400">Your BAT Balance</span>
+                                <span class="text-sm text-neutral-400">Your BAT Balance ({{ chainInfo?.name }})</span>
                                 <span class="text-green-400 text-sm">● Connected</span>
                             </div>
                             <div class="text-3xl font-bold text-braveOrange">
@@ -208,12 +222,12 @@ const searchBrave = async () => {
                         Enjoy this privacy-first creator hub? Send a tip with BAT to support development.
                     </p>
 
-                    <div v-if="isConnected && isCorrectNetwork" class="space-y-4">
+                    <div v-if="isConnected" class="space-y-4">
                         <div>
                             <label class="text-sm text-neutral-400 block mb-2">Tip Amount (BAT)</label>
                             <div class="flex gap-2 mb-3">
                                 <button v-for="amount in presetAmounts" :key="amount"
-                                    @click="tipAmount = amount.toString()" :class="[
+                                    @click="() => { tipAmount = amount.toString() }" :class="[
                                         'px-4 py-2 rounded-lg transition-all',
                                         tipAmount === amount.toString()
                                             ? 'bg-bravePurple text-white neon-glow'
@@ -247,7 +261,7 @@ const searchBrave = async () => {
                         <p class="text-neutral-400 mb-4">
                             {{ isConnected ? 'Switch to Ethereum Mainnet to send tips' : 'Connect your wallet to send tips' }}
                         </p>
-                        <Button v-if="!isConnected" variant="secondary" @click="connectWallet">
+                        <Button v-if="!isConnected" variant="secondary" @click="() => connectWallet(selectedChain)">
                             Connect Wallet
                         </Button>
                     </div>

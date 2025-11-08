@@ -60,14 +60,10 @@ const routes: RouteRecordRaw[] = [
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-  scrollBehavior(to, from, savedPosition) {
-    // Always scroll to top, ignore saved position
-    return { top: 0, left: 0, behavior: "instant" };
-  },
 });
 
-// Update page title on route change
-router.beforeEach((to, from, next) => {
+// Update page title on route change (no scroll logic here)
+router.beforeEach((to, _from, next) => {
   document.title = (to.meta.title as string) || "Privacy-First Creator Hub";
   next();
 });

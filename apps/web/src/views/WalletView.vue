@@ -4,16 +4,15 @@ import BATIntegration from '../components/BATIntegration.vue';
 import BATPriceTicker from '../components/BATPriceTicker.vue';
 import BraveFlowChart from '../components/BraveFlowChart.vue';
 import Button from '../components/Button.vue';
-import { useWallet } from '../composables/useWallet';
-import { useWeb3Modal } from '@web3modal/ethers/vue';
+import { useMultiChainWallet } from '../composables/useMultiChainWallet';
 import { useIntersectionObserver } from '../composables/useIntersectionObserver';
 
-const { isConnected, address, batBalance, connectWallet, fetchBATBalance } = useWallet();
-const { open } = useWeb3Modal();
+const { isConnected, address, batBalance, connectWallet, fetchBATBalance, disconnectWallet } = useMultiChainWallet();
 
 const shortenAddress = computed(() => {
     if (!address.value) return '';
-    return `${address.value.slice(0, 6)}...${address.value.slice(-4)}`;
+    const addr = address.value.toString();
+    return `${addr.slice(0, 6)}...${addr.slice(-4)}`;
 });
 
 watch(isConnected, (connected) => {
@@ -23,7 +22,7 @@ watch(isConnected, (connected) => {
 });
 
 const disconnect = async () => {
-    await open({ view: 'Account' });
+    await disconnectWallet();
 };
 
 // Reveal on scroll for main headings

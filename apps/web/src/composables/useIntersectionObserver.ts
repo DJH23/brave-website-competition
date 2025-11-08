@@ -1,4 +1,4 @@
-import { ref, onMounted, onUnmounted, type Ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 
 export interface UseIntersectionObserverOptions {
   threshold?: number | number[];
@@ -6,8 +6,11 @@ export interface UseIntersectionObserverOptions {
   once?: boolean;
 }
 
+// Structural ref type to avoid cross-package RefSymbol branding conflicts
+type ElementRefLike = { value: Element | null };
+
 export function useIntersectionObserver(
-  target: Ref<Element | null>,
+  target: ElementRefLike,
   options: UseIntersectionObserverOptions = {}
 ) {
   const isVisible = ref(false);

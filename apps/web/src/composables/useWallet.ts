@@ -1,32 +1,72 @@
-import { ref, computed } from "vue";
+import { ref, computed, shallowRef } from "vue";
 import { BrowserProvider, Contract, formatUnits, parseUnits } from "ethers";
-import {
-  useWeb3Modal,
-  useWeb3ModalAccount,
-  useWeb3ModalProvider,
-} from "@web3modal/ethers/vue";
 import {
   BAT_TOKEN_ADDRESS,
   BAT_TOKEN_ABI,
   TIP_RECIPIENT_ADDRESS,
 } from "../config/web3";
 
-export function useWallet() {
-  const { open } = useWeb3Modal();
-  const { address, chainId, isConnected } = useWeb3ModalAccount();
-  const { walletProvider } = useWeb3ModalProvider();
+// Manual wallet state management (no Web3Modal hooks)
+const connectedAddress = ref<string | null>(null);
+const connectedChainId = ref<number | null>(null);
+const walletProviderRef = shallowRef<any>(null);
+let web3ModalInstance: any = null;
 
+/**
+ * Dynamically load and open Web3Modal connection dialog
+ * This is the ONLY way Web3Modal code should be loaded
+ */
+async function openWeb3ModalConnection() {
+  if (!web3ModalInstance) {
+    console.log("[useWallet] Lazy loading Web3Modal for first connection");
+
+    // Dynamically import Web3Modal creator
+    const { createEthereumModal } = await import("../config/web3");
+    web3ModalInstance = createEthereumModal();
+
+    // Subscribe to connection events manually
+    web3ModalInstance.subscribeProvider((state: any) => {
+      if (state.address) {
+        connectedAddress.value = state.address;
+      }
+      if (state.chainId) {
+        connectedChainId.value = state.chainId;
+      }
+      if (state.provider) {
+        walletProviderRef.value = state.provider;
+      }
+      if (!state.isConnected) {
+        connectedAddress.value = null;
+        connectedChainId.value = null;
+        walletProviderRef.value = null;
+      }
+    });
+  }
+
+  // Open the modal to let user connect
+  await web3ModalInstance.open();
+}
+
+export function useWallet() {
   const batBalance = ref<string>("0");
   const isLoading = ref(false);
   const error = ref<string>("");
 
   // Check if on Ethereum Mainnet
-  const isCorrectNetwork = computed(() => chainId.value === 1);
+  const isCorrectNetwork = computed(() => {
+    return connectedChainId.value === 1;
+  });
 
   // Connect wallet
   const connectWallet = async () => {
     try {
-      await open();
+      await openWeb3ModalConnection();
+      // Close modal after connection to keep user on page
+      setTimeout(() => {
+        if (web3ModalInstance && connectedAddress.value) {
+          web3ModalInstance.close();
+        }
+      }, 1000);
     } catch (err) {
       console.error("Failed to connect wallet:", err);
       error.value = "Failed to connect wallet";
@@ -35,7 +75,7 @@ export function useWallet() {
 
   // Fetch BAT balance
   const fetchBATBalance = async () => {
-    if (!isConnected.value || !address.value || !walletProvider.value) {
+    if (!connectedAddress.value || !walletProviderRef.value) {
       batBalance.value = "0";
       return;
     }
@@ -44,14 +84,14 @@ export function useWallet() {
       isLoading.value = true;
       error.value = "";
 
-      const ethersProvider = new BrowserProvider(walletProvider.value);
+      const ethersProvider = new BrowserProvider(walletProviderRef.value);
       const batContract = new Contract(
         BAT_TOKEN_ADDRESS,
         BAT_TOKEN_ABI,
         ethersProvider
       );
 
-      const balance = await batContract.balanceOf(address.value);
+      const balance = await batContract.balanceOf(connectedAddress.value);
       const decimals = await batContract.decimals();
 
       batBalance.value = formatUnits(balance, decimals);
@@ -66,7 +106,7 @@ export function useWallet() {
 
   // Send BAT tip
   const sendBATTip = async (amount: string): Promise<boolean> => {
-    if (!isConnected.value || !address.value || !walletProvider.value) {
+    if (!connectedAddress.value || !walletProviderRef.value) {
       error.value = "Wallet not connected";
       return false;
     }
@@ -80,7 +120,7 @@ export function useWallet() {
       isLoading.value = true;
       error.value = "";
 
-      const ethersProvider = new BrowserProvider(walletProvider.value);
+      const ethersProvider = new BrowserProvider(walletProviderRef.value);
       const signer = await ethersProvider.getSigner();
       const batContract = new Contract(
         BAT_TOKEN_ADDRESS,
@@ -118,15 +158,27 @@ export function useWallet() {
     }
   };
 
+  // Disconnect wallet
+  const disconnectWallet = async () => {
+    if (web3ModalInstance) {
+      await web3ModalInstance.disconnect();
+    }
+    connectedAddress.value = null;
+    connectedChainId.value = null;
+    walletProviderRef.value = null;
+    batBalance.value = "0";
+  };
+
   return {
-    address,
-    chainId,
-    isConnected,
+    address: computed(() => connectedAddress.value),
+    chainId: computed(() => connectedChainId.value),
+    isConnected: computed(() => !!connectedAddress.value),
     isCorrectNetwork,
     batBalance,
     isLoading,
     error,
     connectWallet,
+    disconnectWallet,
     fetchBATBalance,
     sendBATTip,
   };

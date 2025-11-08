@@ -4,8 +4,15 @@ import SkeletonLoader from './SkeletonLoader.vue';
 import BATLogo3DAsync from './BATLogo3DAsync.vue';
 import { ref, Suspense, computed, onMounted, onBeforeUnmount } from "vue";
 import { useIntersectionObserver } from "../composables/useIntersectionObserver";
-import { useWallet } from '../composables/useWallet';
+import { useMultiChainWallet } from '../composables/useMultiChainWallet';
 import { useBATPrice } from '../composables/useBATPrice';
+
+interface Track {
+    title: string;
+    genre: string;
+    src: string;
+    price: number;
+}
 
 const sectionRef = ref<HTMLElement | null>(null);
 const { hasBeenVisible } = useIntersectionObserver(sectionRef, {
@@ -13,24 +20,33 @@ const { hasBeenVisible } = useIntersectionObserver(sectionRef, {
     once: true
 });
 
-const musicTracks = ref([
+const musicTracks = ref<Track[]>([
     {
-        title: "Bach Style",
+        title: "Bachman",
         genre: "Classical",
         src: "/audio/Bach_Style.wav",
         price: 10 // Price in BAT
     },
     {
-        title: "Bach Style",
-        genre: "Classical",
-        src: "/audio/Bach_Style.wav",
+        title: "A Computer Is An Educational Device",
+        genre: "Electronica",
+        src: "/audio/A_Computer_Is_An_Educational_Device_Mixdown_3.wav",
+        price: 10 // Price in BAT
+    },
+    {
+        title: "Cygnus",
+        genre: "Techno - Melodic",
+        src: "/audio/Cygnus.wav",
         price: 10 // Price in BAT
     }
 ]);
 
 const tipAmount = ref(5); // Default tip amount in BAT
-const { connectWallet, isConnected, sendBATTip } = useWallet();
+const { connectWallet, isConnected, sendBATTip } = useMultiChainWallet();
 const { batPrice } = useBATPrice();
+
+// Avoid TS plugin union issues by providing a narrowed list for rendering
+const visibleTracks = computed<Track[]>(() => (hasBeenVisible.value ? musicTracks.value : []));
 
 // Height matching refs
 const tipButtonRef = ref<HTMLElement | null>(null);
@@ -114,12 +130,12 @@ const handleTipArtist = async () => {
                 Music Tracks
             </h3> <!-- Music Container -->
             <div class="glass rounded-2xl p-6 md:p-8">
-                <div v-if="!hasBeenVisible" class="space-y-4 mb-6">
+                <div v-show="!hasBeenVisible" class="space-y-4 mb-6">
                     <!-- Skeleton loaders for waveforms -->
                     <SkeletonLoader type="waveform" />
                     <SkeletonLoader type="waveform" />
                 </div>
-                <div v-else class="space-y-4 mb-6">
+                <div v-show="hasBeenVisible" class="space-y-4 mb-6">
                     <div v-for="track in musicTracks" :key="track.src">
                         <WaveformPlayer :src="track.src" :title="track.title" :genre="track.genre"
                             :price="track.price" />

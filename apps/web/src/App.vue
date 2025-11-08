@@ -85,7 +85,12 @@ useHead({
 });
 
 // GSAP Route Transition Functions  
+// Because <Transition mode="out-in"> first runs leave on the old view, then before-enter on the new one,
+// we can reliably force scroll-to-top here *before* the new view animates in, eliminating any flash
+// of the previous page scrolled to top. No timers needed, it's tied to the lifecycle.
 const onBeforeEnter = (el: Element) => {
+    // Ensure viewport starts at top for the incoming route
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' as ScrollBehavior });
     gsap.set(el, { opacity: 0, y: 20 });
 };
 

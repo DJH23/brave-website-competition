@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import MusicProductions from '../components/MusicProductions.vue';
-import Button from '../components/Button.vue';
 import { useIntersectionObserver } from '../composables/useIntersectionObserver';
 
 const showTipModal = ref(false);
@@ -126,6 +125,29 @@ const userRows: Row[] = [
 ];
 
 const currentRows = () => (perspective.value === 'creators' ? creatorRows : userRows);
+
+// Card tilt effect (match HomeView)
+const handleCardMouseMove = (event: MouseEvent) => {
+    const card = event.currentTarget as HTMLElement;
+    const rect = card.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = (y - centerY) / 50;
+    const rotateY = -(x - centerX) / 50;
+
+    card.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+};
+
+const handleCardMouseLeave = (event: MouseEvent) => {
+    const card = event.currentTarget as HTMLElement;
+    card.style.transition = 'transform 0.5s ease, box-shadow 0.3s ease';
+    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+};
 </script>
 
 <template>
@@ -157,14 +179,14 @@ const currentRows = () => (perspective.value === 'creators' ? creatorRows : user
                     <button type="button"
                         class="px-4 py-2 rounded-lg text-base md:text-lg font-semibold transition-colors inline-flex items-center gap-2 tracking-wide"
                         :class="perspective === 'creators' ? 'bg-white/15 text-white shadow-sm' : 'text-gray-300 hover:bg-white/5'"
-                        :aria-pressed="perspective === 'creators'" @click="perspective = 'creators'">
+                        :aria-pressed="perspective === 'creators'" @click="() => { perspective = 'creators' }">
                         <i class="bi bi-music-note-beamed text-braveOrange" aria-hidden="true"></i>
                         <span>For Creators</span>
                     </button>
                     <button type="button"
                         class="px-4 py-2 rounded-lg text-base md:text-lg font-semibold transition-colors inline-flex items-center gap-2 tracking-wide"
                         :class="perspective === 'users' ? 'bg-white/15 text-white shadow-sm' : 'text-gray-300 hover:bg-white/5'"
-                        :aria-pressed="perspective === 'users'" @click="perspective = 'users'">
+                        :aria-pressed="perspective === 'users'" @click="() => { perspective = 'users' }">
                         <i class="bi bi-people text-braveOrange" aria-hidden="true"></i>
                         <span>For Users</span>
                     </button>
@@ -257,17 +279,49 @@ const currentRows = () => (perspective.value === 'creators' ? creatorRows : user
                 Ready to explore?
             </h3>
             <div class="flex flex-wrap gap-4 justify-center">
-                <RouterLink to="/wallet">
-                    <button
-                        class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-base transition-all duration-300 bg-braveBlue/20 text-braveBlue border-2 border-braveBlue/40 hover:bg-braveBlue hover:text-white hover:border-braveBlue hover:shadow-lg hover:shadow-braveBlue/30 hover:scale-105">
-                        <i class="bi bi-rocket-takeoff" aria-hidden="true"></i> Getting Set Up
-                    </button>
+                <!-- Wallet Card -->
+                <RouterLink to="/wallet" @mousemove="handleCardMouseMove" @mouseleave="handleCardMouseLeave"
+                    class="group relative glass rounded-2xl p-6 md:p-8 cursor-pointer feature-card flex flex-col w-[280px] md:w-[320px] text-left"
+                    :style="{ '--glow-color': '#0EA5E9' }">
+                    <!-- Gradient Overlay -->
+                    <div
+                        class="absolute inset-0 rounded-2xl bg-brave-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300">
+                    </div>
+                    <!-- Content -->
+                    <div class="relative z-10 flex flex-col h-full">
+                        <i class="bi bi-wallet2 text-braveBlue text-4xl md:text-5xl mb-3" aria-hidden="true"></i>
+                        <h4 class="text-xl md:text-2xl font-bold text-white mb-2">Getting Set Up</h4>
+                        <p class="text-gray-300 text-sm md:text-base mb-4 flex-grow">Wallet & BAT guide.</p>
+                        <div
+                            class="text-braveBlue flex items-center gap-2 font-semibold transition-all duration-300 mt-auto">
+                            <span>Explore</span>
+                            <i class="bi bi-arrow-right transition-transform duration-300 group-hover:translate-x-2"
+                                aria-hidden="true"></i>
+                        </div>
+                    </div>
                 </RouterLink>
-                <RouterLink to="/surprise">
-                    <button
-                        class="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-base transition-all duration-300 bg-bravePurple/20 text-bravePurple border-2 border-bravePurple/40 hover:bg-bravePurple hover:text-white hover:border-bravePurple hover:shadow-lg hover:shadow-bravePurple/30 hover:scale-105">
-                        <i class="bi bi-gift" aria-hidden="true"></i> Bonus Feature
-                    </button>
+
+                <!-- Bonus Feature Card -->
+                <RouterLink to="/surprise" @mousemove="handleCardMouseMove" @mouseleave="handleCardMouseLeave"
+                    class="group relative glass rounded-2xl p-6 md:p-8 cursor-pointer feature-card flex flex-col w-[280px] md:w-[320px] text-left"
+                    :style="{ '--glow-color': '#7C3AED' }">
+                    <!-- Gradient Overlay -->
+                    <div
+                        class="absolute inset-0 rounded-2xl bg-brave-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300">
+                    </div>
+                    <!-- Content -->
+                    <div class="relative z-10 flex flex-col h-full">
+                        <i class="bi bi-gift text-bravePurple text-4xl md:text-5xl mb-3" aria-hidden="true"></i>
+                        <h4 class="text-xl md:text-2xl font-bold text-white mb-2">Bonus Feature</h4>
+                        <p class="text-gray-300 text-sm md:text-base mb-4 flex-grow">Only the bravest dare to explore.
+                        </p>
+                        <div
+                            class="text-bravePurple flex items-center gap-2 font-semibold transition-all duration-300 mt-auto">
+                            <span>Explore</span>
+                            <i class="bi bi-arrow-right transition-transform duration-300 group-hover:translate-x-2"
+                                aria-hidden="true"></i>
+                        </div>
+                    </div>
                 </RouterLink>
             </div>
         </div>
@@ -284,5 +338,16 @@ const currentRows = () => (perspective.value === 'creators' ? creatorRows : user
 .fade-slide-leave-to {
     opacity: 0;
     transform: translateY(12px);
+}
+
+/* Feature card with smooth transition and colored glow (match HomeView) */
+.feature-card {
+    transform-style: preserve-3d;
+    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+
+.feature-card:hover {
+    box-shadow: 0 0 20px color-mix(in srgb, var(--glow-color) 60%, transparent),
+        0 10px 40px rgba(0, 0, 0, 0.3);
 }
 </style>
