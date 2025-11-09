@@ -288,7 +288,7 @@ watch(() => props.src, (newSrc) => {
 
         <!-- Chain Selector Modal (reusable) -->
         <ChainSelectorModal :show="showChainSelector" mode="purchase" @close="showChainSelector = false"
-            @select="handleChainSelected" />
+            @select="handleChainSelected" title-color-class="text-gradient-orange" />
     </div>
 
     <!-- Transaction Notification -->

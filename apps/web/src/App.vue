@@ -4,13 +4,42 @@ import { useRoute } from 'vue-router';
 import Navigation from "./components/Navigation.vue";
 import ParticleBackground from "./components/ParticleBackground.vue";
 import AnimatedBackground from "./components/AnimatedBackground.vue";
+import ChainSelectorModal from './components/ChainSelectorModal.vue';
 import gsap from 'gsap';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 // Import web3 config to initialize modal (side effect, but tree-shaken if wallet features unused)
 import './config/web3';
 
 const route = useRoute();
 const currentYear = computed(() => new Date().getFullYear());
+
+// Support (Tip) modal state
+const showSupportModal = ref(false);
+
+// Map current route to a themed title color class for the support modal
+// Assumptions (adjust if different view themes):
+//  - Music / music hub routes use orange
+//  - Wallet page uses blue
+//  - Privacy demo uses purple
+//  - Default fallback blue
+const pageTitleColorClass = computed(() => {
+    const p = route.path.toLowerCase();
+    if (p.startsWith('/music')) return 'text-gradient-orange';
+    if (p.startsWith('/wallet')) return 'text-gradient-blue';
+    if (p.startsWith('/privacy')) return 'text-gradient-purple';
+    return 'text-gradient-blue';
+});
+
+function openSupportModal() {
+    showSupportModal.value = true;
+}
+function closeSupportModal() {
+    showSupportModal.value = false;
+}
+function handleChainSelect(_chain: 'ethereum' | 'solana') {
+    // For now simply close; future enhancement could route to tipping flow
+    showSupportModal.value = false;
+}
 
 // SEO Meta Tags
 useHead({
@@ -163,6 +192,15 @@ const onLeave = (el: Element, done: () => void) => {
                                     <span>LinkedIn</span>
                                 </a>
                             </li>
+                            <!-- Support This Project (opens chain selector modal) -->
+                            <li>
+                                <button type="button" @click="openSupportModal" aria-label="Support this project (tip)"
+                                    class="w-full text-left flex items-center gap-2 hover:text-white transition-colors focus:outline-none focus:ring-2 rounded-sm"
+                                    :class="pageTitleColorClass === 'text-gradient-orange' ? 'focus:ring-braveOrange' : pageTitleColorClass === 'text-gradient-purple' ? 'focus:ring-bravePurple' : 'focus:ring-braveBlue'">
+                                    <i class="bi bi-heart-fill text-lg" aria-hidden="true"></i>
+                                    <span>Support Project</span>
+                                </button>
+                            </li>
                             <li>
                                 <a href="https://soundcloud.com/onemangangmusic" target="_blank"
                                     rel="noopener noreferrer" aria-label="SoundCloud - One Man Gang Music"
@@ -231,6 +269,10 @@ const onLeave = (el: Element, done: () => void) => {
                 </div> -->
             </div>
         </footer>
+
+        <!-- Global Support (Tip) Chain Selector Modal -->
+        <ChainSelectorModal :show="showSupportModal" mode="tip" title="Support this Project"
+            :title-color-class="pageTitleColorClass" @close="closeSupportModal" @select="handleChainSelect" />
     </div>
 </template>
 

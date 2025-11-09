@@ -10,8 +10,11 @@ const props = withDefaults(defineProps<{
     mode?: Mode;
     title?: string;
     description?: string;
+    /** Tailwind text color or gradient class for the title */
+    titleColorClass?: string;
 }>(), {
     mode: 'purchase',
+    titleColorClass: 'text-gradient-blue'
 });
 
 const emit = defineEmits<{
@@ -77,7 +80,7 @@ function onCardMouseLeave(event: MouseEvent) {
                                 d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </button>
-                    <h3 class="text-2xl font-bold mb-4 text-gradient-purple">{{ resolvedTitle }}</h3>
+                    <h3 class="text-2xl font-bold mb-4" :class="props.titleColorClass">{{ resolvedTitle }}</h3>
                     <p class="text-neutral-300 mb-6">{{ resolvedDescription }}</p>
 
                     <div class="space-y-3">

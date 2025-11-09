@@ -485,7 +485,7 @@ onBeforeUnmount(() => {
                             </div>
                             <div ref="uRow" class="flex gap-3">
                                 <div ref="u2Card" data-node-id="u2" tabindex="0"
-                                    :class="['glass-strong rounded-xl px-3 py-3 text-center cursor-pointer select-none transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('u2'), 'node-active': isNodeActive('u2') }]"
+                                    :class="['flex-1 glass-strong rounded-xl px-3 py-3 text-center cursor-pointer select-none transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('u2'), 'node-active': isNodeActive('u2') }]"
                                     :style="getNodeStyle('u2')" @mouseenter="handleNodeHoverEnter('u2')"
                                     @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('u2')"
                                     @blur="handleNodeBlur" @click="handleNodeClick('u2')">
@@ -494,7 +494,7 @@ onBeforeUnmount(() => {
                                     Tip on‑demand
                                 </div>
                                 <div ref="u3Card" data-node-id="u3" tabindex="0"
-                                    :class="['glass-strong rounded-xl px-3 py-3 text-center cursor-pointer select-none transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('u3'), 'node-active': isNodeActive('u3') }]"
+                                    :class="['flex-1 glass-strong rounded-xl px-3 py-3 text-center cursor-pointer select-none transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('u3'), 'node-active': isNodeActive('u3') }]"
                                     :style="getNodeStyle('u3')" @mouseenter="handleNodeHoverEnter('u3')"
                                     @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('u3')"
                                     @blur="handleNodeBlur" @click="handleNodeClick('u3')">
@@ -503,7 +503,7 @@ onBeforeUnmount(() => {
                                     Set recurring tip
                                 </div>
                                 <div ref="u4Card" data-node-id="u4" tabindex="0"
-                                    :class="['glass-strong rounded-xl px-3 py-3 text-center cursor-pointer select-none transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('u4'), 'node-active': isNodeActive('u4') }]"
+                                    :class="['flex-1 glass-strong rounded-xl px-3 py-3 text-center cursor-pointer select-none transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('u4'), 'node-active': isNodeActive('u4') }]"
                                     :style="getNodeStyle('u4')" @mouseenter="handleNodeHoverEnter('u4')"
                                     @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('u4')"
                                     @blur="handleNodeBlur" @click="handleNodeClick('u4')">

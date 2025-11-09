@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
 import BATIntegration from '../components/BATIntegration.vue';
-import BATPriceTicker from '../components/BATPriceTicker.vue';
 import BraveFlowChart from '../components/BraveFlowChart.vue';
 import Button from '../components/Button.vue';
+import TipSection from '../components/TipSection.vue';
 import { useMultiChainWallet } from '../composables/useMultiChainWallet';
 import { useIntersectionObserver } from '../composables/useIntersectionObserver';
 
@@ -35,6 +35,14 @@ const { hasBeenVisible: batTippingVisible } = useIntersectionObserver(batTipping
 // "Why This Matters" load transition visibility
 const whyMattersRef = ref<HTMLElement | null>(null);
 const { hasBeenVisible: whyMattersVisible } = useIntersectionObserver(whyMattersRef, { threshold: 0.1, once: true });
+
+// "Get Set Up" load transition visibility
+const getSetUpRef = ref<HTMLElement | null>(null);
+const { hasBeenVisible: getSetUpVisible } = useIntersectionObserver(getSetUpRef, { threshold: 0.1, once: true });
+
+// "Why Wallets Matter" load transition visibility
+const whyWalletsRef = ref<HTMLElement | null>(null);
+const { hasBeenVisible: whyWalletsVisible } = useIntersectionObserver(whyWalletsRef, { threshold: 0.1, once: true });
 
 // Comparison data (responsive + perspective toggle)
 const perspective = ref<'users' | 'creators'>('users');
@@ -146,6 +154,29 @@ const creatorRows: Row[] = [
 ];
 
 const currentRows = () => (perspective.value === 'users' ? userRows : creatorRows);
+
+// Card tilt effect (match HomeView)
+const handleCardMouseMove = (event: MouseEvent) => {
+    const card = event.currentTarget as HTMLElement;
+    const rect = card.getBoundingClientRect();
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = (y - centerY) / 50;
+    const rotateY = -(x - centerX) / 50;
+
+    card.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+};
+
+const handleCardMouseLeave = (event: MouseEvent) => {
+    const card = event.currentTarget as HTMLElement;
+    card.style.transition = 'transform 0.5s ease, box-shadow 0.3s ease';
+    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
+};
 </script>
 
 <template>
@@ -267,174 +298,182 @@ const currentRows = () => (perspective.value === 'users' ? userRows : creatorRow
             </div>
         </div>
 
-        <!-- Why This Matters -->
-        <div class="mt-12 glass rounded-2xl p-8">
-            <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                <i class="bi bi-lightbulb text-yellow-400" aria-hidden="true"></i>
-                Why Wallets Matter (Even for Beginners)
-            </h2>
-            <div class="space-y-4 text-gray-300">
-                <p>
-                    Think of a <strong class="text-braveOrange">crypto wallet</strong> like your
-                    own personal bank — except <strong>you're in complete control</strong>.
-                    No company can freeze your account, track your purchases, or take a cut.
-                </p>
-                <p>
-                    <strong class="text-bravePurple">Basic Attention Token (BAT)</strong> is a
-                    cryptocurrency built for the internet economy. Use it to:
-                </p>
-                <ul class="list-disc list-inside space-y-2 ml-4">
-                    <li><strong>Tip creators</strong> directly without ads or middlemen</li>
-                    <li><strong>Earn rewards</strong> for viewing privacy-respecting ads</li>
-                    <li><strong>Support websites</strong> you love automatically</li>
-                    <li><strong>Trade and invest</strong> in the decentralized economy</li>
-                </ul>
-                <p class="text-sm text-gray-400 mt-4">
-                    <i class="bi bi-shield-lock"></i> <strong>Privacy note:</strong> Brave Wallet is non-custodial,
-                    meaning
-                    <em>only you</em> have access to your funds. Not even Brave can see your balance.
-                </p>
-            </div>
-        </div>
-        <!-- BAT Price Ticker -->
-        <div class="max-w-3xl mx-auto mb-12">
-            <BATPriceTicker />
-        </div>
-
-        <!-- Wallet Connection Card -->
-        <div class="max-w-3xl mx-auto mb-16">
-            <div class="glass rounded-2xl p-8">
-                <h2 class="text-2xl font-bold text-white mb-6 text-center">
-                    Connect Your Brave Wallet
-                </h2>
-
-                <div v-if="!isConnected" class="text-center space-y-6">
-                    <p class="text-gray-300">
-                        Connect your Brave Wallet to see your BAT balance, tip creators,
-                        and interact with Web3 features.
-                    </p>
-                    <Button variant="primary" size="lg" @click="connectWallet">
-                        <i class="bi bi-wallet2"></i> Connect Wallet
-                    </Button>
-                    <p class="text-sm text-gray-400">
-                        Don't have Brave?
-                        <a href="https://brave.com/download/" target="_blank" rel="noopener noreferrer"
-                            class="text-braveOrange hover:text-orange-300 underline">
-                            Download it here
-                        </a>
-                    </p>
-                </div>
-
-                <div v-else class="space-y-6">
-                    <!-- Wallet Info -->
-                    <div class="bg-black/30 rounded-xl p-6 space-y-4">
-                        <div class="flex items-center justify-between">
-                            <span class="text-gray-400">Connected Address</span>
-                            <span class="text-white font-mono">{{ shortenAddress }}</span>
-                        </div>
-                        <div class="flex items-center justify-between">
-                            <span class="text-gray-400">BAT Balance</span>
-                            <span class="text-2xl font-bold text-orange-400">
-                                {{ batBalance }} BAT
-                            </span>
-                        </div>
-                    </div>
-
-                    <!-- Actions -->
-                    <div class="flex gap-4 justify-center">
-                        <Button variant="secondary" @click="disconnect">
-                            Disconnect
-                        </Button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- BAT Ecosystem Flow -->
         <div class="max-w-7xl mx-auto mb-16">
             <div class="text-center mb-12">
-                <h2 class="text-4xl font-bold text-gradient-blue mb-4">
-                    Complete BAT Ecosystem Guide
+                <h2 ref="getSetUpRef"
+                    class="text-3xl md:text-4xl font-bold mb-8 text-left transition-all duration-700 text-gradient-blue"
+                    :class="{ 'opacity-0 translate-y-8': !getSetUpVisible, 'opacity-100 translate-y-0': getSetUpVisible }">
+                    <i class="bi bi-lightbulb text-yellow-400" aria-hidden="true"></i>
+                    Get Set Up with Brave Wallet & BAT
                 </h2>
-                <p class="text-gray-300 text-lg max-w-3xl mx-auto">
-                    Explore the complete journey for both users and creators in the Brave Rewards ecosystem
-                </p>
             </div>
             <BraveFlowChart />
         </div>
 
-        <!-- BAT Tipping Demo -->
-        <div class="max-w-5xl mx-auto mb-16">
-            <div class="glass rounded-2xl p-8">
-                <h2 ref="batTippingRef"
-                    class="text-3xl font-bold text-gradient-blue mb-6 text-center transition-all duration-700"
-                    :class="{ 'opacity-0 translate-y-8': !batTippingVisible, 'opacity-100 translate-y-0': batTippingVisible }">
-                    Try BAT Tipping
-                </h2>
-                <p class="text-gray-300 text-center mb-8 max-w-2xl mx-auto">
-                    Experience the future of creator support. Tip instantly with no fees or tracking.
-                </p>
-                <BATIntegration />
+        <!-- Why Wallets Matter -->
+        <div class="max-w-7xl mx-auto mb-16">
+            <h2 ref="whyWalletsRef"
+                class="text-3xl md:text-4xl font-bold mb-8 text-left transition-all duration-700 text-gradient-blue"
+                :class="{ 'opacity-0 translate-y-8': !whyWalletsVisible, 'opacity-100 translate-y-0': whyWalletsVisible }">
+                Why Wallets Matter (Even for Beginners)
+            </h2>
+            <div class="glass rounded-2xl p-6 md:p-8">
+                <div class="space-y-4 text-gray-300">
+                    <p>
+                        <strong class="text-braveBlue">Basic Attention Token (BAT)</strong> is a
+                        cryptocurrency built for the internet economy. Use it to:
+                    </p>
+                    <ul class="space-y-2 ml-4">
+                        <li class="flex items-center gap-2">
+                            <i class="bi bi-check-circle-fill text-braveBlue"></i>
+                            <span><strong>Tip creators</strong> directly without ads or middlemen</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="bi bi-check-circle-fill text-braveBlue"></i>
+                            <span><strong>Earn rewards</strong> for viewing privacy-respecting ads</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="bi bi-check-circle-fill text-braveBlue"></i>
+                            <span><strong>Support websites</strong> you love automatically</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="bi bi-check-circle-fill text-braveBlue"></i>
+                            <span><strong>Trade and invest</strong> in the decentralized economy</span>
+                        </li>
+                    </ul>
+                    <p class="text-sm text-gray-400 mt-4">
+                        <i class="bi bi-shield-lock"></i> <strong>Privacy note:</strong> Brave Wallet is non-custodial,
+                        meaning
+                        <em>only you</em> have access to your funds. Not even Brave can see your balance.
+                    </p>
+                </div>
             </div>
         </div>
 
-        <!-- How It Works -->
-        <div class="max-w-5xl mx-auto">
-            <h2 class="text-3xl font-bold text-gradient-blue mb-8 text-center">
-                Getting Started with BAT
+        <!-- Get Set Up with Brave Wallet -->
+        <div class="max-w-7xl mx-auto mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8 text-left transition-all duration-700 text-gradient-blue">
+                Get Set Up with Brave Wallet
             </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="glass rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-braveOrange mb-3"><i class="bi bi-gift"></i> Earn BAT Free</h3>
-                    <p class="text-gray-300">
-                        Enable Brave Rewards in your browser settings. You'll earn BAT automatically
-                        by viewing privacy-respecting ads. Opt-in only — no ads if you don't want them.
-                    </p>
+
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Connect Wallet Card -->
+                <div class="glass rounded-2xl p-6 md:p-8">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="bi bi-wallet2 text-braveBlue text-4xl" aria-hidden="true"></i>
+                        <h3 class="text-xl md:text-2xl font-bold text-white">Connect Your Wallet</h3>
+                    </div>
+
+                    <div v-if="!isConnected" class="space-y-4">
+                        <p class="text-gray-300 text-sm md:text-base">
+                            Connect your Brave Wallet to see your BAT balance, tip creators,
+                            and interact with Web3 features.
+                        </p>
+                        <div class="flex gap-3">
+                            <button @click="() => connectWallet()"
+                                class="flex-1 glass-strong rounded-xl px-4 py-3 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:border-braveBlue/60 hover:shadow-[0_0_16px_rgba(14,165,233,0.4)] text-white font-semibold">
+                                <i class="bi bi-wallet2"></i> Connect Wallet
+                            </button>
+                            <a href="https://brave.com/download/" target="_blank" rel="noopener noreferrer"
+                                class="flex-1 glass-strong rounded-xl px-4 py-3 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:border-braveOrange/60 hover:shadow-[0_0_16px_rgba(255,106,0,0.4)] text-white font-semibold">
+                                <i class="bi bi-download"></i> Download Brave
+                            </a>
+                        </div>
+                    </div>
+
+                    <div v-else class="space-y-4">
+                        <!-- Wallet Info -->
+                        <div class="bg-black/30 rounded-xl p-4 space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-400 text-sm">Connected Address</span>
+                                <span class="text-white font-mono text-sm">{{ shortenAddress }}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-400 text-sm">BAT Balance</span>
+                                <span class="text-xl font-bold text-orange-400">
+                                    {{ batBalance }} BAT
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <button @click="disconnect"
+                            class="w-full glass-strong rounded-xl px-4 py-3 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:border-red-400/60 hover:shadow-[0_0_16px_rgba(239,68,68,0.4)] text-white font-semibold">
+                            <i class="bi bi-x-circle"></i> Disconnect
+                        </button>
+                    </div>
                 </div>
-                <div class="glass rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-bravePurple mb-3"><i class="bi bi-credit-card"></i> Buy BAT</h3>
-                    <p class="text-gray-300">
-                        Purchase BAT on major exchanges like Coinbase, Binance, or Gemini.
-                        Transfer to your Brave Wallet for full control and privacy.
+
+                <!-- Support This Project Card -->
+                <div class="glass rounded-2xl p-6 md:p-8">
+                    <div class="flex items-center gap-3 mb-4">
+                        <i class="bi bi-heart-fill text-braveBlue text-4xl" aria-hidden="true"></i>
+                        <h3 class="text-xl md:text-2xl font-bold text-white">Support This Project</h3>
+                    </div>
+                    <p class="text-gray-300 text-sm md:text-base mb-6">
+                        Help support the development of this project with a BAT tip.
                     </p>
-                </div>
-                <div class="glass rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-pink-400 mb-3"><i class="bi bi-heart-fill"></i> Auto-Contribute
-                    </h3>
-                    <p class="text-gray-300">
-                        Set up monthly auto-contributions to support your favorite sites automatically
-                        based on your browsing time. Effortless creator support.
-                    </p>
-                </div>
-                <div class="glass rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-braveBlue mb-3"><i class="bi bi-cursor"></i> One-Click Tips</h3>
-                    <p class="text-gray-300">
-                        Send tips instantly from any Brave-verified site. No forms, no sign-ups.
-                        Just click the BAT icon and choose your amount.
-                    </p>
+                    <TipSection label="Support this project" colorClass="text-braveBlue" />
                 </div>
             </div>
         </div>
 
         <!-- CTA Section -->
         <div class="max-w-3xl mx-auto mt-16 text-center space-y-6">
-            <h3 class="text-2xl font-bold text-white">
-                Explore more privacy features
+            <h3 class="text-2xl font-bold text-gradient-blue transition-all duration-700 opacity-100 translate-y-0">
+                Ready to explore?
             </h3>
             <div class="flex flex-wrap gap-4 justify-center">
-                <RouterLink to="/privacy">
-                    <Button variant="primary" size="lg">
-                        <i class="bi bi-shield-check"></i> Privacy Demos
-                    </Button>
+                <!-- Creator Hub Card -->
+                <RouterLink to="/creator-hub" @mousemove="handleCardMouseMove" @mouseleave="handleCardMouseLeave"
+                    class="group relative glass rounded-2xl p-6 md:p-8 cursor-pointer feature-card flex flex-col w-[280px] md:w-[320px] text-left"
+                    :style="{ '--glow-color': '#FF6A00' }">
+                    <!-- Gradient Overlay -->
+                    <div
+                        class="absolute inset-0 rounded-2xl bg-brave-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300">
+                    </div>
+                    <!-- Content -->
+                    <div class="relative z-10 flex flex-col h-full">
+                        <i class="bi bi-music-note-beamed text-braveOrange text-4xl md:text-5xl mb-3"
+                            aria-hidden="true"></i>
+                        <h4 class="text-xl md:text-2xl font-bold text-white mb-2">Creator Hub</h4>
+                        <p class="text-gray-300 text-sm md:text-base mb-4 flex-grow">Music & content monetization.</p>
+                        <div
+                            class="text-braveOrange flex items-center gap-2 font-semibold transition-all duration-300 mt-auto">
+                            <span>Explore</span>
+                            <i class="bi bi-arrow-right transition-transform duration-300 group-hover:translate-x-2"
+                                aria-hidden="true"></i>
+                        </div>
+                    </div>
                 </RouterLink>
-                <RouterLink to="/search">
-                    <Button variant="secondary" size="lg">
-                        <i class="bi bi-search"></i> Try Brave Search
-                    </Button>
+
+                <!-- Bonus Feature Card -->
+                <RouterLink to="/surprise" @mousemove="handleCardMouseMove" @mouseleave="handleCardMouseLeave"
+                    class="group relative glass rounded-2xl p-6 md:p-8 cursor-pointer feature-card flex flex-col w-[280px] md:w-[320px] text-left"
+                    :style="{ '--glow-color': '#7C3AED' }">
+                    <!-- Gradient Overlay -->
+                    <div
+                        class="absolute inset-0 rounded-2xl bg-brave-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300">
+                    </div>
+                    <!-- Content -->
+                    <div class="relative z-10 flex flex-col h-full">
+                        <i class="bi bi-gift text-bravePurple text-4xl md:text-5xl mb-3" aria-hidden="true"></i>
+                        <h4 class="text-xl md:text-2xl font-bold text-white mb-2">Bonus Feature</h4>
+                        <p class="text-gray-300 text-sm md:text-base mb-4 flex-grow">Only the bravest dare to explore.
+                        </p>
+                        <div
+                            class="text-bravePurple flex items-center gap-2 font-semibold transition-all duration-300 mt-auto">
+                            <span>Explore</span>
+                            <i class="bi bi-arrow-right transition-transform duration-300 group-hover:translate-x-2"
+                                aria-hidden="true"></i>
+                        </div>
+                    </div>
                 </RouterLink>
             </div>
         </div>
     </div>
+
 </template>
 
 <style scoped>
@@ -447,5 +486,16 @@ const currentRows = () => (perspective.value === 'users' ? userRows : creatorRow
 .fade-slide-leave-to {
     opacity: 0;
     transform: translateY(12px);
+}
+
+/* Feature card with smooth transition and colored glow (match HomeView) */
+.feature-card {
+    transform-style: preserve-3d;
+    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+}
+
+.feature-card:hover {
+    box-shadow: 0 0 20px color-mix(in srgb, var(--glow-color) 60%, transparent),
+        0 10px 40px rgba(0, 0, 0, 0.3);
 }
 </style>
