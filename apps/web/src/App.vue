@@ -3,6 +3,7 @@ import { useHead } from '@vueuse/head';
 import { useRoute } from 'vue-router';
 import Navigation from "./components/Navigation.vue";
 import ParticleBackground from "./components/ParticleBackground.vue";
+import ConfigurableParticleBackground from './components/ConfigurableParticleBackground.vue';
 import AnimatedBackground from "./components/AnimatedBackground.vue";
 import ChainSelectorModal from './components/ChainSelectorModal.vue';
 import gsap from 'gsap';
@@ -146,7 +147,8 @@ const onLeave = (el: Element, done: () => void) => {
 
 <template>
     <!-- <AnimatedBackground variant="dots" :opacity="0.12" :parallaxFactor="0.2" :zIndex="-1" /> -->
-    <ParticleBackground :parallax-factor="0.035" />
+    <!-- <ParticleBackground :parallax-factor="0.035" :density-boost="2.8"/> -->
+    <ConfigurableParticleBackground />
     <div class="min-h-screen flex flex-col relative z-10">
         <Navigation />
 

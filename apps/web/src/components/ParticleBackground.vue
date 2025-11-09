@@ -3,10 +3,13 @@ import { ref, onMounted, onBeforeUnmount } from 'vue';
 
 interface Props {
     parallaxFactor?: number; // 0..1, controls parallax depth
+    /** Multiplier to increase/decrease particle density. 1 = default */
+    densityBoost?: number;
 }
 
 const props = withDefaults(defineProps<Props>(), {
-    parallaxFactor: 0.035
+    parallaxFactor: 0.035,
+    densityBoost: 1.5 // increase default particles ~50%
 });
 
 const canvas = ref<HTMLCanvasElement | null>(null);
@@ -295,8 +298,9 @@ onMounted(() => {
     window.addEventListener('resize', resize);
 
     // Create particles
-    // Reduce particle density (was area/10000)
-    const particleCount = Math.floor((canvas.value.width * canvas.value.height) / 14000);
+    // Base density (was area/10000 previously); keep conservative base and apply multiplier
+    const BASE_DIVISOR = 14000;
+    const particleCount = Math.floor((canvas.value.width * canvas.value.height) / BASE_DIVISOR * props.densityBoost);
     for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle(canvas.value.width, canvas.value.height));
     }
