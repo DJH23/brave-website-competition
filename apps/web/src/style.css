@@ -42,6 +42,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    padding-bottom: 0.2em;
   }
 
   .text-gradient-orange {
@@ -49,6 +50,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    padding-bottom: 0.2em;
   }
 
   .text-gradient-blue {
@@ -56,6 +58,7 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    padding-bottom: 0.2em;
   }
 
   .text-gradient-rainbow {
@@ -125,6 +128,7 @@
 
 /* Subtle noise/gradient overlay can be added later */
 body {
+  background-color: #000000;
   background-blend-mode: overlay;
 }
 

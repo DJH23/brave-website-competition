@@ -51,6 +51,7 @@ const visibleTracks = computed<Track[]>(() => (hasBeenVisible.value ? musicTrack
             <h3 id="music-tracks-heading"
                 class="text-3xl md:text-4xl font-bold mb-8 text-left transition-all duration-700 text-gradient-orange"
                 :class="{ 'opacity-0 translate-y-8': !hasBeenVisible, 'opacity-100 translate-y-0': hasBeenVisible }">
+                <i class="bi bi-boombox text-braveOrange/80" aria-hidden="true"></i>
                 Music Tracks
             </h3> <!-- Music Container -->
             <div class="glass rounded-2xl p-6 md:p-8">

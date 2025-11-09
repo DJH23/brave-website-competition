@@ -64,7 +64,7 @@ onMounted(() => {
                     <h2 ref="memesPrivacyRef"
                         class="text-2xl font-bold text-gradient-purple mb-4 flex items-center gap-2 transition-all duration-700"
                         :class="{ 'opacity-0 translate-y-8': !memesPrivacyVisible, 'opacity-100 translate-y-0': memesPrivacyVisible }">
-                        <i class="bi bi-shield-lock text-bravePurple" aria-hidden="true"></i>
+                        <i class="bi bi-emoji-surprise-fill text-bravePurple" aria-hidden="true"></i>
                         But here's the twist:
                     </h2>
                     <div class="space-y-4 text-gray-300">
@@ -77,12 +77,24 @@ onMounted(() => {
                             web without being the product.
                         </p>
                     </div>
+                      <div class="mt-6 text-center">
+                        <RouterLink to="/wallet#get-set-up"
+                            class="group/link text-sm text-neutral-400 hover:text-bravePurple transition-colors inline-flex items-center gap-1">
+                            <span>Get Set Up</span>
+                            <svg class="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-2"
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                        </RouterLink>
+                    </div>
                 </div>
 
                 <!-- CTA Section -->
                 <div class="max-w-3xl mx-auto mt-16 text-center space-y-6">
                     <h3
                         class="text-2xl font-bold text-gradient-purple transition-all duration-700 opacity-100 translate-y-0">
+                        <i class="bi bi-search text-bravePurple/80" aria-hidden="true"></i>
                         Ready to explore?
                     </h3>
                     <div class="flex flex-wrap gap-4 justify-center">

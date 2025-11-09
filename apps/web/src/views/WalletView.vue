@@ -86,15 +86,6 @@ const userRows: Row[] = [
         ]
     },
     {
-        label: 'Multi-chain support',
-        cells: [
-            { text: 'Ethereum + Solana', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'Ethereum only', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: 'Multi-chain', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'Limited', icon: 'bi-dash-circle', color: 'text-yellow-400' }
-        ]
-    },
-    {
         label: 'Self-custody',
         cells: [
             { text: 'Full control', icon: 'bi-check-circle-fill', color: 'text-green-400' },
@@ -134,15 +125,6 @@ const creatorRows: Row[] = [
         ]
     },
     {
-        label: 'Transaction fees',
-        cells: [
-            { text: 'Network fees only', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'Network fees only', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'Network fees only', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'Exchange fees', icon: 'bi-dash-circle', color: 'text-yellow-400' }
-        ]
-    },
-    {
         label: 'Privacy for supporters',
         cells: [
             { text: 'Anonymous tipping', icon: 'bi-check-circle-fill', color: 'text-green-400' },
@@ -164,7 +146,8 @@ const currentRows = () => (perspective.value === 'users' ? userRows : creatorRow
                 <h1 ref="walletHeadingRef"
                     class="text-5xl md:text-6xl font-bold text-gradient-blue transition-all duration-700"
                     :class="{ 'opacity-0 translate-y-8': !walletVisible, 'opacity-100 translate-y-0': walletVisible }">
-                    <i class="bi bi-wallet2" aria-hidden="true"></i> Brave Wallet & BAT
+                    <i class="bi bi-wallet2" aria-hidden="true"></i> Brave Wallet And <i class="bi bi-cash"
+                        aria-hidden="true"></i> BAT
                 </h1>
                 <p class="text-xl text-gray-300 max-w-3xl mx-auto">
                     Your gateway to Web3, privacy, and decentralized finance.
@@ -179,7 +162,8 @@ const currentRows = () => (perspective.value === 'users' ? userRows : creatorRow
             <h2 ref="whyMattersRef"
                 class="text-3xl md:text-4xl font-bold mb-8 text-left transition-all duration-700 text-gradient-blue"
                 :class="{ 'opacity-0 translate-y-8': !whyMattersVisible, 'opacity-100 translate-y-0': whyMattersVisible }">
-                Why This Matters
+                <i class="bi bi-info-circle text-braveBlue/80" aria-hidden="true"></i>
+                Why Use a Wallet?
             </h2>
             <div class="mt-12 glass rounded-2xl p-6 md:p-8">
                 <!-- Perspective toggle -->
@@ -275,25 +259,13 @@ const currentRows = () => (perspective.value === 'users' ? userRows : creatorRow
             </div>
         </div>
 
-        <!-- BAT Ecosystem Flow -->
-        <div class="max-w-7xl mx-auto mb-16">
-            <div class="text-center mb-12">
-                <h2 ref="getSetUpRef"
-                    class="text-3xl md:text-4xl font-bold mb-8 text-left transition-all duration-700 text-gradient-blue"
-                    :class="{ 'opacity-0 translate-y-8': !getSetUpVisible, 'opacity-100 translate-y-0': getSetUpVisible }">
-                    <i class="bi bi-lightbulb text-yellow-400" aria-hidden="true"></i>
-                    Get Set Up with Brave Wallet & BAT
-                </h2>
-            </div>
-            <BraveFlowChart />
-        </div>
-
         <!-- Why Wallets Matter -->
         <div class="max-w-7xl mx-auto mb-16">
             <h2 ref="whyWalletsRef"
                 class="text-3xl md:text-4xl font-bold mb-8 text-left transition-all duration-700 text-gradient-blue"
                 :class="{ 'opacity-0 translate-y-8': !whyWalletsVisible, 'opacity-100 translate-y-0': whyWalletsVisible }">
-                Why Wallets Matter (Even for Beginners)
+                <i class="bi bi-info-circle text-braveBlue/80" aria-hidden="true"></i>
+                Why Use BAT?
             </h2>
             <div class="glass rounded-2xl p-6 md:p-8">
                 <div class="space-y-4 text-gray-300">
@@ -312,7 +284,7 @@ const currentRows = () => (perspective.value === 'users' ? userRows : creatorRow
                         </li>
                         <li class="flex items-center gap-2">
                             <i class="bi bi-check-circle-fill text-braveBlue"></i>
-                            <span><strong>Support websites</strong> you love automatically</span>
+                            <span><strong>Support websites and products</strong> you love automatically</span>
                         </li>
                         <li class="flex items-center gap-2">
                             <i class="bi bi-check-circle-fill text-braveBlue"></i>
@@ -327,78 +299,43 @@ const currentRows = () => (perspective.value === 'users' ? userRows : creatorRow
                 </div>
             </div>
         </div>
+        <!-- Anchor point for hash navigation (offset for fixed navbar) -->
+        <div id="get-set-up" class="relative -top-[7.2rem] invisible"></div>
 
+        <!-- BAT Ecosystem Flow -->
+        <div class="max-w-7xl mx-auto mb-16">
+            <div class="text-center mb-12">
+                <h2 ref="getSetUpRef"
+                    class="text-3xl md:text-4xl font-bold mb-8 text-left transition-all duration-700 text-gradient-blue"
+                    :class="{ 'opacity-0 translate-y-8': !getSetUpVisible, 'opacity-100 translate-y-0': getSetUpVisible }">
+                    <i class="bi bi-gear text-braveBlue" aria-hidden="true"></i>
+                    Get Set Up
+                </h2>
+            </div>
+            <BraveFlowChart />
+        </div>
         <!-- Get Set Up with Brave Wallet -->
         <div class="max-w-7xl mx-auto mb-16">
             <h2 class="text-3xl md:text-4xl font-bold mb-8 text-left transition-all duration-700 text-gradient-blue">
-                Get Set Up with Brave Wallet
+                <i class="bi bi-piggy-bank text-braveBlue/80" aria-hidden="true"></i>
+                Now Try Out Tipping:
             </h2>
 
-            <div class="grid md:grid-cols-2 gap-6">
-                <!-- Connect Wallet Card -->
-                <div class="glass rounded-2xl p-6 md:p-8">
-                    <div class="flex items-center gap-3 mb-4">
-                        <i class="bi bi-wallet2 text-braveBlue text-4xl" aria-hidden="true"></i>
-                        <h3 class="text-xl md:text-2xl font-bold text-white">Connect Your Wallet</h3>
-                    </div>
-
-                    <div v-if="!isConnected" class="space-y-4">
-                        <p class="text-gray-300 text-sm md:text-base">
-                            Connect your Brave Wallet to see your BAT balance, tip creators,
-                            and interact with Web3 features.
-                        </p>
-                        <div class="flex gap-3">
-                            <button @click="() => connectWallet()"
-                                class="flex-1 glass-strong rounded-xl px-4 py-3 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:border-braveBlue/60 hover:shadow-[0_0_16px_rgba(14,165,233,0.4)] text-white font-semibold">
-                                <i class="bi bi-wallet2"></i> Connect Wallet
-                            </button>
-                            <a href="https://brave.com/download/" target="_blank" rel="noopener noreferrer"
-                                class="flex-1 glass-strong rounded-xl px-4 py-3 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:border-braveOrange/60 hover:shadow-[0_0_16px_rgba(255,106,0,0.4)] text-white font-semibold">
-                                <i class="bi bi-download"></i> Download Brave
-                            </a>
-                        </div>
-                    </div>
-
-                    <div v-else class="space-y-4">
-                        <!-- Wallet Info -->
-                        <div class="bg-black/30 rounded-xl p-4 space-y-3">
-                            <div class="flex items-center justify-between">
-                                <span class="text-gray-400 text-sm">Connected Address</span>
-                                <span class="text-white font-mono text-sm">{{ shortenAddress }}</span>
-                            </div>
-                            <div class="flex items-center justify-between">
-                                <span class="text-gray-400 text-sm">BAT Balance</span>
-                                <span class="text-xl font-bold text-orange-400">
-                                    {{ batBalance }} BAT
-                                </span>
-                            </div>
-                        </div>
-
-                        <!-- Actions -->
-                        <button @click="disconnect"
-                            class="w-full glass-strong rounded-xl px-4 py-3 text-center cursor-pointer transition-all duration-300 hover:scale-105 hover:border-red-400/60 hover:shadow-[0_0_16px_rgba(239,68,68,0.4)] text-white font-semibold">
-                            <i class="bi bi-x-circle"></i> Disconnect
-                        </button>
-                    </div>
+            <!-- Support This Project Card -->
+            <div class="glass rounded-2xl p-6 md:p-8 mx-auto w-fit">
+                <div class="flex items-center gap-3 mb-4">
+                    <i class="bi bi-heart-fill text-braveBlue text-4xl" aria-hidden="true"></i>
+                    <h3 class="text-xl md:text-2xl font-bold text-white">Support This Project</h3>
                 </div>
-
-                <!-- Support This Project Card -->
-                <div class="glass rounded-2xl p-6 md:p-8">
-                    <div class="flex items-center gap-3 mb-4">
-                        <i class="bi bi-heart-fill text-braveBlue text-4xl" aria-hidden="true"></i>
-                        <h3 class="text-xl md:text-2xl font-bold text-white">Support This Project</h3>
-                    </div>
-                    <p class="text-gray-300 text-sm md:text-base mb-6">
-                        Help support the development of this project with a BAT tip.
-                    </p>
-                    <TipSection label="Support this project" colorClass="text-braveBlue" />
-                </div>
+                <TipSection label="" colorClass="text-braveBlue" />
             </div>
+
         </div>
 
         <!-- CTA Section -->
         <div class="max-w-3xl mx-auto mt-16 text-center space-y-6">
             <h3 class="text-2xl font-bold text-gradient-blue transition-all duration-700 opacity-100 translate-y-0">
+                <i class="bi bi-search text-braveBlue/80" aria-hidden="true"></i>
                 Ready to explore?
             </h3>
             <div class="flex flex-wrap gap-4 justify-center">

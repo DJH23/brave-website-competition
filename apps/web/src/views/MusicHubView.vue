@@ -147,10 +147,13 @@ const currentRows = () => (perspective.value === 'creators' ? creatorRows : user
 
         <!-- Why This Matters (Comparison Table) -->
         <div class="max-w-7xl mx-auto mb-16">
-            <h2 ref="whyMattersRef"
-                class="text-3xl md:text-4xl font-bold mb-8 text-left transition-all duration-700 text-gradient-orange"
-                :class="{ 'opacity-0 translate-y-8': !whyMattersVisible, 'opacity-100 translate-y-0': whyMattersVisible }">
-                Why This Matters
+            <h2
+                ref="whyMattersRef"
+                class="text-3xl md:text-4xl font-bold mb-8 text-left transition-all duration-700 text-gradient-orange flex items-center gap-3"
+                :class="{ 'opacity-0 translate-y-8': !whyMattersVisible, 'opacity-100 translate-y-0': whyMattersVisible }"
+            >
+                <i class="bi bi-info-circle text-braveOrange/80" aria-hidden="true"></i>
+                <span>Why This Matters</span>
             </h2>
             <div class="mt-12 glass rounded-2xl p-6 md:p-8">
                 <!-- Perspective toggle -->
@@ -255,6 +258,7 @@ const currentRows = () => (perspective.value === 'creators' ? creatorRows : user
         <!-- CTA Section -->
         <div class="max-w-3xl mx-auto mt-16 text-center space-y-6">
             <h3 class="text-2xl font-bold text-gradient-orange transition-all duration-700 opacity-100 translate-y-0">
+                <i class="bi bi-search text-braveOrange/80" aria-hidden="true"></i>
                 Ready to explore?
             </h3>
             <div class="flex flex-wrap gap-4 justify-center">
