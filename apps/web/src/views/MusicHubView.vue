@@ -2,8 +2,10 @@
 import { ref } from 'vue';
 import MusicProductions from '../components/MusicProductions.vue';
 import { useIntersectionObserver } from '../composables/useIntersectionObserver';
+import { useCardTilt } from '../composables/useCardTilt';
 
 const showTipModal = ref(false);
+const { handleCardMouseMove, handleCardMouseLeave } = useCardTilt();
 
 const musicHubHeadingRef = ref<HTMLElement | null>(null);
 const { hasBeenVisible: musicHubVisible } = useIntersectionObserver(musicHubHeadingRef, { threshold: 0.1, once: true });
@@ -125,29 +127,6 @@ const userRows: Row[] = [
 ];
 
 const currentRows = () => (perspective.value === 'creators' ? creatorRows : userRows);
-
-// Card tilt effect (match HomeView)
-const handleCardMouseMove = (event: MouseEvent) => {
-    const card = event.currentTarget as HTMLElement;
-    const rect = card.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    const rotateX = (y - centerY) / 50;
-    const rotateY = -(x - centerX) / 50;
-
-    card.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
-    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-};
-
-const handleCardMouseLeave = (event: MouseEvent) => {
-    const card = event.currentTarget as HTMLElement;
-    card.style.transition = 'transform 0.5s ease, box-shadow 0.3s ease';
-    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
-};
 </script>
 
 <template>
@@ -327,27 +306,3 @@ const handleCardMouseLeave = (event: MouseEvent) => {
         </div>
     </div>
 </template>
-
-<style scoped>
-.fade-slide-enter-active,
-.fade-slide-leave-active {
-    transition: opacity 300ms var(--ease-standard, cubic-bezier(.22, .61, .36, 1)), transform 300ms var(--ease-standard, cubic-bezier(.22, .61, .36, 1));
-}
-
-.fade-slide-enter-from,
-.fade-slide-leave-to {
-    opacity: 0;
-    transform: translateY(12px);
-}
-
-/* Feature card with smooth transition and colored glow (match HomeView) */
-.feature-card {
-    transform-style: preserve-3d;
-    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
-}
-
-.feature-card:hover {
-    box-shadow: 0 0 20px color-mix(in srgb, var(--glow-color) 60%, transparent),
-        0 10px 40px rgba(0, 0, 0, 0.3);
-}
-</style>

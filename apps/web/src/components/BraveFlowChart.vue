@@ -406,7 +406,7 @@ onBeforeUnmount(() => {
                 </marker>
             </defs>
             <path v-for="e in edges" :key="e.id" :d="e.d" :stroke="e.color" stroke-width="2.5"
-                :class="{ 'edge-muted': hoveredNodeId }" fill="none"
+                :class="{ 'edge-muted': hoveredNodeId, 'edge-active': !hoveredNodeId }" fill="none"
                 :marker-end="`url(#arrow-${getMarkerName(e.color)})`" />
         </svg>
 
@@ -605,22 +605,35 @@ svg {
 .node-muted {
     opacity: 0.35;
     filter: grayscale(0.5);
+    transition: opacity var(--dur-med) var(--ease-standard), filter var(--dur-med) var(--ease-standard), transform var(--dur-med) var(--ease-standard);
 }
 
 .node-active {
     transform: scale(1.02);
-    transition: transform var(--dur-med) var(--ease-standard), box-shadow var(--dur-med) var(--ease-standard);
+    transition: transform var(--dur-med) var(--ease-standard), box-shadow var(--dur-med) var(--ease-standard), opacity var(--dur-med) var(--ease-standard), filter var(--dur-med) var(--ease-standard);
 }
 
 /* Edge states */
 .edge-muted {
     opacity: 0.2;
-    transition: opacity var(--dur-med) var(--ease-standard);
+    stroke-opacity: 0.25;
+    transition: opacity var(--dur-med) var(--ease-standard), stroke-opacity var(--dur-med) var(--ease-standard), filter var(--dur-med) var(--ease-standard);
+    transition-delay: 0ms;
 }
 
 .edge-active {
     opacity: 1;
     filter: drop-shadow(0 0 6px rgba(14, 165, 233, 0.6));
+    stroke-opacity: 1;
+    transition: opacity var(--dur-med) var(--ease-standard), stroke-opacity var(--dur-med) var(--ease-standard), filter var(--dur-med) var(--ease-standard);
+    transition-delay: 50ms;
+}
+
+/* Base edge rule to ensure transitions apply even before state class swap */
+.edge path,
+.edge line,
+.edge circle {
+    transition: opacity var(--dur-med) var(--ease-standard), stroke-opacity var(--dur-med) var(--ease-standard), filter var(--dur-med) var(--ease-standard);
 }
 
 /* Arrow animation - always active on all edges */

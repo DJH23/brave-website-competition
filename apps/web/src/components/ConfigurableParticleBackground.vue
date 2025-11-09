@@ -26,7 +26,7 @@ const PARTICLE_SIZE_SCALE = 0.9;
 // 5) Group boost speed multiplier range — coordinated bursts of speed for subsets of particles
 //    Narrower/lower range = calmer motion, Wider/higher = more lively motion (slightly more CPU)
 const GROUP_BOOST_MIN = 0;
-const GROUP_BOOST_MAX = 2;
+const GROUP_BOOST_MAX = 3;
 
 // 6) Parallax effect strength factor — how strongly the background tracks scroll
 //    Lower = subtler motion (easier on sensitive users), Higher = more noticeable parallax

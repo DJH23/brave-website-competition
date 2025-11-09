@@ -1,16 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import Button from '../components/Button.vue';
 import { useIntersectionObserver } from '../composables/useIntersectionObserver';
+import { useCardTilt } from '../composables/useCardTilt';
 
-const copyLink = async () => {
-    try {
-        await window.navigator.clipboard.writeText(window.location.href);
-        window.alert('Link copied! Go spread the joy (privately) 🎉');
-    } catch (err) {
-        console.error('Failed to copy link:', err);
-    }
-};
+const { handleCardMouseMove, handleCardMouseLeave } = useCardTilt();
 
 // Reveal on scroll for main headings
 const rickRollHeadingRef = ref<HTMLElement | null>(null);
@@ -28,14 +21,11 @@ const { hasBeenVisible: memesPrivacyVisible } = useIntersectionObserver(memesPri
                 <!-- Header -->
                 <div class="text-center space-y-4">
                     <h1 ref="rickRollHeadingRef"
-                        class="text-4xl md:text-5xl font-bold text-white transition-all duration-700"
+                        class="text-4xl md:text-5xl font-bold text-gradient-purple transition-all duration-700"
                         :class="{ 'opacity-0 translate-y-8': !rickRollVisible, 'opacity-100 translate-y-0': rickRollVisible }">
-                        <i class="bi bi-music-note-beamed text-purple-400" aria-hidden="true"></i> Never Gonna Give
-                        You Up
+                        <i class="bi bi-music-note-beamed text-bravePurple" aria-hidden="true"></i> You just got Rick
+                        Roll'd
                     </h1>
-                    <p class="text-xl text-purple-400">
-                        Classic internet culture, now with privacy
-                    </p>
                 </div>
 
                 <!-- Video Container -->
@@ -52,98 +42,80 @@ const { hasBeenVisible: memesPrivacyVisible } = useIntersectionObserver(memesPri
                 <!-- The Message -->
                 <div class="glass rounded-2xl p-8">
                     <h2 ref="memesPrivacyRef"
-                        class="text-2xl font-bold text-white mb-4 flex items-center gap-2 transition-all duration-700"
+                        class="text-2xl font-bold text-gradient-purple mb-4 flex items-center gap-2 transition-all duration-700"
                         :class="{ 'opacity-0 translate-y-8': !memesPrivacyVisible, 'opacity-100 translate-y-0': memesPrivacyVisible }">
                         <i class="bi bi-lightbulb text-yellow-400" aria-hidden="true"></i>
-                        Even Memes Deserve Privacy
+                        But here's the twist:
                     </h2>
                     <div class="space-y-4 text-gray-300">
                         <p>
-                            You just got <strong class="text-pink-400">Rick Roll'd</strong> —
-                            one of the internet's most beloved traditions. But here's the twist:
+                            Brave automatically blocks third-party cookies and trackers across the web, so you can watch
+                            videos, browse memes, and explore content — privately and in control.
                         </p>
                         <p>
-                            That video is embedded using <strong class="text-bravePurple">
-                                youtube-nocookie.com</strong>, which means YouTube isn't tracking you
-                            while you enjoy this classic banger. No cookies, no profiling,
-                            just pure nostalgic entertainment.
-                        </p>
-                        <p>
-                            This is the <strong class="text-braveOrange">Brave Browser philosophy</strong>
-                            in action: <strong>You can enjoy the web without being the product</strong>.
-                            Watch videos, browse memes, explore content — all while staying private.
+                            This is the <strong class="text-bravePurple">Brave Browser philosophy</strong>: enjoy the
+                            web without being the product.
                         </p>
                     </div>
                 </div>
 
-                <!-- Why This Matters -->
-                <div class="glass rounded-2xl p-8">
-                    <h3 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                        <i class="bi bi-palette" aria-hidden="true"></i> Creative Freedom Needs Privacy
+                <!-- CTA Section -->
+                <div class="max-w-3xl mx-auto mt-16 text-center space-y-6">
+                    <h3
+                        class="text-2xl font-bold text-gradient-purple transition-all duration-700 opacity-100 translate-y-0">
+                        Ready to explore?
                     </h3>
-                    <p class="text-gray-300 mb-4">
-                        Content creators (yes, even Rick Astley) deserve to share their work
-                        without surveillance capitalism. When you watch videos on privacy-respecting
-                        platforms or use BAT to tip creators, you're supporting a better internet:
-                    </p>
-                    <ul class="list-disc list-inside space-y-2 text-gray-300 ml-4">
-                        <li>Creators get paid directly, not through ad revenue that exploits users</li>
-                        <li>Fans stay anonymous — no surveillance or data collection</li>
-                        <li>Memes, music, and art thrive without corporate gatekeepers</li>
-                        <li>The internet becomes fun again, not just a data extraction machine</li>
-                    </ul>
-                </div>
-
-                <!-- Fun Stats -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div class="glass rounded-xl p-6 text-center">
-                        <div class="text-4xl font-bold text-pink-400 mb-2">1.4B+</div>
-                        <div class="text-gray-300">Views on YouTube</div>
-                        <div class="text-sm text-gray-400 mt-2">Rick Astley is eternal</div>
-                    </div>
-                    <div class="glass rounded-xl p-6 text-center">
-                        <div class="text-4xl font-bold text-bravePurple mb-2">1987</div>
-                        <div class="text-gray-300">Original Release</div>
-                        <div class="text-sm text-gray-400 mt-2">A timeless classic</div>
-                    </div>
-                    <div class="glass rounded-xl p-6 text-center">
-                        <div class="text-4xl font-bold text-braveBlue mb-2">0</div>
-                        <div class="text-gray-300">Trackers Here</div>
-                        <div class="text-sm text-gray-400 mt-2">Privacy-first entertainment</div>
-                    </div>
-                </div>
-
-                <!-- Sharing -->
-                <div class="text-center space-y-4">
-                    <p class="text-gray-300">
-                        Want to Rick Roll your friends... <em>privately</em>?
-                    </p>
                     <div class="flex flex-wrap gap-4 justify-center">
-                        <Button variant="primary" @click="copyLink">
-                            <i class="bi bi-clipboard" aria-hidden="true"></i> Copy Link to Share
-                        </Button>
-                        <RouterLink to="/">
-                            <Button variant="secondary">
-                                <i class="bi bi-house-door" aria-hidden="true"></i> Back to Home
-                            </Button>
+                        <!-- Creator Hub Card -->
+                        <RouterLink to="/creator-hub" @mousemove="handleCardMouseMove"
+                            @mouseleave="handleCardMouseLeave"
+                            class="group relative glass rounded-2xl p-6 md:p-8 cursor-pointer feature-card flex flex-col w-[280px] md:w-[320px] text-left"
+                            :style="{ '--glow-color': '#FF6A00' }">
+                            <!-- Gradient Overlay -->
+                            <div
+                                class="absolute inset-0 rounded-2xl bg-brave-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300">
+                            </div>
+                            <!-- Content -->
+                            <div class="relative z-10 flex flex-col h-full">
+                                <i class="bi bi-music-note-beamed text-braveOrange text-4xl md:text-5xl mb-3"
+                                    aria-hidden="true"></i>
+                                <h4 class="text-xl md:text-2xl font-bold text-white mb-2">Creator Hub</h4>
+                                <p class="text-gray-300 text-sm md:text-base mb-4 flex-grow">Music & content
+                                    monetization.</p>
+                                <div
+                                    class="text-braveOrange flex items-center gap-2 font-semibold transition-all duration-300 mt-auto">
+                                    <span>Explore</span>
+                                    <i class="bi bi-arrow-right transition-transform duration-300 group-hover:translate-x-2"
+                                        aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </RouterLink>
+
+                        <!-- Wallet Card -->
+                        <RouterLink to="/wallet" @mousemove="handleCardMouseMove" @mouseleave="handleCardMouseLeave"
+                            class="group relative glass rounded-2xl p-6 md:p-8 cursor-pointer feature-card flex flex-col w-[280px] md:w-[320px] text-left"
+                            :style="{ '--glow-color': '#0EA5E9' }">
+                            <!-- Gradient Overlay -->
+                            <div
+                                class="absolute inset-0 rounded-2xl bg-brave-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300">
+                            </div>
+                            <!-- Content -->
+                            <div class="relative z-10 flex flex-col h-full">
+                                <i class="bi bi-wallet2 text-braveBlue text-4xl md:text-5xl mb-3"
+                                    aria-hidden="true"></i>
+                                <h4 class="text-xl md:text-2xl font-bold text-white mb-2">Getting Set Up</h4>
+                                <p class="text-gray-300 text-sm md:text-base mb-4 flex-grow">Wallet & BAT guide.</p>
+                                <div
+                                    class="text-braveBlue flex items-center gap-2 font-semibold transition-all duration-300 mt-auto">
+                                    <span>Explore</span>
+                                    <i class="bi bi-arrow-right transition-transform duration-300 group-hover:translate-x-2"
+                                        aria-hidden="true"></i>
+                                </div>
+                            </div>
                         </RouterLink>
                     </div>
                 </div>
 
-                <!-- Easter Egg Credits -->
-                <div class="text-center text-sm text-gray-500 mt-12">
-                    <p>
-                        You're <strong class="text-bravePurple">Never Gonna Give Up</strong>
-                        on privacy, right? 😉
-                    </p>
-                    <p class="mt-2">
-                        Thanks for exploring this hub. Now go download
-                        <a href="https://brave.com/download/" target="_blank" rel="noopener noreferrer"
-                            class="text-braveOrange hover:text-orange-300 underline">
-                            Brave Browser
-                        </a>
-                    </p>
-                </div>
             </div>
         </div>
     </div>

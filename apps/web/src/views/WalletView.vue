@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import BATIntegration from '../components/BATIntegration.vue';
 import BraveFlowChart from '../components/BraveFlowChart.vue';
-import Button from '../components/Button.vue';
 import TipSection from '../components/TipSection.vue';
 import { useMultiChainWallet } from '../composables/useMultiChainWallet';
 import { useIntersectionObserver } from '../composables/useIntersectionObserver';
+import { useCardTilt } from '../composables/useCardTilt';
 
 const { isConnected, address, batBalance, connectWallet, fetchBATBalance, disconnectWallet } = useMultiChainWallet();
+const { handleCardMouseMove, handleCardMouseLeave } = useCardTilt();
 
 const shortenAddress = computed(() => {
     if (!address.value) return '';
@@ -154,29 +154,6 @@ const creatorRows: Row[] = [
 ];
 
 const currentRows = () => (perspective.value === 'users' ? userRows : creatorRows);
-
-// Card tilt effect (match HomeView)
-const handleCardMouseMove = (event: MouseEvent) => {
-    const card = event.currentTarget as HTMLElement;
-    const rect = card.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    const rotateX = (y - centerY) / 50;
-    const rotateY = -(x - centerX) / 50;
-
-    card.style.transition = 'transform 0.15s ease-out, box-shadow 0.15s ease-out';
-    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-};
-
-const handleCardMouseLeave = (event: MouseEvent) => {
-    const card = event.currentTarget as HTMLElement;
-    card.style.transition = 'transform 0.5s ease, box-shadow 0.3s ease';
-    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)';
-};
 </script>
 
 <template>
@@ -475,27 +452,3 @@ const handleCardMouseLeave = (event: MouseEvent) => {
     </div>
 
 </template>
-
-<style scoped>
-.fade-slide-enter-active,
-.fade-slide-leave-active {
-    transition: opacity 300ms var(--ease-standard, cubic-bezier(.22, .61, .36, 1)), transform 300ms var(--ease-standard, cubic-bezier(.22, .61, .36, 1));
-}
-
-.fade-slide-enter-from,
-.fade-slide-leave-to {
-    opacity: 0;
-    transform: translateY(12px);
-}
-
-/* Feature card with smooth transition and colored glow (match HomeView) */
-.feature-card {
-    transform-style: preserve-3d;
-    transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
-}
-
-.feature-card:hover {
-    box-shadow: 0 0 20px color-mix(in srgb, var(--glow-color) 60%, transparent),
-        0 10px 40px rgba(0, 0, 0, 0.3);
-}
-</style>
