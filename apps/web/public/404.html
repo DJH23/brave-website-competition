@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Loading App…</title>
+    <meta name="robots" content="noindex" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <style>
+      body {background:#0b0b10;color:#e6e8ef;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100dvh;margin:0;padding:0;}
+      .wrap {text-align:center;max-width:480px;padding:32px;}
+      h1 {font-size:1.25rem;font-weight:600;margin:0 0 1rem;}
+      p {opacity:.75;margin:.25rem 0;}
+      .note {font-size:.75rem;opacity:.5}
+      .pulse {width:12px;height:12px;border-radius:50%;background:#ff6a00;display:inline-block;animation:pulse 1.2s infinite ease-in-out;}
+      @keyframes pulse {0%,100%{transform:scale(.6);opacity:.5}50%{transform:scale(1);opacity:1}}
+    </style>
+    <script>
+      // Hash router fallback for IPFS / deep links
+      (function(){
+        var loc = window.location;
+        // If already using hash history, just redirect to root with hash
+        if(!loc.hash){
+          var path = loc.pathname.replace(/^(\/)*/,'');
+          if(path && path !== 'index.html' && path !== '404.html'){
+            // Preserve query string if present
+            var query = loc.search || '';
+            // Use relative redirect to keep IPFS CID path
+            loc.replace('./#/' + path + query);
+          } else {
+            // Nothing to do; send to root
+            loc.replace('./#/');
+          }
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="pulse" aria-hidden="true"></div>
+      <h1>Loading the Privacy‑First Creator Hub…</h1>
+      <p>If this page doesn't load automatically, <a href="/">go to the homepage</a>.</p>
+      <p class="note">IPFS fallback page</p>
+    </div>
+  </body>
+</html>
