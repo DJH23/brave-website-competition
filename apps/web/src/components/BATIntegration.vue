@@ -174,8 +174,7 @@ const searchBrave = async () => {
                                 Solana
                             </button>
                         </div>
-                        <Button variant="primary"
-                            @click="() => { connectWallet(selectedChain); }"
+                        <Button variant="primary" @click="() => { connectWallet(selectedChain); }"
                             :disabled="isLoading">
                             {{ isLoading ? '⏳ Connecting...' : `🔗 Connect ${selectedChain === 'solana' ? 'Solana' :
                                 'Ethereum'}` }}

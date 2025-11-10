@@ -297,8 +297,7 @@ watch(() => props.src, (newSrc) => {
         transform: scale(0.95);
     }
 
-    to {
-        opacity: 1;
+    to {        opacity: 1;
         transform: scale(1);
     }
 }

@@ -1,9 +1,5 @@
 import { ref, computed } from "vue";
-import {
-  Connection,
-  PublicKey,
-  Transaction,
-} from "@solana/web3.js";
+import { Connection, PublicKey, Transaction } from "@solana/web3.js";
 import {
   getAssociatedTokenAddress,
   createTransferInstruction,
