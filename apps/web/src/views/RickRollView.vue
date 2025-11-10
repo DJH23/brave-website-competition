@@ -3,9 +3,6 @@ import { ref, onMounted } from 'vue';
 import CTASection from '../components/CTASection.vue';
 import CTACard from '../components/CTACard.vue';
 import { useIntersectionObserver } from '../composables/useIntersectionObserver';
-import { useCardTilt } from '../composables/useCardTilt';
-
-const { handleCardMouseMove, handleCardMouseLeave } = useCardTilt();
 
 // Reveal on scroll for main headings
 const rickRollHeadingRef = ref<HTMLElement | null>(null);
@@ -16,9 +13,10 @@ const { hasBeenVisible: memesPrivacyVisible } = useIntersectionObserver(memesPri
 
 // Thug life glasses overlay on video for first 5 seconds
 const glassesVisible = ref(true);
-// Primary image expected in /public root: /thug-life-sunglasses.png
+// Primary image expected in /public root. Use BASE_URL so it works on IPFS (relative paths)
 // Fallback is an inline data URI (simple placeholder) if the file is missing
-const glassesSrc = ref<string>('/thug-life-sunglasses.png');
+const baseUrl = import.meta.env.BASE_URL || './';
+const glassesSrc = ref<string>(baseUrl + 'thug-life-sunglasses.png');
 const fallbackGlassesDataUri = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHAAAAAUCAYAAAB1Z0ZuAAAACXBIWXMAAAsTAAALEwEAmpwYAAABF0lEQVRoge2WsQ3CMAxF3yYgA3ACMwAnYAImYAImYAI2YAL8lU2gqWmS2kXG6nPpkWcY1w6P2xv1G0JbJpOJ1PEjQfH3EmvtvG19sPHD6GCGME0kIJpQjCNCBQAl5gA+H3gArx0wx6xAAFtG6M8Gvc0wOCECVqT3V5XqB4Zk7LQ6AZdU1KYwmlbJKxveQ0HcTqXCMBFi5AbixQCnG4j2pJxtA+K5Z0Lk7mWDjzEkvDHgGe0xQFJibOA6gk+IQFsZ0gDv6e1Zgj6Ew8BS4cr7fFa44pG+DWmB0u2X1hR98Mav3CEhp3/AqdpdgR5O/WM2Vx6Z81jfn6x9NG7PHF69It5QRYwSSQgmlCMI0IFACXmAQ1HGOA+V5BgAAAABJRU5ErkJggg==';
 onMounted(() => {
     // Hide after 5 seconds

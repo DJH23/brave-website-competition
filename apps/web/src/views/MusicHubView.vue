@@ -159,17 +159,21 @@ const currentRows = () => (perspective.value === 'creators' ? creatorRows : user
                 <!-- Perspective toggle -->
                 <div class="flex items-center justify-center gap-3 mb-6">
                     <button type="button"
-                        class="px-4 py-2 rounded-lg text-base md:text-lg font-semibold transition-colors inline-flex items-center gap-2 tracking-wide"
-                        :class="perspective === 'creators' ? 'bg-white/15 text-white shadow-sm' : 'text-gray-300 hover:bg-white/5'"
+                        class="px-4 py-2 rounded-lg text-base md:text-lg font-semibold transition-all inline-flex items-center gap-2 tracking-wide border-2"
+                        :class="perspective === 'creators' ? 'bg-braveOrange/20 border-braveOrange text-white shadow-[0_0_20px_rgba(251,84,43,0.3)]' : 'text-gray-300 hover:bg-white/5 border-transparent'"
                         :aria-pressed="perspective === 'creators'" @click="() => { perspective = 'creators' }">
-                        <i class="bi bi-music-note-beamed text-braveOrange" aria-hidden="true"></i>
+                        <i class="bi bi-music-note-beamed"
+                            :class="perspective === 'creators' ? 'text-braveOrange' : 'text-braveOrange/70'"
+                            aria-hidden="true"></i>
                         <span>For Creators</span>
                     </button>
                     <button type="button"
-                        class="px-4 py-2 rounded-lg text-base md:text-lg font-semibold transition-colors inline-flex items-center gap-2 tracking-wide"
-                        :class="perspective === 'users' ? 'bg-white/15 text-white shadow-sm' : 'text-gray-300 hover:bg-white/5'"
+                        class="px-4 py-2 rounded-lg text-base md:text-lg font-semibold transition-all inline-flex items-center gap-2 tracking-wide border-2"
+                        :class="perspective === 'users' ? 'bg-braveOrange/20 border-braveOrange text-white shadow-[0_0_20px_rgba(251,84,43,0.3)]' : 'text-gray-300 hover:bg-white/5 border-transparent'"
                         :aria-pressed="perspective === 'users'" @click="() => { perspective = 'users' }">
-                        <i class="bi bi-people text-braveOrange" aria-hidden="true"></i>
+                        <i class="bi bi-people"
+                            :class="perspective === 'users' ? 'text-braveOrange' : 'text-braveOrange/70'"
+                            aria-hidden="true"></i>
                         <span>For Users</span>
                     </button>
                 </div>
@@ -183,7 +187,7 @@ const currentRows = () => (perspective.value === 'creators' ? creatorRows : user
                                     <tr class="text-gray-400">
                                         <th scope="col" class="py-3 pr-6">Criteria</th>
                                         <th v-for="p in platforms" :key="p.key" scope="col" class="py-3 pr-6">{{ p.label
-                                        }}</th>
+                                            }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="align-top">

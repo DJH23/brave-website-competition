@@ -25,7 +25,12 @@ export default defineConfig(({ mode }) => {
           enabled: false, // Disable PWA in dev mode to avoid the error
           type: "module",
         },
-        includeAssets: ["favicon.ico", "robots.txt", "audio/**/*"],
+        includeAssets: [
+          "favicon.ico",
+          "robots.txt",
+          "audio/**/*",
+          "thug-life-sunglasses.png",
+        ],
         manifest: {
           name: "Privacy-First Creator Hub",
           short_name: "Creator Hub",

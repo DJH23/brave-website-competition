@@ -96,8 +96,8 @@ onMounted(() => {
             enter-from-class="opacity-0 -translate-y-4" enter-to-class="opacity-100 translate-y-0"
             leave-active-class="transition-all duration-200 ease-in" leave-from-class="opacity-100 translate-y-0"
             leave-to-class="opacity-0 -translate-y-4">
-            <div v-if="mobileMenuOpen" class="md:hidden border-t border-white/10 glass-strong">
-                <div class="px-4 py-4 space-y-2">
+            <div v-if="mobileMenuOpen" class="glass-strong md:hidden border-t border-white/10">
+                <div class="glass-strong px-4 py-4 space-y-2">
                     <RouterLink v-for="item in navItems" :key="item.path" :to="item.path"
                         @click="mobileMenuOpen = false"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg transition-colors" :class="route.path === item.path

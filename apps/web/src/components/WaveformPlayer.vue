@@ -236,32 +236,35 @@ watch(() => props.src, (newSrc) => {
         </div>
 
         <!-- Play Button, Waveform, and Purchase Button Container -->
-        <div class="flex items-center gap-2">
-            <!-- Play Button on the left -->
-            <Button size="sm" variant="ghost" :aria-label="isPlaying ? `Pause ${title}` : `Play ${title}`" @click="play"
-                class="shrink-0">
-                <i :class="isPlaying ? 'bi-pause-fill' : 'bi-play-fill'" class="text-xl" aria-hidden="true"></i>
-            </Button>
+        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-2">
+            <!-- Top row on mobile: Play Button and Waveform side by side -->
+            <div class="flex items-center gap-2 flex-1">
+                <!-- Play Button on the left -->
+                <Button size="sm" variant="ghost" :aria-label="isPlaying ? `Pause ${title}` : `Play ${title}`"
+                    @click="play" class="shrink-0">
+                    <i :class="isPlaying ? 'bi-pause-fill' : 'bi-play-fill'" class="text-xl" aria-hidden="true"></i>
+                </Button>
 
-            <!-- Waveform fills available width -->
-            <div class="flex-1 mr-2 relative" style="min-height:80px;">
-                <!-- Loading state -->
-                <div v-if="isLoading"
-                    class="absolute inset-0 flex items-center justify-center bg-white/5 rounded-lg backdrop-blur-sm">
-                    <div class="flex flex-col items-center gap-2">
-                        <div
-                            class="w-8 h-8 border-2 border-brand-orange border-t-transparent rounded-full animate-spin">
+                <!-- Waveform fills available width -->
+                <div class="flex-1 relative" style="min-height:80px;">
+                    <!-- Loading state -->
+                    <div v-if="isLoading"
+                        class="absolute inset-0 flex items-center justify-center bg-white/5 rounded-lg backdrop-blur-sm">
+                        <div class="flex flex-col items-center gap-2">
+                            <div
+                                class="w-8 h-8 border-2 border-brand-orange border-t-transparent rounded-full animate-spin">
+                            </div>
+                            <span class="text-xs text-neutral-400">Loading audio...</span>
                         </div>
-                        <span class="text-xs text-neutral-400">Loading audio...</span>
                     </div>
+                    <!-- Waveform container -->
+                    <div ref="container" class="w-full h-full"></div>
                 </div>
-                <!-- Waveform container -->
-                <div ref="container" class="w-full h-full"></div>
             </div>
 
-            <!-- Purchase Button on the right -->
+            <!-- Purchase Button: Auto width, centered on mobile with spacing -->
             <button v-if="price" @click="handlePurchaseTrack" :aria-label="`Purchase ${title} for ${price} BAT`"
-                class="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/20 hover:border-white/40 hover:bg-white/10 transition-all duration-300 hover:scale-105 hover:shadow-lg whitespace-nowrap shrink-0">
+                class="flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/20 hover:border-white/40 hover:bg-white/10 transition-all duration-300 hover:scale-105 hover:shadow-lg whitespace-nowrap shrink-0 w-auto mt-2 sm:mt-0 mx-auto sm:mx-0">
                 <Suspense>
                     <BATLogo3DAsync :width="56" :height="56" />
                     <template #fallback>
@@ -297,7 +300,8 @@ watch(() => props.src, (newSrc) => {
         transform: scale(0.95);
     }
 
-    to {        opacity: 1;
+    to {
+        opacity: 1;
         transform: scale(1);
     }
 }
