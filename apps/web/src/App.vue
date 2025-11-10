@@ -8,6 +8,7 @@ import AnimatedBackground from "./components/AnimatedBackground.vue";
 import ChainSelectorModal from './components/ChainSelectorModal.vue';
 import gsap from 'gsap';
 import { computed, ref } from 'vue';
+import { useMultiChainWallet } from './composables/useMultiChainWallet';
 // Import web3 config to initialize modal (side effect, but tree-shaken if wallet features unused)
 import './config/web3';
 
@@ -16,6 +17,9 @@ const currentYear = computed(() => new Date().getFullYear());
 
 // Support (Tip) modal state
 const showSupportModal = ref(false);
+
+// Use wallet composable for support functionality
+const { connectWallet, isConnected } = useMultiChainWallet();
 
 // Map current route to a themed title color class for the support modal
 // Assumptions (adjust if different view themes):
@@ -40,9 +44,25 @@ function openSupportModal() {
 function closeSupportModal() {
     showSupportModal.value = false;
 }
-function handleChainSelect(_chain: 'ethereum' | 'solana') {
-    // For now simply close; future enhancement could route to tipping flow
+async function handleChainSelect(chain: 'ethereum' | 'solana') {
+    console.log('[App.vue] Chain selected for support:', chain);
+
+    // Close modal first to show wallet popup
     showSupportModal.value = false;
+
+    try {
+        // Connect to selected chain
+        await connectWallet(chain);
+
+        // If connection successful, you could show a success message or navigate
+        console.log('[App.vue] Connected to', chain, '- isConnected:', isConnected.value);
+
+        // Optional: Show a notification that they're connected and can now support
+        // For now, user can click "Support Project" again to make a tip after connecting
+    } catch (error) {
+        console.error('[App.vue] Failed to connect wallet:', error);
+        // Error is already handled in the wallet composable
+    }
 }
 
 // SEO Meta Tags

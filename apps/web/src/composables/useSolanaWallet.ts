@@ -123,10 +123,24 @@ export function useSolanaWallet() {
 
       // Don't auto-fetch balance to avoid RPC rate limits
       // Balance will be fetched on-demand when needed
-    } catch (err) {
+    } catch (err: any) {
       console.error("Failed to connect Solana wallet:", err);
-      error.value =
-        "Failed to connect Solana wallet. Please try again or check wallet settings.";
+
+      // Handle specific error cases
+      if (err.code === 4001 || err.message?.includes("User rejected")) {
+        error.value = "Connection cancelled. Please try again when ready.";
+        console.log("[useSolanaWallet] User rejected the connection request");
+      } else if (err.message?.includes("wallet is locked")) {
+        error.value = "Please unlock your Solana wallet and try again.";
+      } else {
+        error.value =
+          "Failed to connect Solana wallet. Please try again or check wallet settings.";
+      }
+
+      // Clear any partial connection state
+      solanaProvider.value = null;
+      address.value = null;
+      isConnected.value = false;
     } finally {
       isLoading.value = false;
     }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref, onMounted, watch } from 'vue';
 
 type ChainType = 'ethereum' | 'solana';
 
@@ -22,6 +22,39 @@ const emit = defineEmits<{
     (e: 'select', chain: ChainType): void;
 }>();
 
+// Check wallet availability
+const hasEthereumWallet = ref(false);
+const hasSolanaWallet = ref(false);
+
+onMounted(() => {
+    checkWalletAvailability();
+});
+
+// Re-check wallet availability when modal opens
+watch(() => props.show, (isOpen) => {
+    if (isOpen) {
+        checkWalletAvailability();
+    }
+});
+
+const checkWalletAvailability = () => {
+    if (typeof window !== 'undefined') {
+        const w = window as any;
+
+        // Check for Ethereum wallets (MetaMask, Brave Wallet, etc.)
+        hasEthereumWallet.value = !!w.ethereum;
+
+        // Check for Solana wallet (Phantom, Brave Wallet with Solana enabled)
+        const solProvider = w.solana;
+        hasSolanaWallet.value = !!(
+            solProvider &&
+            (solProvider.isPhantom === true ||
+                solProvider.isBraveWallet === true ||
+                typeof solProvider.connect === 'function')
+        );
+    }
+};
+
 const resolvedTitle = computed(() => props.title ?? 'Choose Blockchain');
 const resolvedDescription = computed(() => props.description ?? (
     props.mode === 'tip'
@@ -41,6 +74,16 @@ function close() {
     emit('close');
 }
 function select(chain: ChainType) {
+    // Check if wallet is available before emitting
+    if (chain === 'ethereum' && !hasEthereumWallet.value) {
+        alert('No Ethereum wallet detected. Please install Brave Wallet or MetaMask.');
+        return;
+    }
+    if (chain === 'solana' && !hasSolanaWallet.value) {
+        alert('No Solana wallet detected. Please enable Solana in Brave Wallet settings or install Phantom wallet.');
+        return;
+    }
+
     emit('select', chain);
 }
 
@@ -95,16 +138,27 @@ function onCardMouseLeave(event: MouseEvent) {
                         <!-- Ethereum -->
                         <button @click="select('ethereum')"
                             class="relative w-full p-4 rounded-lg bg-white/5 text-left chain-selector-card"
-                            :style="{ '--glow-color': '#7C3AED' }" @mousemove="onCardMouseMove"
-                            @mouseleave="onCardMouseLeave">
+                            :class="{ 'opacity-50': !hasEthereumWallet }" :style="{ '--glow-color': '#7C3AED' }"
+                            @mousemove="onCardMouseMove" @mouseleave="onCardMouseLeave">
                             <div class="flex items-center gap-3">
                                 <div
                                     class="w-10 h-10 rounded-full bg-brand-purple/20 flex items-center justify-center transition-transform">
                                     <span class="text-xl">⟠</span>
                                 </div>
-                                <div>
+                                <div class="flex-1">
                                     <div class="font-semibold text-white">Ethereum</div>
                                     <div class="text-xs text-neutral-400">ERC-20 BAT Token</div>
+                                </div>
+                                <div v-if="!hasEthereumWallet" class="text-xs text-yellow-500 font-medium">
+                                    Not Detected
+                                </div>
+                                <div v-else class="text-xs text-green-500 font-medium flex items-center gap-1">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    Ready
                                 </div>
                             </div>
                         </button>
@@ -112,16 +166,27 @@ function onCardMouseLeave(event: MouseEvent) {
                         <!-- Solana -->
                         <button @click="select('solana')"
                             class="relative w-full p-4 rounded-lg bg-white/5 text-left chain-selector-card"
-                            :style="{ '--glow-color': '#FF6A00' }" @mousemove="onCardMouseMove"
-                            @mouseleave="onCardMouseLeave">
+                            :class="{ 'opacity-50': !hasSolanaWallet }" :style="{ '--glow-color': '#FF6A00' }"
+                            @mousemove="onCardMouseMove" @mouseleave="onCardMouseLeave">
                             <div class="flex items-center gap-3">
                                 <div
                                     class="w-10 h-10 rounded-full bg-brand-orange/20 flex items-center justify-center transition-transform">
                                     <span class="text-xl">◎</span>
                                 </div>
-                                <div>
+                                <div class="flex-1">
                                     <div class="font-semibold text-white">Solana</div>
                                     <div class="text-xs text-neutral-400">SPL BAT Token</div>
+                                </div>
+                                <div v-if="!hasSolanaWallet" class="text-xs text-yellow-500 font-medium">
+                                    Not Detected
+                                </div>
+                                <div v-else class="text-xs text-green-500 font-medium flex items-center gap-1">
+                                    <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    Ready
                                 </div>
                             </div>
                         </button>
