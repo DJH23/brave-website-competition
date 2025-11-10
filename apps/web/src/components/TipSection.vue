@@ -17,6 +17,11 @@ const props = withDefaults(defineProps<Props>(), {
     colorClass: 'text-braveOrange'
 });
 
+const emit = defineEmits<{
+    tipInitiated: [];
+    chainSelectorOpening: [];
+}>();
+
 const tipAmount = ref(5); // Default tip amount in BAT
 const { connectWallet, isConnected, sendBATTip, activeChain } = useMultiChainWallet();
 const { batPrice } = useBATPrice();
@@ -106,11 +111,16 @@ const handleTipInput = (event: Event) => {
 
 const handleTip = async () => {
     if (!isConnected.value) {
-        // Show chain selector modal
-        showTipChainSelector.value = true;
+        // Emit event to hide parent modal content before showing chain selector
+        emit('chainSelectorOpening');
+        // Show chain selector modal after a brief delay
+        setTimeout(() => {
+            showTipChainSelector.value = true;
+        }, 100);
         return;
     }
 
+    // Already connected, send tip directly
     try {
         const success = await sendBATTip(tipAmount.value.toString());
         if (success) {
@@ -132,6 +142,9 @@ const handleTip = async () => {
 
 const handleTipChainSelected = async (chain: ChainType) => {
     showTipChainSelector.value = false;
+
+    // Emit to close the parent modal now that chain is selected
+    emit('tipInitiated');
 
     try {
         await connectWallet(chain);

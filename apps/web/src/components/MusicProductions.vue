@@ -22,19 +22,19 @@ const musicTracks = ref<Track[]>([
     {
         title: "Bachman",
         genre: "Classical",
-        src: "https://gateway.pinata.cloud/ipfs/bafybeie7iaduggdgtctw4sqyds4y54kxjjrlsiovxtiep4k74qlbtizufa",
+        src: "https://gateway.pinata.cloud/ipfs/bafybeigcj2wdtf7fj4cfdeluahzkxdokooewlrxrhqezznlkwe2kgqstu4",
         price: 10 // Price in BAT
     },
     {
         title: "A Computer Is An Educational Device",
         genre: "Electronica",
-        src: "https://gateway.pinata.cloud/ipfs/bafybeihwhh3zodo7ptgdyun3w7r4kdnhrabquo5266j6vzlbgbh2gcscby",
+        src: "https://gateway.pinata.cloud/ipfs/bafybeie5lfhax5kexpnjwxwxodr55emroexqeuzfwyo4zp6q7dg44afere",
         price: 10 // Price in BAT
     },
     {
         title: "Cygnus",
         genre: "Techno - Melodic",
-        src: "https://gateway.pinata.cloud/ipfs/bafybeia62owagdkdqbtqwjn6max3dt74jmmruhi2issj2dkbssvk5q67di",
+        src: "https://gateway.pinata.cloud/ipfs/bafybeig643a6zmii2zesog7bcrv7nyp2z5c6kiubcfsrfhsslcco7hcnwu",
         price: 10 // Price in BAT
     }
 ]);

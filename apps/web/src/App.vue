@@ -5,7 +5,7 @@ import Navigation from "./components/Navigation.vue";
 import ParticleBackground from "./components/ParticleBackground.vue";
 import ConfigurableParticleBackground from './components/ConfigurableParticleBackground.vue';
 import AnimatedBackground from "./components/AnimatedBackground.vue";
-import ChainSelectorModal from './components/ChainSelectorModal.vue';
+import SupportTipModal from './components/SupportTipModal.vue';
 import gsap from 'gsap';
 import { computed, ref } from 'vue';
 import { useMultiChainWallet } from './composables/useMultiChainWallet';
@@ -16,7 +16,7 @@ const route = useRoute();
 const currentYear = computed(() => new Date().getFullYear());
 
 // Support (Tip) modal state
-const showSupportModal = ref(false);
+const showTipModal = ref(false);
 
 // Use wallet composable for support functionality
 const { connectWallet, isConnected } = useMultiChainWallet();
@@ -39,30 +39,11 @@ const pageTitleColorClass = computed(() => {
 });
 
 function openSupportModal() {
-    showSupportModal.value = true;
+    // Always show tip modal first (consistent flow)
+    showTipModal.value = true;
 }
-function closeSupportModal() {
-    showSupportModal.value = false;
-}
-async function handleChainSelect(chain: 'ethereum' | 'solana') {
-    console.log('[App.vue] Chain selected for support:', chain);
-
-    // Close modal first to show wallet popup
-    showSupportModal.value = false;
-
-    try {
-        // Connect to selected chain
-        await connectWallet(chain);
-
-        // If connection successful, you could show a success message or navigate
-        console.log('[App.vue] Connected to', chain, '- isConnected:', isConnected.value);
-
-        // Optional: Show a notification that they're connected and can now support
-        // For now, user can click "Support Project" again to make a tip after connecting
-    } catch (error) {
-        console.error('[App.vue] Failed to connect wallet:', error);
-        // Error is already handled in the wallet composable
-    }
+function closeTipModal() {
+    showTipModal.value = false;
 }
 
 // SEO Meta Tags
@@ -226,10 +207,10 @@ const onLeave = (el: Element, done: () => void) => {
                                     <span>Support Project</span>
                                 </button>
                             </li>
-                            <li>
+                            <li class="flex">
                                 <a href="https://soundcloud.com/onemangangmusic" target="_blank"
                                     rel="noopener noreferrer" aria-label="SoundCloud - One Man Gang Music"
-                                    class="flex items-center gap-2 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-braveOrange rounded-sm col-span-2">
+                                    class="w-full text-left flex items-center gap-2 hover:text-white transition-colors focus:outline-none focus:ring-2 focus:ring-braveOrange rounded-sm">
                                     <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"
                                         xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
                                         <path fill="none" d="M0 0h24v24H0z" />
@@ -295,9 +276,8 @@ const onLeave = (el: Element, done: () => void) => {
             </div>
         </footer>
 
-        <!-- Global Support (Tip) Chain Selector Modal -->
-        <ChainSelectorModal :show="showSupportModal" mode="tip" title="Support this Project"
-            :title-color-class="pageTitleColorClass" @close="closeSupportModal" @select="handleChainSelect" />
+        <!-- Support Tip Modal -->
+        <SupportTipModal :is-open="showTipModal" @close="closeTipModal" />
     </div>
 </template>
 

@@ -33,7 +33,7 @@ export const BAT_SPL_MINT_ADDRESS =
 // Solana recipient address for tips (CHANGE THIS TO YOUR ACTUAL RECIPIENT ADDRESS)
 // Currently set to same as wallet for testing - YOU MUST CHANGE THIS!
 export const TIP_RECIPIENT_ADDRESS_SOLANA =
-  "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM"; // Example address - REPLACE WITH YOUR ACTUAL RECIPIENT
+  "1mWFauW7TmVVLWcSMojUFFqgoJJEYcJKUcyM3x1KccE";
 
 // Solana RPC endpoint - using Helius with API key for reliable transactions
 export const SOLANA_RPC_ENDPOINTS = [
