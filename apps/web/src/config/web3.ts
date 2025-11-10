@@ -1,5 +1,5 @@
 import { createWeb3Modal, defaultConfig } from "@web3modal/ethers/vue";
-import { solana, solanaDevnet, solanaTestnet } from "@web3modal/solana/chains";
+import { solana } from "@web3modal/solana/chains";
 
 // ============================================================================
 // ETHEREUM / EVM CONFIGURATION

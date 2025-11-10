@@ -1,12 +1,11 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, reactive, ref, nextTick, computed } from 'vue';
+import { onBeforeUnmount, onMounted, reactive, ref, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
-import { useFloating, offset, flip, shift, arrow } from '@floating-ui/vue';
 import BaseModal from './BaseModal.vue';
 import { useFlowNodes, type FlowNode } from '../composables/useFlowNodes';
 
 const router = useRouter();
-const { nodes, getNode, getConnectedNodes } = useFlowNodes();
+const { getNode, getConnectedNodes } = useFlowNodes();
 
 // Tooltip text for interactive nodes
 const tooltips: Record<string, string> = {
@@ -19,7 +18,7 @@ const tooltips: Record<string, string> = {
     c4: 'Receive on-demand tips, recurring contributions, and auto-contributions once verified and connected.'
 };
 
-// Navigation mapping for node clicks
+// Navigation mapping for node clicks (currently unused but kept for fallback)
 const navigationMap: Record<string, string> = {
     c1: '/wallet#creator-signup',
     c2: '/wallet#creator-verification',
@@ -32,17 +31,6 @@ const navigationMap: Record<string, string> = {
 
 const activeTooltip = ref<string | null>(null);
 const tooltipPosition = ref({ x: 0, y: 0 });
-
-const showTooltip = (id: string, event: MouseEvent) => {
-    if (tooltips[id]) {
-        activeTooltip.value = id;
-        tooltipPosition.value = { x: event.clientX, y: event.clientY + 20 };
-    }
-};
-
-const hideTooltip = () => {
-    activeTooltip.value = null;
-};
 
 const handleNodeClick = (id: string) => {
     // New modal-based interaction
@@ -176,7 +164,6 @@ function handleNodeBlur() {
 
 // Overlay SVG + anchors
 const wrap = ref<HTMLElement | null>(null);
-const svg = ref<SVGSVGElement | null>(null);
 
 // Container refs for cross-lane connectors
 const setupContainer = ref<HTMLElement | null>(null);
@@ -207,9 +194,6 @@ const c4Card = ref<HTMLElement | null>(null);
 // Container size for viewBox mapping
 const boxWidth = ref(1200);
 const boxHeight = ref(800);
-
-// Brand colors from design system - using braveBlue consistently
-const brandColors = ['#0EA5E9']; // braveBlue
 
 // Stable color assignment per edge ID
 function getEdgeColor(edgeId: string): string {
