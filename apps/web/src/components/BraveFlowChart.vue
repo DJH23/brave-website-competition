@@ -282,16 +282,28 @@ function layoutEdges() {
 
     const list: Edge[] = [];
 
-    // Cross edges from bottom of Setup container to top of Users/Creators containers
-    if (setupContainer.value && usersContainer.value) {
-        const a = anchor(setupContainer.value, box, 'bottom');
-        const b = anchor(usersContainer.value, box, 'top');
-        if (a && b) list.push({ id: 'setup->users', d: quadPath(a, b, 60), color: getEdgeColor('setup->users') });
+    // Determine if Users and Creators are side-by-side (desktop) or stacked (mobile)
+    let sideBySide = true;
+    if (usersContainer.value && creatorsContainer.value) {
+        const uRect = usersContainer.value.getBoundingClientRect();
+        const cRect = creatorsContainer.value.getBoundingClientRect();
+        // If their top positions differ significantly, they're stacked
+        sideBySide = Math.abs(uRect.top - cRect.top) < 80;
     }
-    if (setupContainer.value && creatorsContainer.value) {
-        const a = anchor(setupContainer.value, box, 'bottom');
-        const b = anchor(creatorsContainer.value, box, 'top');
-        if (a && b) list.push({ id: 'setup->creators', d: quadPath(a, b, 60), color: getEdgeColor('setup->creators') });
+
+    // Cross edges from bottom of Setup container to top of Users/Creators containers
+    // Only draw these when lanes are side-by-side to avoid messy overlaps on stacked layout
+    if (sideBySide) {
+        if (setupContainer.value && usersContainer.value) {
+            const a = anchor(setupContainer.value, box, 'bottom');
+            const b = anchor(usersContainer.value, box, 'top');
+            if (a && b) list.push({ id: 'setup->users', d: quadPath(a, b, 60), color: getEdgeColor('setup->users') });
+        }
+        if (setupContainer.value && creatorsContainer.value) {
+            const a = anchor(setupContainer.value, box, 'bottom');
+            const b = anchor(creatorsContainer.value, box, 'top');
+            if (a && b) list.push({ id: 'setup->creators', d: quadPath(a, b, 60), color: getEdgeColor('setup->creators') });
+        }
     }
 
     // Internal vertical edges: Setup
@@ -423,8 +435,7 @@ onBeforeUnmount(() => {
         </svg>
 
         <!-- Content laid out with Flex/Grid so it reflows naturally -->
-        <div
-            class="w-full overflow-x-auto overflow-y-visible pb-4 scrollbar-thin scrollbar-thumb-blue-500/30 scrollbar-track-transparent">
+        <div class="w-full overflow-hidden pb-4">
             <div class="flex flex-col gap-24 lg:gap-26">
                 <!-- Row 1: Setup centered -->
                 <div class="w-full flex justify-center">
@@ -477,10 +488,9 @@ onBeforeUnmount(() => {
                 </div>
 
                 <!-- Row 2: Users and Creators adjacent -->
-                <div class="grid gap-8 grid-cols-1 lg:grid-cols-2 place-items-center">
+                <div class="grid gap-24 lg:gap-8 grid-cols-1 lg:grid-cols-2 place-items-center">
                     <!-- Users lane -->
-                    <div ref="usersContainer"
-                        class="glass rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[480px]">
+                    <div ref="usersContainer" class="glass rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[480px]">
                         <h3
                             class="text-white text-[20px] font-semibold text-center flex items-center justify-center gap-2">
                             <i class="bi bi-people-fill text-braveBlue"></i>
@@ -538,8 +548,7 @@ onBeforeUnmount(() => {
                     </div>
 
                     <!-- Creators lane -->
-                    <div ref="creatorsContainer"
-                        class="glass rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[480px]">
+                    <div ref="creatorsContainer" class="glass rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[480px]">
                         <h3
                             class="text-white text-[20px] font-semibold text-center flex items-center justify-center gap-2">
                             <i class="bi bi-palette-fill text-braveBlue"></i>
