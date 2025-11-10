@@ -36,34 +36,34 @@ const creatorRows: Row[] = [
     {
         label: 'Revenue share kept',
         cells: [
-            { text: '~95%+', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: '45–70%', icon: 'bi-x-circle-fill', color: 'text-red-400' },
-            { text: '8–12% fees', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: '~30–45% share', icon: 'bi-dash-circle', color: 'text-yellow-400' }
+            { text: '~95%+', icon: 'bi-check-circle', color: 'text-green-600' },
+            { text: '45–70%', icon: 'bi-x-circle', color: 'text-red-600' },
+            { text: '8–12% fees', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: '~30–45% share', icon: 'bi-dash-circle', color: 'text-yellow-500' }
         ]
     },
     {
         label: 'Privacy (user tracking)',
         cells: [
-            { text: 'No tracking', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'Heavy tracking', icon: 'bi-exclamation-triangle-fill', color: 'text-red-400' },
-            { text: 'Account data', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: 'Platform data', icon: 'bi-dash-circle', color: 'text-yellow-400' }
+            { text: 'No tracking', icon: 'bi-check-circle', color: 'text-green-600' },
+            { text: 'Heavy tracking', icon: 'bi-exclamation-triangle', color: 'text-red-600' },
+            { text: 'Account data', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: 'Platform data', icon: 'bi-dash-circle', color: 'text-yellow-500' }
         ]
     },
     {
         label: 'Fees / friction',
         cells: [
-            { text: 'No account needed', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'High platform cut', icon: 'bi-x-circle-fill', color: 'text-red-400' },
-            { text: '% fees + churn', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: '% share + churn', icon: 'bi-dash-circle', color: 'text-yellow-400' }
+            { text: 'No account needed', icon: 'bi-check-circle', color: 'text-green-600' },
+            { text: 'High platform cut', icon: 'bi-x-circle', color: 'text-red-600' },
+            { text: '% fees + churn', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: '% share + churn', icon: 'bi-dash-circle', color: 'text-yellow-500' }
         ]
     },
     {
         label: 'Payout speed',
         cells: [
-            { text: 'Fast', icon: 'bi-check-circle-fill', color: 'text-green-400' },
+            { text: 'Fast', icon: 'bi-check-circle', color: 'text-green-600' },
             { text: 'Delayed', icon: 'bi-hourglass-split', color: 'text-gray-400' },
             { text: 'Monthly cycles', icon: 'bi-hourglass-split', color: 'text-gray-400' },
             { text: 'Monthly cycles', icon: 'bi-hourglass-split', color: 'text-gray-400' }
@@ -72,10 +72,10 @@ const creatorRows: Row[] = [
     {
         label: 'Platform dependence',
         cells: [
-            { text: 'Open web', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'Algorithmic risk', icon: 'bi-x-circle-fill', color: 'text-red-400' },
-            { text: 'Platform lock‑in', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: 'Platform lock‑in', icon: 'bi-dash-circle', color: 'text-yellow-400' }
+            { text: 'Open web', icon: 'bi-check-circle', color: 'text-green-600' },
+            { text: 'Algorithmic risk', icon: 'bi-x-circle', color: 'text-red-600' },
+            { text: 'Platform lock‑in', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: 'Platform lock‑in', icon: 'bi-dash-circle', color: 'text-yellow-500' }
         ]
     }
 ];
@@ -84,46 +84,46 @@ const userRows: Row[] = [
     {
         label: 'Privacy protection',
         cells: [
-            { text: 'No tracking', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'Targeted tracking', icon: 'bi-exclamation-triangle-fill', color: 'text-red-400' },
-            { text: 'Account data', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: 'Platform data', icon: 'bi-dash-circle', color: 'text-yellow-400' }
+            { text: 'No tracking', icon: 'bi-check-circle', color: 'text-green-600' },
+            { text: 'Targeted tracking', icon: 'bi-exclamation-triangle', color: 'text-red-600' },
+            { text: 'Account data', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: 'Platform data', icon: 'bi-dash-circle', color: 'text-yellow-500' }
         ]
     },
     {
         label: 'Account required',
         cells: [
-            { text: 'No', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'N/A', icon: 'bi-x-circle-fill', color: 'text-red-400' },
-            { text: 'Yes', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: 'Yes', icon: 'bi-dash-circle', color: 'text-yellow-400' }
+            { text: 'No', icon: 'bi-check-circle', color: 'text-green-600' },
+            { text: 'N/A', icon: 'bi-x-circle', color: 'text-red-600' },
+            { text: 'Yes', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: 'Yes', icon: 'bi-dash-circle', color: 'text-yellow-500' }
         ]
     },
     {
         label: 'Ease to support',
         cells: [
-            { text: 'One‑click tipping', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'Indirect (ads)', icon: 'bi-x-circle-fill', color: 'text-red-400' },
-            { text: 'Memberships', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: 'Memberships', icon: 'bi-dash-circle', color: 'text-yellow-400' }
+            { text: 'One‑click tipping', icon: 'bi-check-circle', color: 'text-green-600' },
+            { text: 'Indirect (ads)', icon: 'bi-x-circle', color: 'text-red-600' },
+            { text: 'Memberships', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: 'Memberships', icon: 'bi-dash-circle', color: 'text-yellow-500' }
         ]
     },
     {
         label: 'Ad experience',
         cells: [
-            { text: 'Opt‑in private ads', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'Targeted invasive ads', icon: 'bi-x-circle-fill', color: 'text-red-400' },
-            { text: 'No ads (paid)', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: 'Platform promos', icon: 'bi-dash-circle', color: 'text-yellow-400' }
+            { text: 'Opt‑in private ads', icon: 'bi-check-circle', color: 'text-green-600' },
+            { text: 'Targeted invasive ads', icon: 'bi-x-circle', color: 'text-red-600' },
+            { text: 'No ads (paid)', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: 'Platform promos', icon: 'bi-dash-circle', color: 'text-yellow-500' }
         ]
     },
     {
         label: 'Costs to user',
         cells: [
-            { text: 'None for tipping', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'Time/attention', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: 'Monthly fee', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: 'Monthly fee', icon: 'bi-dash-circle', color: 'text-yellow-400' }
+            { text: 'None for tipping', icon: 'bi-check-circle', color: 'text-green-600' },
+            { text: 'Time/attention', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: 'Monthly fee', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: 'Monthly fee', icon: 'bi-dash-circle', color: 'text-yellow-500' }
         ]
     }
 ];
@@ -183,7 +183,7 @@ const currentRows = () => (perspective.value === 'creators' ? creatorRows : user
                                     <tr class="text-gray-400">
                                         <th scope="col" class="py-3 pr-6">Criteria</th>
                                         <th v-for="p in platforms" :key="p.key" scope="col" class="py-3 pr-6">{{ p.label
-                                            }}</th>
+                                        }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="align-top">
@@ -207,7 +207,7 @@ const currentRows = () => (perspective.value === 'creators' ? creatorRows : user
                                     <div class="text-white font-semibold mb-2 flex items-center gap-2 text-base">
                                         <i v-if="p.key === 'bat'" class="bi bi-shield-check text-braveBlue"
                                             aria-hidden="true"></i>
-                                        <i v-else-if="p.key === 'ads'" class="bi bi-bullseye text-red-400"
+                                        <i v-else-if="p.key === 'ads'" class="bi bi-bullseye text-red-600"
                                             aria-hidden="true"></i>
                                         <i v-else-if="p.key === 'patreon'" class="bi bi-people text-braveOrange"
                                             aria-hidden="true"></i>

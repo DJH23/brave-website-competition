@@ -142,33 +142,33 @@ const { hasBeenVisible: trySearchVisible } = useIntersectionObserver(trySearchRe
                     <tbody class="divide-y divide-white/10">
                         <tr>
                             <td class="px-6 py-4 text-gray-300">No tracking</td>
-                            <td class="px-6 py-4 text-center text-green-400 text-xl">✓</td>
-                            <td class="px-6 py-4 text-center text-red-400 text-xl">✗</td>
-                            <td class="px-6 py-4 text-center text-green-400 text-xl">✓</td>
+                            <td class="px-6 py-4 text-center text-green-600 text-xl">✓</td>
+                            <td class="px-6 py-4 text-center text-red-600 text-xl">✗</td>
+                            <td class="px-6 py-4 text-center text-green-600 text-xl">✓</td>
                         </tr>
                         <tr>
                             <td class="px-6 py-4 text-gray-300">Independent index</td>
-                            <td class="px-6 py-4 text-center text-green-400 text-xl">✓</td>
-                            <td class="px-6 py-4 text-center text-green-400 text-xl">✓</td>
-                            <td class="px-6 py-4 text-center text-red-400 text-xl">✗</td>
+                            <td class="px-6 py-4 text-center text-green-600 text-xl">✓</td>
+                            <td class="px-6 py-4 text-center text-green-600 text-xl">✓</td>
+                            <td class="px-6 py-4 text-center text-red-600 text-xl">✗</td>
                         </tr>
                         <tr>
                             <td class="px-6 py-4 text-gray-300">No filter bubble</td>
-                            <td class="px-6 py-4 text-center text-green-400 text-xl">✓</td>
-                            <td class="px-6 py-4 text-center text-red-400 text-xl">✗</td>
-                            <td class="px-6 py-4 text-center text-yellow-400 text-xl">~</td>
+                            <td class="px-6 py-4 text-center text-green-600 text-xl">✓</td>
+                            <td class="px-6 py-4 text-center text-red-600 text-xl">✗</td>
+                            <td class="px-6 py-4 text-center text-yellow-500 text-xl">~</td>
                         </tr>
                         <tr>
                             <td class="px-6 py-4 text-gray-300">No ads based on your data</td>
-                            <td class="px-6 py-4 text-center text-green-400 text-xl">✓</td>
-                            <td class="px-6 py-4 text-center text-red-400 text-xl">✗</td>
-                            <td class="px-6 py-4 text-center text-green-400 text-xl">✓</td>
+                            <td class="px-6 py-4 text-center text-green-600 text-xl">✓</td>
+                            <td class="px-6 py-4 text-center text-red-600 text-xl">✗</td>
+                            <td class="px-6 py-4 text-center text-green-600 text-xl">✓</td>
                         </tr>
                         <tr>
                             <td class="px-6 py-4 text-gray-300">Anonymous usage</td>
-                            <td class="px-6 py-4 text-center text-green-400 text-xl">✓</td>
-                            <td class="px-6 py-4 text-center text-red-400 text-xl">✗</td>
-                            <td class="px-6 py-4 text-center text-green-400 text-xl">✓</td>
+                            <td class="px-6 py-4 text-center text-green-600 text-xl">✓</td>
+                            <td class="px-6 py-4 text-center text-red-600 text-xl">✗</td>
+                            <td class="px-6 py-4 text-center text-green-600 text-xl">✓</td>
                         </tr>
                     </tbody>
                 </table>

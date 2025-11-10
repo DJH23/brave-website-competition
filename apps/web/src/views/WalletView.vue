@@ -63,37 +63,37 @@ const userRows: Row[] = [
     {
         label: 'Privacy protection',
         cells: [
-            { text: 'No tracking', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'Some analytics', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: 'Account data', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: 'Full KYC required', icon: 'bi-x-circle-fill', color: 'text-red-400' }
+            { text: 'No tracking', icon: 'bi-check-circle', color: 'text-green-600' },
+            { text: 'Some analytics', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: 'Account data', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: 'Full KYC required', icon: 'bi-x-circle', color: 'text-red-600' }
         ]
     },
     {
         label: 'Built-in browser',
         cells: [
-            { text: 'Native integration', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'Extension required', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: 'Extension required', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: 'Separate app', icon: 'bi-x-circle-fill', color: 'text-red-400' }
+            { text: 'Native integration', icon: 'bi-check-circle', color: 'text-green-600' },
+            { text: 'Extension required', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: 'Extension required', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: 'Separate app', icon: 'bi-x-circle', color: 'text-red-600' }
         ]
     },
     {
         label: 'Earn while browsing',
         cells: [
-            { text: 'BAT Rewards', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'No', icon: 'bi-x-circle-fill', color: 'text-red-400' },
-            { text: 'No', icon: 'bi-x-circle-fill', color: 'text-red-400' },
-            { text: 'No', icon: 'bi-x-circle-fill', color: 'text-red-400' }
+            { text: 'BAT Rewards', icon: 'bi-check-circle', color: 'text-green-600' },
+            { text: 'No', icon: 'bi-x-circle', color: 'text-red-600' },
+            { text: 'No', icon: 'bi-x-circle', color: 'text-red-600' },
+            { text: 'No', icon: 'bi-x-circle', color: 'text-red-600' }
         ]
     },
     {
         label: 'Self-custody',
         cells: [
-            { text: 'Full control', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'Full control', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'Full control', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'Exchange holds keys', icon: 'bi-x-circle-fill', color: 'text-red-400' }
+            { text: 'Full control', icon: 'bi-check-circle', color: 'text-green-600' },
+            { text: 'Full control', icon: 'bi-check-circle', color: 'text-green-600' },
+            { text: 'Full control', icon: 'bi-check-circle', color: 'text-green-600' },
+            { text: 'Exchange holds keys', icon: 'bi-x-circle', color: 'text-red-600' }
         ]
     }
 ];
@@ -102,37 +102,37 @@ const creatorRows: Row[] = [
     {
         label: 'Direct payments',
         cells: [
-            { text: 'BAT tips + auto-contribute', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'Manual setup required', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: 'Manual setup required', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: 'No direct tipping', icon: 'bi-x-circle-fill', color: 'text-red-400' }
+            { text: 'BAT tips + auto-contribute', icon: 'bi-check-circle', color: 'text-green-600' },
+            { text: 'Manual setup required', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: 'Manual setup required', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: 'No direct tipping', icon: 'bi-x-circle', color: 'text-red-600' }
         ]
     },
     {
         label: 'Creator registration',
         cells: [
-            { text: 'Free & simple', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'Technical setup', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: 'Technical setup', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: 'N/A', icon: 'bi-x-circle-fill', color: 'text-red-400' }
+            { text: 'Free & simple', icon: 'bi-check-circle', color: 'text-green-600' },
+            { text: 'Technical setup', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: 'Technical setup', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: 'N/A', icon: 'bi-x-circle', color: 'text-red-600' }
         ]
     },
     {
         label: 'User discovery',
         cells: [
-            { text: 'Verified creators list', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'No discovery', icon: 'bi-x-circle-fill', color: 'text-red-400' },
-            { text: 'No discovery', icon: 'bi-x-circle-fill', color: 'text-red-400' },
-            { text: 'N/A', icon: 'bi-x-circle-fill', color: 'text-red-400' }
+            { text: 'Verified creators list', icon: 'bi-check-circle', color: 'text-green-600' },
+            { text: 'No discovery', icon: 'bi-x-circle', color: 'text-red-600' },
+            { text: 'No discovery', icon: 'bi-x-circle', color: 'text-red-600' },
+            { text: 'N/A', icon: 'bi-x-circle', color: 'text-red-600' }
         ]
     },
     {
         label: 'Privacy for supporters',
         cells: [
-            { text: 'Anonymous tipping', icon: 'bi-check-circle-fill', color: 'text-green-400' },
-            { text: 'Public addresses', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: 'Public addresses', icon: 'bi-dash-circle', color: 'text-yellow-400' },
-            { text: 'Account-based', icon: 'bi-x-circle-fill', color: 'text-red-400' }
+            { text: 'Anonymous tipping', icon: 'bi-check-circle', color: 'text-green-600' },
+            { text: 'Public addresses', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: 'Public addresses', icon: 'bi-dash-circle', color: 'text-yellow-500' },
+            { text: 'Account-based', icon: 'bi-x-circle', color: 'text-red-600' }
         ]
     }
 ];
@@ -277,19 +277,19 @@ const currentRows = () => (perspective.value === 'users' ? userRows : creatorRow
                     </p>
                     <ul class="space-y-2 ml-4">
                         <li class="flex items-center gap-2">
-                            <i class="bi bi-check-circle-fill text-braveBlue"></i>
+                            <i class="bi bi-check-circle text-braveBlue"></i>
                             <span><strong>Tip creators</strong> directly without ads or middlemen</span>
                         </li>
                         <li class="flex items-center gap-2">
-                            <i class="bi bi-check-circle-fill text-braveBlue"></i>
+                            <i class="bi bi-check-circle text-braveBlue"></i>
                             <span><strong>Earn rewards</strong> for viewing privacy-respecting ads</span>
                         </li>
                         <li class="flex items-center gap-2">
-                            <i class="bi bi-check-circle-fill text-braveBlue"></i>
+                            <i class="bi bi-check-circle text-braveBlue"></i>
                             <span><strong>Support websites and products</strong> you love automatically</span>
                         </li>
                         <li class="flex items-center gap-2">
-                            <i class="bi bi-check-circle-fill text-braveBlue"></i>
+                            <i class="bi bi-check-circle text-braveBlue"></i>
                             <span><strong>Trade and invest</strong> in the decentralized economy</span>
                         </li>
                     </ul>

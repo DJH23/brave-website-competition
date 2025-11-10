@@ -153,8 +153,8 @@ const scrollToDemo = async (refName: string) => {
 
                     <div class="mt-6 p-4 bg-green-900/20 border border-green-700/30 rounded" role="status"
                         aria-live="polite">
-                        <p class="text-sm text-green-400">
-                            <i class="bi-check-circle-fill" aria-hidden="true"></i> Your privacy is protected. Brave
+                        <p class="text-sm text-green-600">
+                            <i class="bi-check-circle" aria-hidden="true"></i> Your privacy is protected. Brave
                             blocked all tracking
                             attempts.
                         </p>

@@ -52,7 +52,7 @@ export function useBATPrice() {
 
   const changeColor = (change: number | undefined) => {
     if (!change) return "text-neutral-400";
-    return change > 0 ? "text-green-400" : "text-red-400";
+    return change > 0 ? "text-green-600" : "text-red-600";
   };
 
   return {

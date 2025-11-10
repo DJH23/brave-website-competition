@@ -106,8 +106,8 @@ const protectionStats = computed(() => {
 
 const getProtectionColor = (level: string) => {
     switch (level) {
-        case 'high': return 'text-green-400'
-        case 'medium': return 'text-yellow-400'
+        case 'high': return 'text-green-600'
+        case 'medium': return 'text-yellow-500'
         case 'low': return 'text-braveOrange'
         default: return 'text-neutral-400'
     }
@@ -146,7 +146,7 @@ const closeDetail = () => {
 
         <!-- Overall Protection Score -->
         <div class="glass-strong rounded-lg p-6 mb-6 text-center">
-            <div class="text-5xl font-bold text-green-400 mb-2">
+            <div class="text-5xl font-bold text-green-600 mb-2">
                 {{ protectionStats.score }}%
             </div>
             <div class="text-lg font-semibold mb-4">Fingerprinting Protection</div>
@@ -198,12 +198,12 @@ const closeDetail = () => {
 
                 <div v-if="showComparison" class="space-y-2 text-xs">
                     <div class="p-2 bg-red-900/20 border border-red-700/30 rounded">
-                        <div class="text-red-400 font-medium mb-1"><i class="bi bi-x-circle" aria-hidden="true"></i>
+                        <div class="text-red-600 font-medium mb-1"><i class="bi bi-x-circle" aria-hidden="true"></i>
                             Without Brave:</div>
                         <div class="text-neutral-300 truncate">{{ item.normalValue }}</div>
                     </div>
                     <div class="p-2 bg-green-900/20 border border-green-700/30 rounded">
-                        <div class="text-green-400 font-medium mb-1"><i class="bi bi-check-circle"
+                        <div class="text-green-600 font-medium mb-1"><i class="bi bi-check-circle"
                                 aria-hidden="true"></i> With Brave:</div>
                         <div class="text-neutral-300 truncate">{{ item.braveValue }}</div>
                     </div>
@@ -257,7 +257,7 @@ const closeDetail = () => {
 
                     <div class="space-y-4">
                         <div class="p-4 bg-red-900/20 border-2 border-red-700/50 rounded-lg">
-                            <div class="font-semibold text-red-400 mb-2 flex items-center gap-2">
+                            <div class="font-semibold text-red-600 mb-2 flex items-center gap-2">
                                 <span><i class="bi bi-x-circle" aria-hidden="true"></i></span> Without Brave Protection
                             </div>
                             <div class="text-neutral-200 font-mono text-sm break-all">
@@ -266,7 +266,7 @@ const closeDetail = () => {
                         </div>
 
                         <div class="p-4 bg-green-900/20 border-2 border-green-700/50 rounded-lg">
-                            <div class="font-semibold text-green-400 mb-2 flex items-center gap-2">
+                            <div class="font-semibold text-green-600 mb-2 flex items-center gap-2">
                                 <span><i class="bi bi-check-circle" aria-hidden="true"></i></span> With Brave Protection
                             </div>
                             <div class="text-neutral-200 font-mono text-sm break-all">

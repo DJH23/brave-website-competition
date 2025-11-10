@@ -67,9 +67,9 @@ const getExplorerUrl = () => {
 const getIconColor = () => {
     switch (props.type) {
         case 'success':
-            return 'text-green-400';
+            return 'text-green-600';
         case 'error':
-            return 'text-red-400';
+            return 'text-red-600';
         case 'info':
             return 'text-blue-400';
         default:

@@ -194,11 +194,11 @@ onUnmounted(() => {
         <!-- Stats Dashboard -->
         <div class="grid grid-cols-3 gap-4 mb-6">
             <div class="glass p-4 rounded-lg text-center">
-                <div class="text-3xl font-bold text-green-400">{{ stats.blocked }}</div>
+                <div class="text-3xl font-bold text-green-600">{{ stats.blocked }}</div>
                 <div class="text-xs text-neutral-400 mt-1">Blocked</div>
             </div>
             <div class="glass p-4 rounded-lg text-center">
-                <div class="text-3xl font-bold text-red-400">{{ stats.attempted }}</div>
+                <div class="text-3xl font-bold text-red-600">{{ stats.attempted }}</div>
                 <div class="text-xs text-neutral-400 mt-1">Attempted</div>
             </div>
             <div class="glass p-4 rounded-lg text-center">

@@ -142,13 +142,12 @@ const nodeRegistry = reactive<Record<string, FlowNode>>({
       "Browse verified creators at brave.com/creators/",
       "Supports major platforms: YouTube, Twitch, Twitter, GitHub",
     ],
-    viewRoute: "/privacy-demo",
+    viewRoute: "/wallet",
     ctas: [
-      { label: "Try Tipping Demo", route: "/privacy-demo", variant: "primary" },
       {
         label: "Search verified creators",
         href: "https://brave.com/creators/",
-        variant: "secondary",
+        variant: "primary",
       },
     ],
     connectedTo: ["u2", "u3", "u4"],
@@ -166,10 +165,8 @@ const nodeRegistry = reactive<Record<string, FlowNode>>({
       "Choose tip amount (e.g., 1 BAT = ~$0.20 USD)",
       "Creator receives 100%—no platform cut",
     ],
-    viewRoute: "/privacy-demo",
-    ctas: [
-      { label: "Try Tipping Demo", route: "/privacy-demo", variant: "primary" },
-    ],
+    viewRoute: "/wallet",
+    ctas: [],
     connectedTo: ["u1", "u5"],
   },
   u3: {
@@ -185,14 +182,8 @@ const nodeRegistry = reactive<Record<string, FlowNode>>({
       "Auto-renews from your Rewards balance",
       "Cancel or adjust anytime—no vendor lock-in",
     ],
-    viewRoute: "/privacy-demo",
-    ctas: [
-      {
-        label: "Setup Recurring Tip",
-        route: "/privacy-demo",
-        variant: "primary",
-      },
-    ],
+    viewRoute: "/wallet",
+    ctas: [],
     connectedTo: ["u1", "u5"],
   },
   u4: {
@@ -208,17 +199,12 @@ const nodeRegistry = reactive<Record<string, FlowNode>>({
       "Brave splits based on attention time across all verified sites",
       "Transparent local algorithm—no server tracking",
     ],
-    viewRoute: "/privacy-demo",
+    viewRoute: "/wallet",
     ctas: [
-      {
-        label: "Enable Auto-contribute",
-        route: "/privacy-demo",
-        variant: "primary",
-      },
       {
         label: "How attention is measured",
         href: "https://support.brave.com/hc/en-us/articles/360021123971",
-        variant: "ghost",
+        variant: "primary",
       },
     ],
     connectedTo: ["u1", "u5"],
@@ -236,15 +222,8 @@ const nodeRegistry = reactive<Record<string, FlowNode>>({
       "No personal data leaves your device—anonymous confirmations only",
       "Earn ~5 BAT/month (varies by region and frequency)",
     ],
-    viewRoute: "/privacy-demo",
-    ctas: [
-      { label: "See Privacy Demo", route: "/privacy-demo", variant: "primary" },
-      {
-        label: "How private ads work",
-        href: "https://brave.com/brave-ads/",
-        variant: "ghost",
-      },
-    ],
+    viewRoute: "/wallet",
+    ctas: [],
     connectedTo: ["u2", "u3", "u4"],
   },
 
@@ -253,7 +232,7 @@ const nodeRegistry = reactive<Record<string, FlowNode>>({
     id: "c1",
     label: "Verify channel",
     level: "creators",
-    icon: "bi-check-circle-fill",
+    icon: "bi-check-circle",
     summary: "Get verified to receive tips from users",
     whyMatters:
       "Prove authenticity to fans and unlock BAT tips—keep 100% ownership, reduce platform dependency.",
@@ -265,14 +244,9 @@ const nodeRegistry = reactive<Record<string, FlowNode>>({
     viewRoute: "/creator-hub",
     ctas: [
       {
-        label: "Creator Dashboard Demo",
-        route: "/creator-hub",
-        variant: "primary",
-      },
-      {
         label: "Start creator onboarding",
         href: "https://creators.brave.com/",
-        variant: "secondary",
+        variant: "primary",
       },
     ],
     connectedTo: ["c2"],
@@ -292,11 +266,10 @@ const nodeRegistry = reactive<Record<string, FlowNode>>({
     ],
     viewRoute: "/wallet",
     ctas: [
-      { label: "Connect Wallet", route: "/wallet", variant: "primary" },
       {
-        label: "Creator payout FAQ",
-        href: "https://support.brave.com/hc/en-us/categories/360001053012-Brave-Rewards-for-Creators",
-        variant: "ghost",
+        label: "Wallet Types",
+        href: "https://brave.com/wallet/",
+        variant: "primary",
       },
     ],
     connectedTo: ["c1", "c3"],
@@ -315,13 +288,7 @@ const nodeRegistry = reactive<Record<string, FlowNode>>({
       "Auto-contribute from passive users (based on attention)",
     ],
     viewRoute: "/creator-hub",
-    ctas: [
-      {
-        label: "View Creator Dashboard",
-        route: "/creator-hub",
-        variant: "primary",
-      },
-    ],
+    ctas: [],
     connectedTo: ["c2", "c4"],
   },
   c4: {
@@ -338,14 +305,7 @@ const nodeRegistry = reactive<Record<string, FlowNode>>({
       "Self-custody: Swap BAT using DEX in Brave Wallet",
     ],
     viewRoute: "/wallet",
-    ctas: [
-      { label: "Manage Earnings", route: "/wallet", variant: "primary" },
-      {
-        label: "Payout schedule details",
-        href: "https://support.brave.com/hc/en-us/articles/360026952311",
-        variant: "ghost",
-      },
-    ],
+    ctas: [],
     connectedTo: ["c3"],
   },
 });

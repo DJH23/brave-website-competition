@@ -429,7 +429,7 @@ onBeforeUnmount(() => {
                 <!-- Row 1: Setup centered -->
                 <div class="w-full flex justify-center">
                     <div ref="setupContainer"
-                        class="glass-strong rounded-2xl p-6 flex flex-col items-center gap-4 w-[520px] h-[480px]">
+                        class="glass rounded-2xl p-6 flex flex-col items-center gap-4 w-[520px] h-[480px]">
                         <h3 class="text-white text-[20px] font-semibold flex items-center gap-2">
                             <i class="bi bi-gear-fill text-braveBlue"></i>
                             Setup
@@ -480,7 +480,7 @@ onBeforeUnmount(() => {
                 <div class="grid gap-8 grid-cols-1 lg:grid-cols-2 place-items-center">
                     <!-- Users lane -->
                     <div ref="usersContainer"
-                        class="glass-strong rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[480px]">
+                        class="glass rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[480px]">
                         <h3
                             class="text-white text-[20px] font-semibold text-center flex items-center justify-center gap-2">
                             <i class="bi bi-people-fill text-braveBlue"></i>
@@ -539,7 +539,7 @@ onBeforeUnmount(() => {
 
                     <!-- Creators lane -->
                     <div ref="creatorsContainer"
-                        class="glass-strong rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[480px]">
+                        class="glass rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[480px]">
                         <h3
                             class="text-white text-[20px] font-semibold text-center flex items-center justify-center gap-2">
                             <i class="bi bi-palette-fill text-braveBlue"></i>

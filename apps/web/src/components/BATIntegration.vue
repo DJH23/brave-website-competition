@@ -178,7 +178,7 @@ const searchBrave = async () => {
                             @click="() => { console.log('[BATIntegration] Connect clicked, chain:', selectedChain); connectWallet(selectedChain); }"
                             :disabled="isLoading">
                             {{ isLoading ? '⏳ Connecting...' : `🔗 Connect ${selectedChain === 'solana' ? 'Solana' :
-                            'Ethereum'}` }}
+                                'Ethereum'}` }}
                         </Button>
                         <p class="text-xs text-neutral-500 mt-4">
                             {{ selectedChain === 'solana' ? 'Solana via Brave Wallet or Phantom' : 'Ethereum via Web3Modal & ethers.js' }}
@@ -187,13 +187,13 @@ const searchBrave = async () => {
 
                     <div v-else class="space-y-4">
                         <div v-if="error" class="p-3 bg-red-500/10 border border-red-500/50 rounded-lg">
-                            <p class="text-red-400 text-sm">{{ error }}</p>
+                            <p class="text-red-600 text-sm">{{ error }}</p>
                         </div>
 
                         <div class="p-4 bg-gradient-to-br from-bravePurple/20 to-braveOrange/20 rounded-lg">
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-sm text-neutral-400">Your BAT Balance ({{ chainInfo?.name }})</span>
-                                <span class="text-green-400 text-sm">● Connected</span>
+                                <span class="text-green-600 text-sm">● Connected</span>
                             </div>
                             <div class="text-3xl font-bold text-braveOrange">
                                 {{ isLoading ? '...' : parseFloat(batBalance).toFixed(2) }} BAT

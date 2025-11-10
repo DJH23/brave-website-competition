@@ -31,7 +31,7 @@ Successfully refactored the Portfolio component and updated all views with consi
 
 - Changed main title to use `text-gradient-rainbow transition-all duration-700 opacity-100 translate-y-0`
 - Replaced emoji icons with Bootstrap icons:
-  - 💡 → `<i class="bi bi-lightbulb text-yellow-400">`
+  - 💡 → `<i class="bi bi-lightbulb text-yellow-500">`
   - 🎵 → `<i class="bi bi-music-note-beamed">`
   - 🛡️ → `<i class="bi bi-shield-check">`
 - Updated "Explore the Hub" heading with rainbow gradient styling

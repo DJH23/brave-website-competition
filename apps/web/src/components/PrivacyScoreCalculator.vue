@@ -316,7 +316,7 @@ onMounted(() => {
             </div>
             <div class="glass p-3 rounded-lg">
                 <div class="text-xs text-neutral-400 mb-1"><i class="bi-lock-fill"></i> HTTPS</div>
-                <div class="text-lg font-bold text-green-400">{{ metrics.httpsUpgrades.toLocaleString() }}</div>
+                <div class="text-lg font-bold text-green-600">{{ metrics.httpsUpgrades.toLocaleString() }}</div>
             </div>
             <div class="glass p-3 rounded-lg">
                 <div class="text-xs text-neutral-400 mb-1"><i class="bi-person-fill"></i> Fingerprinting</div>
@@ -329,7 +329,7 @@ onMounted(() => {
             </div>
             <div class="glass p-3 rounded-lg">
                 <div class="text-xs text-neutral-400 mb-1"><i class="bi-file-earmark-code"></i> Scripts</div>
-                <div class="text-lg font-bold text-yellow-400">{{ metrics.scriptsBlocked.toLocaleString() }}</div>
+                <div class="text-lg font-bold text-yellow-500">{{ metrics.scriptsBlocked.toLocaleString() }}</div>
             </div>
             <div class="glass p-3 rounded-lg">
                 <div class="text-xs text-neutral-400 mb-1"><i class="bi-lightning-charge-fill"></i> Total</div>

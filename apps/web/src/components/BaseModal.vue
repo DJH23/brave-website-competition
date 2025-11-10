@@ -158,7 +158,7 @@ onBeforeUnmount(() => {
                     <!-- Bullets -->
                     <ul v-if="bullets && bullets.length > 0" class="space-y-3 mb-8">
                         <li v-for="(bullet, idx) in bullets" :key="idx" class="flex items-start gap-3">
-                            <i class="bi bi-check-circle-fill text-braveBlue flex-shrink-0 mt-0.5 text-lg"></i>
+                            <i class="bi bi-check-circle text-braveBlue flex-shrink-0 mt-0.5 text-lg"></i>
                             <span class="text-text-100 text-[16px] leading-relaxed">{{ bullet }}</span>
                         </li>
                     </ul>

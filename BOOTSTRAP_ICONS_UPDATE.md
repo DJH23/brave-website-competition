@@ -74,7 +74,7 @@ Successfully updated all Bootstrap icons across the entire application to use pr
 - Updated video header:
   - `🎵` → `<i class="bi bi-music-note-beamed text-purple-400">`
 - Updated "Even Memes Deserve Privacy":
-  - `💡` → `<i class="bi bi-lightbulb text-yellow-400">`
+  - `💡` → `<i class="bi bi-lightbulb text-yellow-500">`
 - Updated "Creative Freedom" section:
   - `🎭` → `<i class="bi bi-palette">`
 

@@ -31,12 +31,12 @@ const { hasBeenVisible: howBraveProtectsVisible } = useIntersectionObserver(howB
             <!-- Why This Matters -->
             <div class="mt-12 glass rounded-2xl p-8">
                 <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
-                    <i class="bi bi-lightbulb text-yellow-400" aria-hidden="true"></i>
+                    <i class="bi bi-lightbulb text-yellow-500" aria-hidden="true"></i>
                     Why Privacy Matters (Yes, Even for You)
                 </h2>
                 <div class="space-y-4 text-gray-300">
                     <p>
-                        <strong class="text-red-400">"I have nothing to hide"</strong> is the most
+                        <strong class="text-red-600">"I have nothing to hide"</strong> is the most
                         dangerous myth online. Here's what's actually happening right now:
                     </p>
                     <ul class="list-disc list-inside space-y-2 ml-4">
@@ -60,7 +60,7 @@ const { hasBeenVisible: howBraveProtectsVisible } = useIntersectionObserver(howB
                         </li>
                     </ul>
                     <p class="mt-4">
-                        <strong class="text-green-400">Good news:</strong> Brave Browser blocks all of this
+                        <strong class="text-green-600">Good news:</strong> Brave Browser blocks all of this
                         automatically. No setup required. The demos below show you exactly what's being blocked
                         right now.
                     </p>
@@ -82,7 +82,7 @@ const { hasBeenVisible: howBraveProtectsVisible } = useIntersectionObserver(howB
             </h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="glass rounded-xl p-6">
-                    <h3 class="text-xl font-bold text-green-400 mb-3 flex items-center gap-2">
+                    <h3 class="text-xl font-bold text-green-600 mb-3 flex items-center gap-2">
                         <i class="bi bi-shield-slash" aria-hidden="true"></i> Aggressive Tracker Blocking
                     </h3>
                     <p class="text-gray-300">
@@ -128,7 +128,7 @@ const { hasBeenVisible: howBraveProtectsVisible } = useIntersectionObserver(howB
             </h2>
             <ul class="space-y-3 text-gray-300">
                 <li class="flex items-start gap-3">
-                    <span class="text-green-400 text-xl shrink-0"><i class="bi bi-check-circle"
+                    <span class="text-green-600 text-xl shrink-0"><i class="bi bi-check-circle"
                             aria-hidden="true"></i></span>
                     <span>
                         <strong>Use Brave Search</strong> instead of Google — no tracking, no profiling,
@@ -136,7 +136,7 @@ const { hasBeenVisible: howBraveProtectsVisible } = useIntersectionObserver(howB
                     </span>
                 </li>
                 <li class="flex items-start gap-3">
-                    <span class="text-green-400 text-xl shrink-0"><i class="bi bi-check-circle"
+                    <span class="text-green-600 text-xl shrink-0"><i class="bi bi-check-circle"
                             aria-hidden="true"></i></span>
                     <span>
                         <strong>Enable Brave Shields</strong> (on by default) — blocks ads, trackers,
@@ -144,7 +144,7 @@ const { hasBeenVisible: howBraveProtectsVisible } = useIntersectionObserver(howB
                     </span>
                 </li>
                 <li class="flex items-start gap-3">
-                    <span class="text-green-400 text-xl shrink-0"><i class="bi bi-check-circle"
+                    <span class="text-green-600 text-xl shrink-0"><i class="bi bi-check-circle"
                             aria-hidden="true"></i></span>
                     <span>
                         <strong>Use Private Windows with Tor</strong> for maximum anonymity —
@@ -152,7 +152,7 @@ const { hasBeenVisible: howBraveProtectsVisible } = useIntersectionObserver(howB
                     </span>
                 </li>
                 <li class="flex items-start gap-3">
-                    <span class="text-green-400 text-xl shrink-0"><i class="bi bi-check-circle"
+                    <span class="text-green-600 text-xl shrink-0"><i class="bi bi-check-circle"
                             aria-hidden="true"></i></span>
                     <span>
                         <strong>Review site permissions</strong> regularly — don't give location,
