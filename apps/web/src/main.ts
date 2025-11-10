@@ -45,14 +45,12 @@ if (import.meta.env.PROD) {
   registerSW({
     immediate: true,
     onNeedRefresh() {
-      console.log("🔄 New content available, please refresh.");
+      // New content available - user can refresh
     },
     onOfflineReady() {
-      console.log("✅ App ready to work offline.");
+      // App ready to work offline
     },
     onRegistered(registration) {
-      console.log("✅ PWA Service Worker registered");
-
       // Check for updates periodically
       if (registration) {
         setInterval(() => {
@@ -61,7 +59,7 @@ if (import.meta.env.PROD) {
       }
     },
     onRegisterError(error) {
-      console.error("❌ Service Worker registration failed:", error);
+      console.error("Service Worker registration failed:", error);
     },
   });
 }

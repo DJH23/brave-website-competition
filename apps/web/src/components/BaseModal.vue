@@ -93,9 +93,6 @@ watch(
     () => props.open,
     (isOpen) => {
         if (isOpen) {
-            // Debug: Log CTAs to verify they're being passed
-            console.log('Modal opened with CTAs:', props.ctas);
-
             // Focus first focusable element when modal opens
             setTimeout(() => {
                 const focusableElements = modalRef.value?.querySelectorAll(

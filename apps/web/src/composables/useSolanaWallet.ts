@@ -34,7 +34,6 @@ export function useSolanaWallet() {
       currentRpcIndex = 0; // Reset to primary
     }
     const endpoint = SOLANA_RPC_ENDPOINTS[currentRpcIndex];
-    console.log(`[useSolanaWallet] Using RPC endpoint: ${endpoint}`);
     return new Connection(endpoint, "confirmed");
   };
 
@@ -49,10 +48,6 @@ export function useSolanaWallet() {
         connection = getConnection();
         return await operation(connection);
       } catch (err: any) {
-        console.warn(
-          `[useSolanaWallet] RPC attempt ${i + 1} failed:`,
-          err.message
-        );
         lastError = err;
         currentRpcIndex++;
 
@@ -88,8 +83,6 @@ export function useSolanaWallet() {
 
   // Connect to Solana wallet
   const connectWallet = async () => {
-    console.log("[useSolanaWallet] connectWallet called");
-
     if (!isWalletAvailable.value) {
       error.value =
         "No Solana wallet detected. Please ensure Brave Wallet has Solana enabled or install Phantom.";
@@ -105,19 +98,11 @@ export function useSolanaWallet() {
         return;
       }
 
-      console.log("[useSolanaWallet] Provider found:", {
-        isPhantom: provider.isPhantom,
-        isBraveWallet: provider.isBraveWallet,
-        hasConnect: typeof provider.connect === "function",
-      });
-
       isLoading.value = true;
       const resp = await provider.connect({ onlyIfTrusted: false });
       solanaProvider.value = provider;
       address.value = resp.publicKey.toString();
       isConnected.value = true;
-
-      console.log("[useSolanaWallet] Connected successfully:", address.value);
 
       // Don't auto-fetch balance to avoid RPC rate limits
       // Balance will be fetched on-demand when needed
@@ -127,7 +112,6 @@ export function useSolanaWallet() {
       // Handle specific error cases
       if (err.code === 4001 || err.message?.includes("User rejected")) {
         error.value = "Connection cancelled. Please try again when ready.";
-        console.log("[useSolanaWallet] User rejected the connection request");
       } else if (err.message?.includes("wallet is locked")) {
         error.value = "Please unlock your Solana wallet and try again.";
       } else {
@@ -191,7 +175,6 @@ export function useSolanaWallet() {
         err.message?.includes("Access forbidden")
       ) {
         // RPC rate limit - don't show error, just set balance to unknown
-        console.warn("[useSolanaWallet] RPC rate limited, balance unavailable");
         batBalance.value = "?";
         error.value = ""; // Clear error, rate limits are temporary
       } else {
@@ -214,19 +197,10 @@ export function useSolanaWallet() {
       isLoading.value = true;
       error.value = "";
 
-      console.log("[useSolanaWallet] Creating transaction for", amount, "BAT");
-
       const result = await retryWithNextRPC(async (conn) => {
         const walletPublicKey = new PublicKey(address.value!);
         const recipientPublicKey = new PublicKey(TIP_RECIPIENT_ADDRESS_SOLANA);
         const mintPublicKey = new PublicKey(BAT_SPL_MINT_ADDRESS);
-
-        console.log("[useSolanaWallet] Wallet:", walletPublicKey.toBase58());
-        console.log(
-          "[useSolanaWallet] Recipient:",
-          recipientPublicKey.toBase58()
-        );
-        console.log("[useSolanaWallet] BAT Mint:", mintPublicKey.toBase58());
 
         // Warn if sending to self (for testing purposes)
         if (walletPublicKey.toBase58() === recipientPublicKey.toBase58()) {
@@ -246,24 +220,10 @@ export function useSolanaWallet() {
           recipientPublicKey
         );
 
-        console.log(
-          "[useSolanaWallet] From token account:",
-          fromTokenAccount.toBase58()
-        );
-        console.log(
-          "[useSolanaWallet] To token account:",
-          toTokenAccount.toBase58()
-        );
-
         // Convert amount to smallest unit (typically 18 decimals for BAT)
         const decimals = 18; // BAT on Solana uses 18 decimals
         const amountInSmallestUnit = BigInt(
           Math.floor(parseFloat(amount) * Math.pow(10, decimals))
-        );
-
-        console.log(
-          "[useSolanaWallet] Amount in smallest unit:",
-          amountInSmallestUnit.toString()
         );
 
         // Create transfer instruction
@@ -276,8 +236,6 @@ export function useSolanaWallet() {
           TOKEN_PROGRAM_ID
         );
 
-        console.log("[useSolanaWallet] Transfer instruction created");
-
         // Get recent blockhash
         const { blockhash } = await conn.getLatestBlockhash();
 
@@ -286,13 +244,6 @@ export function useSolanaWallet() {
           recentBlockhash: blockhash,
           feePayer: walletPublicKey,
         }).add(transferInstruction);
-
-        console.log(
-          "[useSolanaWallet] Transaction created with",
-          transaction.instructions.length,
-          "instruction(s)"
-        );
-        console.log("[useSolanaWallet] Transaction details:", transaction);
 
         // Sign and send transaction
         const { signature } = await solanaProvider.value.signAndSendTransaction(
@@ -304,8 +255,6 @@ export function useSolanaWallet() {
 
         return signature;
       });
-
-      console.log("[useSolanaWallet] Transaction successful:", result);
 
       // Refresh balance
       await fetchBATBalance();

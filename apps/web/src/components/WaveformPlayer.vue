@@ -123,9 +123,6 @@ const handleChainSelected = async (chain: ChainType) => {
 
         // Proceed with purchase after connection
         if (isConnected.value && props.price) {
-            console.log('[WaveformPlayer] Connection successful, proceeding with purchase');
-            console.log('[WaveformPlayer] isConnected:', isConnected.value);
-            console.log('[WaveformPlayer] price:', props.price);
             const success = await sendBATTip(props.price.toString());
             if (success) {
                 showNotification(
@@ -141,9 +138,6 @@ const handleChainSelected = async (chain: ChainType) => {
                 showNotification('error', 'Purchase Failed', 'Failed to complete purchase. Please try again.');
             }
         } else {
-            console.warn('[WaveformPlayer] Connection failed or no price set');
-            console.warn('[WaveformPlayer] isConnected:', isConnected.value);
-            console.warn('[WaveformPlayer] price:', props.price);
             showNotification('error', 'Connection Failed', 'Failed to connect wallet. Please try again.');
         }
     } catch (error) {
@@ -153,9 +147,7 @@ const handleChainSelected = async (chain: ChainType) => {
 };
 
 onMounted(() => {
-    console.log('WaveformPlayer mounted for:', props.title, 'src:', props.src, 'container:', container.value);
     if (container.value) {
-        console.log('Creating WaveSurfer instance...');
         wavesurfer.value = WaveSurfer.create({
             container: container.value,
             waveColor: [
@@ -172,7 +164,6 @@ onMounted(() => {
             barRadius: 2,
             cursorColor: '#fff',
         });
-        console.log('Loading audio from:', props.src);
 
         // Capture the instance for use in event callbacks
         const ws = wavesurfer.value;
@@ -199,13 +190,11 @@ onMounted(() => {
             console.error('WaveSurfer error:', e);
         });
         wavesurfer.value.on('ready', () => {
-            console.log('WaveSurfer ready for:', props.title);
             isLoading.value = false;
             // Calculate and set the duration when audio is ready
             const duration = wavesurfer.value?.getDuration() || 0;
             calculatedDuration.value = formatDuration(duration);
             currentTime.value = formatDuration(duration);
-            console.log('Audio duration:', calculatedDuration.value);
         });
         wavesurfer.value.on('timeupdate', (time: number) => {
             // Update remaining time as song plays (countdown)
@@ -214,7 +203,6 @@ onMounted(() => {
             currentTime.value = formatDuration(remaining);
         });
     } else {
-        console.warn('WaveformPlayer: container ref is null on mount');
         errorMsg.value = 'Container not available';
     }
 });

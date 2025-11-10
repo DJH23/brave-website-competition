@@ -93,7 +93,6 @@ function handleNodeHoverLeave() {
 }
 
 function openNodeModal(node: FlowNode) {
-    console.log('Opening modal for node:', node.id, 'CTAs:', node.ctas);
     selectedNode.value = node;
     modalOpen.value = true;
 }

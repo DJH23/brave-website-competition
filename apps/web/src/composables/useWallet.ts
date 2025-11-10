@@ -18,8 +18,6 @@ let web3ModalInstance: any = null;
  */
 async function openWeb3ModalConnection() {
   if (!web3ModalInstance) {
-    console.log("[useWallet] Lazy loading Web3Modal for first connection");
-
     // Dynamically import Web3Modal creator
     const { createEthereumModal } = await import("../config/web3");
     web3ModalInstance = createEthereumModal();

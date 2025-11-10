@@ -110,18 +110,6 @@ export function useMultiChainWallet() {
       const wallet = getSolWallet();
       await wallet.connectWallet();
       activeChain.value = "solana"; // Set active chain
-      console.log(
-        "[useMultiChainWallet] Solana connected, activeChain:",
-        activeChain.value
-      );
-      console.log(
-        "[useMultiChainWallet] solWallet.isConnected:",
-        wallet.isConnected.value
-      );
-      console.log(
-        "[useMultiChainWallet] Computed isConnected:",
-        isConnected.value
-      );
       return;
     }
 
@@ -129,10 +117,6 @@ export function useMultiChainWallet() {
     const wallet = await getEthWallet();
     await wallet.connectWallet();
     activeChain.value = "ethereum"; // Set active chain
-    console.log(
-      "[useMultiChainWallet] Ethereum connected, activeChain:",
-      activeChain.value
-    );
   };
 
   // Explicit connect helpers (for separate buttons if desired)
