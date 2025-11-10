@@ -42,10 +42,10 @@ function handleCta(cta: NodeCTA) {
 }
 
 function getCtaClasses(variant: string = 'primary') {
-    const baseClasses = 'px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105';
+    const baseClasses = 'px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:scale-105 hover:shadow-glow-blue';
 
     if (variant === 'primary') {
-        return `${baseClasses} text-white bg-gradient-to-r from-brand-orange via-brand-pink to-brand-purple hover:shadow-glow`;
+        return `${baseClasses} text-white bg-braveBlue hover:bg-braveBlue/90`;
     } else if (variant === 'secondary') {
         return `${baseClasses} text-white glass-strong border border-white/20 hover:bg-white/10`;
     } else {
@@ -127,7 +127,7 @@ onBeforeUnmount(() => {
 
                 <!-- Modal -->
                 <div ref="modalRef"
-                    class="relative glass rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-glow"
+                    class="relative glass-strong rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-glow-blue"
                     role="dialog" aria-modal="true" :aria-labelledby="title">
                     <!-- Close button -->
                     <button @click="handleClose"
@@ -158,7 +158,7 @@ onBeforeUnmount(() => {
                     <!-- Bullets -->
                     <ul v-if="bullets && bullets.length > 0" class="space-y-3 mb-8">
                         <li v-for="(bullet, idx) in bullets" :key="idx" class="flex items-start gap-3">
-                            <i class="bi bi-check-circle-fill text-brand-purple flex-shrink-0 mt-0.5 text-lg"></i>
+                            <i class="bi bi-check-circle-fill text-braveBlue flex-shrink-0 mt-0.5 text-lg"></i>
                             <span class="text-text-100 text-[16px] leading-relaxed">{{ bullet }}</span>
                         </li>
                     </ul>
@@ -187,7 +187,7 @@ onBeforeUnmount(() => {
                     <!-- Close button -->
                     <div class="flex gap-4">
                         <button @click="handleClose"
-                            class="px-6 py-3 rounded-xl font-semibold text-text-100 glass-strong hover:bg-white/10 transition-colors duration-300">
+                            class="px-6 py-3 rounded-xl font-semibold text-text-100 glass-strong hover:bg-white/10 transition-colors duration-300 hover:shadow-glow-blue">
                             Close
                         </button>
                     </div>

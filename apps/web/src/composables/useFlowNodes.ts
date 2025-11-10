@@ -32,7 +32,7 @@ const nodeRegistry = reactive<Record<string, FlowNode>>({
     icon: "bi-rocket-takeoff",
     summary: "Get started with Brave Browser and Basic Attention Token",
     whyMatters:
-      "Earn and use BAT with privacy intact—start here to activate Rewards and choose custody.",
+      "Setting up Brave and BAT is essential to take advantage of Brave's privacy features and BAT earnings, or tipping.",
     bullets: [
       "Download and install Brave Browser",
       "Enable Shields (ad/tracker blocking) in Settings",
@@ -40,11 +40,10 @@ const nodeRegistry = reactive<Record<string, FlowNode>>({
     ],
     viewRoute: "/wallet",
     ctas: [
-      { label: "Open Wallet View", route: "/wallet", variant: "primary" },
       {
         label: "Download Brave",
         href: "https://brave.com/download/",
-        variant: "secondary",
+        variant: "primary",
       },
       {
         label: "Learn about BAT",
@@ -74,11 +73,10 @@ const nodeRegistry = reactive<Record<string, FlowNode>>({
     ],
     viewRoute: "/wallet",
     ctas: [
-      { label: "Open Wallet View", route: "/wallet", variant: "primary" },
       {
         label: "Rewards FAQ",
-        href: "https://support.brave.com/hc/en-us/sections/360003622091-Brave-Rewards",
-        variant: "ghost",
+        href: "https://brave.com/brave-rewards/",
+        variant: "primary",
       },
     ],
     connectedTo: ["n0", "n2"],
@@ -98,11 +96,10 @@ const nodeRegistry = reactive<Record<string, FlowNode>>({
     ],
     viewRoute: "/wallet",
     ctas: [
-      { label: "Setup Wallet", route: "/wallet", variant: "primary" },
       {
         label: "Compare wallet options",
         href: "https://support.brave.com/hc/en-us/articles/360034841711-What-is-a-verified-wallet-",
-        variant: "ghost",
+        variant: "primary",
       },
     ],
     connectedTo: ["n1", "n3"],
@@ -122,11 +119,10 @@ const nodeRegistry = reactive<Record<string, FlowNode>>({
     ],
     viewRoute: "/wallet",
     ctas: [
-      { label: "View Wallet", route: "/wallet", variant: "primary" },
       {
         label: "Where to buy BAT",
-        href: "https://basicattentiontoken.org/#exchanges",
-        variant: "secondary",
+        href: "https://coincodex.com/how-to-buy-basic-attention-token/",
+        variant: "primary",
       },
     ],
     connectedTo: ["n2"],

@@ -65,6 +65,7 @@ const selectedNode = ref<FlowNode | null>(null);
 const hoveredNodeId = ref<string | null>(null);
 const focusedNodeId = ref<string | null>(null);
 const activePath = ref<Set<string>>(new Set());
+let hoverLeaveTimer: number | null = null;
 
 // Compute active path based on hovered node
 function computeActivePath(nodeId: string | null) {
@@ -83,13 +84,24 @@ function computeActivePath(nodeId: string | null) {
 }
 
 function handleNodeHoverEnter(nodeId: string) {
+    if (hoverLeaveTimer !== null) {
+        window.clearTimeout(hoverLeaveTimer);
+        hoverLeaveTimer = null;
+    }
     hoveredNodeId.value = nodeId;
     computeActivePath(nodeId);
 }
 
 function handleNodeHoverLeave() {
-    hoveredNodeId.value = null;
-    activePath.value.clear();
+    if (hoverLeaveTimer !== null) {
+        window.clearTimeout(hoverLeaveTimer);
+    }
+    // Add a slight linger so edges/arrows don't snap back immediately
+    hoverLeaveTimer = window.setTimeout(() => {
+        hoveredNodeId.value = null;
+        activePath.value.clear();
+        hoverLeaveTimer = null;
+    }, -250);
 }
 
 function openNodeModal(node: FlowNode) {
@@ -417,45 +429,45 @@ onBeforeUnmount(() => {
                 <!-- Row 1: Setup centered -->
                 <div class="w-full flex justify-center">
                     <div ref="setupContainer"
-                        class="glass rounded-2xl p-6 flex flex-col items-center gap-4 w-[520px] h-[480px]">
+                        class="glass-strong rounded-2xl p-6 flex flex-col items-center gap-4 w-[520px] h-[480px]">
                         <h3 class="text-white text-[20px] font-semibold flex items-center gap-2">
-                            <i class="bi bi-gear-fill text-gradient-blue"></i>
+                            <i class="bi bi-gear-fill text-braveBlue"></i>
                             Setup
                         </h3>
                         <div class="flex-1 flex flex-col gap-4 w-full justify-between">
                             <div ref="n0" data-node-id="n0" tabindex="0"
-                                :class="['glass-strong rounded-xl px-4 py-3 w-full text-center cursor-pointer transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('n0'), 'node-active': isNodeActive('n0') }]"
-                                :style="getNodeStyle('n0')" @mouseenter="handleNodeHoverEnter('n0')"
-                                @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('n0')" @blur="handleNodeBlur"
-                                @click="handleNodeClick('n0')">
+                                :class="['glass-strong feature-card rounded-xl px-4 py-3 w-full text-center cursor-pointer transition-transform duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('n0'), 'node-active': isNodeActive('n0') }]"
+                                :style="Object.assign({ '--glow-color': '#0EA5E9' }, getNodeStyle('n0'))"
+                                @mouseenter="handleNodeHoverEnter('n0')" @mouseleave="handleNodeHoverLeave"
+                                @focus="handleNodeFocus('n0')" @blur="handleNodeBlur" @click="handleNodeClick('n0')">
                                 <i
                                     class="bi bi-info-circle-fill absolute top-2 right-2 text-xs opacity-40 group-hover:opacity-100 transition-opacity"></i>
                                 Set up Brave + BAT
                             </div>
                             <div ref="n1" data-node-id="n1" tabindex="0"
-                                :class="['glass-strong rounded-xl px-4 py-3 w-full text-center cursor-pointer transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('n1'), 'node-active': isNodeActive('n1') }]"
-                                :style="getNodeStyle('n1')" @mouseenter="handleNodeHoverEnter('n1')"
-                                @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('n1')" @blur="handleNodeBlur"
-                                @click="handleNodeClick('n1')">
+                                :class="['glass-strong feature-card rounded-xl px-4 py-3 w-full text-center cursor-pointer transition-transform duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('n1'), 'node-active': isNodeActive('n1') }]"
+                                :style="Object.assign({ '--glow-color': '#0EA5E9' }, getNodeStyle('n1'))"
+                                @mouseenter="handleNodeHoverEnter('n1')" @mouseleave="handleNodeHoverLeave"
+                                @focus="handleNodeFocus('n1')" @blur="handleNodeBlur" @click="handleNodeClick('n1')">
                                 <i
                                     class="bi bi-info-circle-fill absolute top-2 right-2 text-xs opacity-40 group-hover:opacity-100 transition-opacity"></i>
                                 Enable Brave Rewards
                             </div>
                             <div ref="n2" data-node-id="n2" tabindex="0"
-                                :class="['glass-strong rounded-xl px-4 py-3 w-full text-center cursor-pointer transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('n2'), 'node-active': isNodeActive('n2') }]"
-                                :style="getNodeStyle('n2')" @mouseenter="handleNodeHoverEnter('n2')"
-                                @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('n2')" @blur="handleNodeBlur"
-                                @click="handleNodeClick('n2')">
+                                :class="['glass-strong feature-card rounded-xl px-4 py-3 w-full text-center cursor-pointer transition-transform duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('n2'), 'node-active': isNodeActive('n2') }]"
+                                :style="Object.assign({ '--glow-color': '#0EA5E9' }, getNodeStyle('n2'))"
+                                @mouseenter="handleNodeHoverEnter('n2')" @mouseleave="handleNodeHoverLeave"
+                                @focus="handleNodeFocus('n2')" @blur="handleNodeBlur" @click="handleNodeClick('n2')">
                                 <i
                                     class="bi bi-info-circle-fill absolute top-2 right-2 text-xs opacity-40 group-hover:opacity-100 transition-opacity"></i>
                                 <div>Choose payout: Custodial</div>
                                 <div>or Self‑custody</div>
                             </div>
                             <div ref="n3" data-node-id="n3" tabindex="0"
-                                :class="['glass-strong rounded-xl px-4 py-3 w-full text-center cursor-pointer transition-all duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('n3'), 'node-active': isNodeActive('n3') }]"
-                                :style="getNodeStyle('n3')" @mouseenter="handleNodeHoverEnter('n3')"
-                                @mouseleave="handleNodeHoverLeave" @focus="handleNodeFocus('n3')" @blur="handleNodeBlur"
-                                @click="handleNodeClick('n3')">
+                                :class="['glass-strong feature-card rounded-xl px-4 py-3 w-full text-center cursor-pointer transition-transform duration-300 hover:scale-105 relative group', { 'node-muted': hoveredNodeId && !isNodeActive('n3'), 'node-active': isNodeActive('n3') }]"
+                                :style="Object.assign({ '--glow-color': '#0EA5E9' }, getNodeStyle('n3'))"
+                                @mouseenter="handleNodeHoverEnter('n3')" @mouseleave="handleNodeHoverLeave"
+                                @focus="handleNodeFocus('n3')" @blur="handleNodeBlur" @click="handleNodeClick('n3')">
                                 <i
                                     class="bi bi-info-circle-fill absolute top-2 right-2 text-xs opacity-40 group-hover:opacity-100 transition-opacity"></i>
                                 Get BAT: Earn via ads or add funds
@@ -467,10 +479,11 @@ onBeforeUnmount(() => {
                 <!-- Row 2: Users and Creators adjacent -->
                 <div class="grid gap-8 grid-cols-1 lg:grid-cols-2 place-items-center">
                     <!-- Users lane -->
-                    <div ref="usersContainer" class="glass rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[480px]">
+                    <div ref="usersContainer"
+                        class="glass-strong rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[480px]">
                         <h3
                             class="text-white text-[20px] font-semibold text-center flex items-center justify-center gap-2">
-                            <i class="bi bi-people-fill text-gradient-blue"></i>
+                            <i class="bi bi-people-fill text-braveBlue"></i>
                             Users
                         </h3>
                         <div class="flex-1 flex flex-col gap-4 justify-between">
@@ -525,10 +538,11 @@ onBeforeUnmount(() => {
                     </div>
 
                     <!-- Creators lane -->
-                    <div ref="creatorsContainer" class="glass rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[480px]">
+                    <div ref="creatorsContainer"
+                        class="glass-strong rounded-2xl p-6 flex flex-col gap-4 w-[520px] h-[480px]">
                         <h3
                             class="text-white text-[20px] font-semibold text-center flex items-center justify-center gap-2">
-                            <i class="bi bi-palette-fill text-gradient-blue"></i>
+                            <i class="bi bi-palette-fill text-braveBlue"></i>
                             Creators
                         </h3>
                         <div class="flex-1 flex flex-col gap-4 justify-between">
@@ -578,7 +592,7 @@ onBeforeUnmount(() => {
         <BaseModal v-if="selectedNode" :open="modalOpen" :title="selectedNode.whyMatters"
             :bullets="selectedNode.bullets" :ctas="selectedNode.ctas" @close="closeModal">
             <div class="flex items-center gap-3 mb-4">
-                <i :class="['text-3xl', selectedNode.icon, 'text-gradient-blue']"></i>
+                <i :class="['text-3xl', selectedNode.icon, 'text-braveBlue']"></i>
                 <h3 class="text-xl font-semibold text-white">{{ selectedNode.label }}</h3>
             </div>
             <p class="text-text-100 mb-4">{{ selectedNode.summary }}</p>
@@ -605,19 +619,19 @@ svg {
 .node-muted {
     opacity: 0.35;
     filter: grayscale(0.5);
-    transition: opacity var(--dur-med) var(--ease-standard), filter var(--dur-med) var(--ease-standard), transform var(--dur-med) var(--ease-standard);
+    transition: opacity var(--dur-med, 600ms) var(--ease-standard, cubic-bezier(0.22, 0.61, 0.36, 1)), filter var(--dur-med, 600ms) var(--ease-standard, cubic-bezier(0.22, 0.61, 0.36, 1)), transform var(--dur-med, 600ms) var(--ease-standard, cubic-bezier(0.22, 0.61, 0.36, 1));
 }
 
 .node-active {
     transform: scale(1.02);
-    transition: transform var(--dur-med) var(--ease-standard), box-shadow var(--dur-med) var(--ease-standard), opacity var(--dur-med) var(--ease-standard), filter var(--dur-med) var(--ease-standard);
+    transition: transform var(--dur-med, 600ms) var(--ease-standard, cubic-bezier(0.22, 0.61, 0.36, 1)), box-shadow var(--dur-med, 600ms) var(--ease-standard, cubic-bezier(0.22, 0.61, 0.36, 1)), opacity var(--dur-med, 600ms) var(--ease-standard, cubic-bezier(0.22, 0.61, 0.36, 1)), filter var(--dur-med, 600ms) var(--ease-standard, cubic-bezier(0.22, 0.61, 0.36, 1));
 }
 
 /* Edge states */
 .edge-muted {
     opacity: 0.2;
     stroke-opacity: 0.25;
-    transition: opacity var(--dur-med) var(--ease-standard), stroke-opacity var(--dur-med) var(--ease-standard), filter var(--dur-med) var(--ease-standard);
+    transition: opacity var(--dur-med, 600ms) var(--ease-standard, cubic-bezier(0.22, 0.61, 0.36, 1)), stroke-opacity var(--dur-med, 600ms) var(--ease-standard, cubic-bezier(0.22, 0.61, 0.36, 1)), filter var(--dur-med, 600ms) var(--ease-standard, cubic-bezier(0.22, 0.61, 0.36, 1));
     transition-delay: 0ms;
 }
 
@@ -625,15 +639,15 @@ svg {
     opacity: 1;
     filter: drop-shadow(0 0 6px rgba(14, 165, 233, 0.6));
     stroke-opacity: 1;
-    transition: opacity var(--dur-med) var(--ease-standard), stroke-opacity var(--dur-med) var(--ease-standard), filter var(--dur-med) var(--ease-standard);
-    transition-delay: 50ms;
+    transition: opacity var(--dur-med, 600ms) var(--ease-standard, cubic-bezier(0.22, 0.61, 0.36, 1)), stroke-opacity var(--dur-med, 600ms) var(--ease-standard, cubic-bezier(0.22, 0.61, 0.36, 1)), filter var(--dur-med, 600ms) var(--ease-standard, cubic-bezier(0.22, 0.61, 0.36, 1));
+    transition-delay: 100ms;
 }
 
 /* Base edge rule to ensure transitions apply even before state class swap */
 .edge path,
 .edge line,
 .edge circle {
-    transition: opacity var(--dur-med) var(--ease-standard), stroke-opacity var(--dur-med) var(--ease-standard), filter var(--dur-med) var(--ease-standard);
+    transition: opacity var(--dur-med, 600ms) var(--ease-standard, cubic-bezier(0.22, 0.61, 0.36, 1)), stroke-opacity var(--dur-med, 600ms) var(--ease-standard, cubic-bezier(0.22, 0.61, 0.36, 1)), filter var(--dur-med, 600ms) var(--ease-standard, cubic-bezier(0.22, 0.61, 0.36, 1));
 }
 
 /* Arrow animation - always active on all edges */
