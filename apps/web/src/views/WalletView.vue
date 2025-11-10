@@ -2,6 +2,8 @@
 import { ref, computed, watch } from 'vue';
 import BraveFlowChart from '../components/BraveFlowChart.vue';
 import TipSection from '../components/TipSection.vue';
+import CTASection from '../components/CTASection.vue';
+import CTACard from '../components/CTACard.vue';
 import { useMultiChainWallet } from '../composables/useMultiChainWallet';
 import { useIntersectionObserver } from '../composables/useIntersectionObserver';
 import { useCardTilt } from '../composables/useCardTilt';
@@ -193,7 +195,7 @@ const currentRows = () => (perspective.value === 'users' ? userRows : creatorRow
                                     <tr class="text-gray-400">
                                         <th scope="col" class="py-3 pr-6">Criteria</th>
                                         <th v-for="w in wallets" :key="w.key" scope="col" class="py-3 pr-6">{{ w.label
-                                            }}</th>
+                                        }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="align-top">
@@ -316,7 +318,9 @@ const currentRows = () => (perspective.value === 'users' ? userRows : creatorRow
         </div>
         <!-- Get Set Up with Brave Wallet -->
         <div class="max-w-7xl mx-auto mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold mb-8 text-left transition-all duration-700 text-gradient-blue">
+            <h2 ref="batTippingRef"
+                class="text-3xl md:text-4xl font-bold mb-8 text-left transition-all duration-700 text-gradient-blue"
+                :class="{ 'opacity-0 translate-y-8': !batTippingVisible, 'opacity-100 translate-y-0': batTippingVisible }">
                 <i class="bi bi-piggy-bank text-braveBlue/80" aria-hidden="true"></i>
                 Now Try Out Tipping:
             </h2>
@@ -333,59 +337,12 @@ const currentRows = () => (perspective.value === 'users' ? userRows : creatorRow
         </div>
 
         <!-- CTA Section -->
-        <div class="max-w-3xl mx-auto mt-16 text-center space-y-6">
-            <h3 class="text-2xl font-bold text-gradient-blue transition-all duration-700 opacity-100 translate-y-0">
-                <i class="bi bi-search text-braveBlue/80" aria-hidden="true"></i>
-                Ready to explore?
-            </h3>
-            <div class="flex flex-wrap gap-4 justify-center">
-                <!-- Creator Hub Card -->
-                <RouterLink to="/creator-hub" @mousemove="handleCardMouseMove" @mouseleave="handleCardMouseLeave"
-                    class="group relative glass rounded-2xl p-6 md:p-8 cursor-pointer feature-card flex flex-col w-[280px] md:w-[320px] text-left"
-                    :style="{ '--glow-color': '#FF6A00' }">
-                    <!-- Gradient Overlay -->
-                    <div
-                        class="absolute inset-0 rounded-2xl bg-brave-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300">
-                    </div>
-                    <!-- Content -->
-                    <div class="relative z-10 flex flex-col h-full">
-                        <i class="bi bi-music-note-beamed text-braveOrange text-4xl md:text-5xl mb-3"
-                            aria-hidden="true"></i>
-                        <h4 class="text-xl md:text-2xl font-bold text-white mb-2">Creator Hub</h4>
-                        <p class="text-gray-300 text-sm md:text-base mb-4 flex-grow">Music & content monetization.</p>
-                        <div
-                            class="text-braveOrange flex items-center gap-2 font-semibold transition-all duration-300 mt-auto">
-                            <span>Explore</span>
-                            <i class="bi bi-arrow-right transition-transform duration-300 group-hover:translate-x-2"
-                                aria-hidden="true"></i>
-                        </div>
-                    </div>
-                </RouterLink>
-
-                <!-- Bonus Feature Card -->
-                <RouterLink to="/surprise" @mousemove="handleCardMouseMove" @mouseleave="handleCardMouseLeave"
-                    class="group relative glass rounded-2xl p-6 md:p-8 cursor-pointer feature-card flex flex-col w-[280px] md:w-[320px] text-left"
-                    :style="{ '--glow-color': '#7C3AED' }">
-                    <!-- Gradient Overlay -->
-                    <div
-                        class="absolute inset-0 rounded-2xl bg-brave-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300">
-                    </div>
-                    <!-- Content -->
-                    <div class="relative z-10 flex flex-col h-full">
-                        <i class="bi bi-gift text-bravePurple text-4xl md:text-5xl mb-3" aria-hidden="true"></i>
-                        <h4 class="text-xl md:text-2xl font-bold text-white mb-2">Bonus Feature</h4>
-                        <p class="text-gray-300 text-sm md:text-base mb-4 flex-grow">Only the bravest dare to explore.
-                        </p>
-                        <div
-                            class="text-bravePurple flex items-center gap-2 font-semibold transition-all duration-300 mt-auto">
-                            <span>Explore</span>
-                            <i class="bi bi-arrow-right transition-transform duration-300 group-hover:translate-x-2"
-                                aria-hidden="true"></i>
-                        </div>
-                    </div>
-                </RouterLink>
-            </div>
-        </div>
+        <CTASection>
+            <CTACard to="/creator-hub" icon="bi-music-note-beamed" title="Creator Hub"
+                description="Music & content monetization." color-class="text-braveOrange" glow-color="#FF6A00" />
+            <CTACard to="/surprise" icon="bi-gift" title="Bonus Feature" description="Only the bravest dare to explore."
+                color-class="text-bravePurple" glow-color="#7C3AED" />
+        </CTASection>
     </div>
 
 </template>

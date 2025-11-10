@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import CTASection from '../components/CTASection.vue';
+import CTACard from '../components/CTACard.vue';
 import { useIntersectionObserver } from '../composables/useIntersectionObserver';
 import { useCardTilt } from '../composables/useCardTilt';
 
@@ -77,7 +79,7 @@ onMounted(() => {
                             web without being the product.
                         </p>
                     </div>
-                      <div class="mt-6 text-center">
+                    <div class="mt-6 text-center">
                         <RouterLink to="/wallet#get-set-up"
                             class="group/link text-sm text-neutral-400 hover:text-bravePurple transition-colors inline-flex items-center gap-1">
                             <span>Get Set Up</span>
@@ -91,62 +93,13 @@ onMounted(() => {
                 </div>
 
                 <!-- CTA Section -->
-                <div class="max-w-3xl mx-auto mt-16 text-center space-y-6">
-                    <h3
-                        class="text-2xl font-bold text-gradient-purple transition-all duration-700 opacity-100 translate-y-0">
-                        <i class="bi bi-search text-bravePurple/80" aria-hidden="true"></i>
-                        Ready to explore?
-                    </h3>
-                    <div class="flex flex-wrap gap-4 justify-center">
-                        <!-- Creator Hub Card -->
-                        <RouterLink to="/creator-hub" @mousemove="handleCardMouseMove"
-                            @mouseleave="handleCardMouseLeave"
-                            class="group relative glass rounded-2xl p-6 md:p-8 cursor-pointer feature-card flex flex-col w-[280px] md:w-[320px] text-left"
-                            :style="{ '--glow-color': '#FF6A00' }">
-                            <!-- Gradient Overlay -->
-                            <div
-                                class="absolute inset-0 rounded-2xl bg-brave-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300">
-                            </div>
-                            <!-- Content -->
-                            <div class="relative z-10 flex flex-col h-full">
-                                <i class="bi bi-music-note-beamed text-braveOrange text-4xl md:text-5xl mb-3"
-                                    aria-hidden="true"></i>
-                                <h4 class="text-xl md:text-2xl font-bold text-white mb-2">Creator Hub</h4>
-                                <p class="text-gray-300 text-sm md:text-base mb-4 flex-grow">Music & content
-                                    monetization.</p>
-                                <div
-                                    class="text-braveOrange flex items-center gap-2 font-semibold transition-all duration-300 mt-auto">
-                                    <span>Explore</span>
-                                    <i class="bi bi-arrow-right transition-transform duration-300 group-hover:translate-x-2"
-                                        aria-hidden="true"></i>
-                                </div>
-                            </div>
-                        </RouterLink>
-
-                        <!-- Wallet Card -->
-                        <RouterLink to="/wallet" @mousemove="handleCardMouseMove" @mouseleave="handleCardMouseLeave"
-                            class="group relative glass rounded-2xl p-6 md:p-8 cursor-pointer feature-card flex flex-col w-[280px] md:w-[320px] text-left"
-                            :style="{ '--glow-color': '#0EA5E9' }">
-                            <!-- Gradient Overlay -->
-                            <div
-                                class="absolute inset-0 rounded-2xl bg-brave-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300">
-                            </div>
-                            <!-- Content -->
-                            <div class="relative z-10 flex flex-col h-full">
-                                <i class="bi bi-wallet2 text-braveBlue text-4xl md:text-5xl mb-3"
-                                    aria-hidden="true"></i>
-                                <h4 class="text-xl md:text-2xl font-bold text-white mb-2">Getting Set Up</h4>
-                                <p class="text-gray-300 text-sm md:text-base mb-4 flex-grow">Wallet & BAT guide.</p>
-                                <div
-                                    class="text-braveBlue flex items-center gap-2 font-semibold transition-all duration-300 mt-auto">
-                                    <span>Explore</span>
-                                    <i class="bi bi-arrow-right transition-transform duration-300 group-hover:translate-x-2"
-                                        aria-hidden="true"></i>
-                                </div>
-                            </div>
-                        </RouterLink>
-                    </div>
-                </div>
+                <CTASection title-color-class="text-gradient-purple" icon-class="text-bravePurple/80">
+                    <CTACard to="/creator-hub" icon="bi-music-note-beamed" title="Creator Hub"
+                        description="Music & content monetization." color-class="text-braveOrange"
+                        glow-color="#FF6A00" />
+                    <CTACard to="/wallet" icon="bi-wallet2" title="Getting Set Up" description="Wallet & BAT guide."
+                        color-class="text-braveBlue" glow-color="#0EA5E9" />
+                </CTASection>
 
             </div>
         </div>

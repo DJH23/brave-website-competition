@@ -25,9 +25,12 @@ const showSupportModal = ref(false);
 //  - Default fallback blue
 const pageTitleColorClass = computed(() => {
     const p = route.path.toLowerCase();
+    if (p === '/' || p === '/home') return 'text-gradient-pink';
     if (p.startsWith('/music')) return 'text-gradient-orange';
     if (p.startsWith('/wallet')) return 'text-gradient-blue';
     if (p.startsWith('/privacy')) return 'text-gradient-purple';
+    if (p.startsWith('/creator-hub')) return 'text-gradient-orange';
+    if (p.startsWith('/surprise')) return 'text-gradient-purple';
     return 'text-gradient-blue';
 });
 
@@ -198,7 +201,7 @@ const onLeave = (el: Element, done: () => void) => {
                             <li>
                                 <button type="button" @click="openSupportModal" aria-label="Support this project (tip)"
                                     class="w-full text-left flex items-center gap-2 hover:text-white transition-colors focus:outline-none focus:ring-2 rounded-sm"
-                                    :class="pageTitleColorClass === 'text-gradient-orange' ? 'focus:ring-braveOrange' : pageTitleColorClass === 'text-gradient-purple' ? 'focus:ring-bravePurple' : 'focus:ring-braveBlue'">
+                                    :class="pageTitleColorClass === 'text-gradient-pink' ? 'focus:ring-bravePink' : pageTitleColorClass === 'text-gradient-orange' ? 'focus:ring-braveOrange' : pageTitleColorClass === 'text-gradient-purple' ? 'focus:ring-bravePurple' : 'focus:ring-braveBlue'">
                                     <i class="bi bi-heart-fill text-lg" aria-hidden="true"></i>
                                     <span>Support Project</span>
                                 </button>

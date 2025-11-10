@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import MusicProductions from '../components/MusicProductions.vue';
+import CTASection from '../components/CTASection.vue';
+import CTACard from '../components/CTACard.vue';
 import { useIntersectionObserver } from '../composables/useIntersectionObserver';
 import { useCardTilt } from '../composables/useCardTilt';
 
@@ -147,11 +149,9 @@ const currentRows = () => (perspective.value === 'creators' ? creatorRows : user
 
         <!-- Why This Matters (Comparison Table) -->
         <div class="max-w-7xl mx-auto mb-16">
-            <h2
-                ref="whyMattersRef"
+            <h2 ref="whyMattersRef"
                 class="text-3xl md:text-4xl font-bold mb-8 text-left transition-all duration-700 text-gradient-orange flex items-center gap-3"
-                :class="{ 'opacity-0 translate-y-8': !whyMattersVisible, 'opacity-100 translate-y-0': whyMattersVisible }"
-            >
+                :class="{ 'opacity-0 translate-y-8': !whyMattersVisible, 'opacity-100 translate-y-0': whyMattersVisible }">
                 <i class="bi bi-info-circle text-braveOrange/80" aria-hidden="true"></i>
                 <span>Why This Matters</span>
             </h2>
@@ -183,7 +183,7 @@ const currentRows = () => (perspective.value === 'creators' ? creatorRows : user
                                     <tr class="text-gray-400">
                                         <th scope="col" class="py-3 pr-6">Criteria</th>
                                         <th v-for="p in platforms" :key="p.key" scope="col" class="py-3 pr-6">{{ p.label
-                                        }}</th>
+                                            }}</th>
                                     </tr>
                                 </thead>
                                 <tbody class="align-top">
@@ -256,57 +256,11 @@ const currentRows = () => (perspective.value === 'creators' ? creatorRows : user
         </div>
 
         <!-- CTA Section -->
-        <div class="max-w-3xl mx-auto mt-16 text-center space-y-6">
-            <h3 class="text-2xl font-bold text-gradient-orange transition-all duration-700 opacity-100 translate-y-0">
-                <i class="bi bi-search text-braveOrange/80" aria-hidden="true"></i>
-                Ready to explore?
-            </h3>
-            <div class="flex flex-wrap gap-4 justify-center">
-                <!-- Wallet Card -->
-                <RouterLink to="/wallet" @mousemove="handleCardMouseMove" @mouseleave="handleCardMouseLeave"
-                    class="group relative glass rounded-2xl p-6 md:p-8 cursor-pointer feature-card flex flex-col w-[280px] md:w-[320px] text-left"
-                    :style="{ '--glow-color': '#0EA5E9' }">
-                    <!-- Gradient Overlay -->
-                    <div
-                        class="absolute inset-0 rounded-2xl bg-brave-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300">
-                    </div>
-                    <!-- Content -->
-                    <div class="relative z-10 flex flex-col h-full">
-                        <i class="bi bi-wallet2 text-braveBlue text-4xl md:text-5xl mb-3" aria-hidden="true"></i>
-                        <h4 class="text-xl md:text-2xl font-bold text-white mb-2">Getting Set Up</h4>
-                        <p class="text-gray-300 text-sm md:text-base mb-4 flex-grow">Wallet & BAT guide.</p>
-                        <div
-                            class="text-braveBlue flex items-center gap-2 font-semibold transition-all duration-300 mt-auto">
-                            <span>Explore</span>
-                            <i class="bi bi-arrow-right transition-transform duration-300 group-hover:translate-x-2"
-                                aria-hidden="true"></i>
-                        </div>
-                    </div>
-                </RouterLink>
-
-                <!-- Bonus Feature Card -->
-                <RouterLink to="/surprise" @mousemove="handleCardMouseMove" @mouseleave="handleCardMouseLeave"
-                    class="group relative glass rounded-2xl p-6 md:p-8 cursor-pointer feature-card flex flex-col w-[280px] md:w-[320px] text-left"
-                    :style="{ '--glow-color': '#7C3AED' }">
-                    <!-- Gradient Overlay -->
-                    <div
-                        class="absolute inset-0 rounded-2xl bg-brave-gradient opacity-0 group-hover:opacity-10 transition-opacity duration-300">
-                    </div>
-                    <!-- Content -->
-                    <div class="relative z-10 flex flex-col h-full">
-                        <i class="bi bi-gift text-bravePurple text-4xl md:text-5xl mb-3" aria-hidden="true"></i>
-                        <h4 class="text-xl md:text-2xl font-bold text-white mb-2">Bonus Feature</h4>
-                        <p class="text-gray-300 text-sm md:text-base mb-4 flex-grow">Only the bravest dare to explore.
-                        </p>
-                        <div
-                            class="text-bravePurple flex items-center gap-2 font-semibold transition-all duration-300 mt-auto">
-                            <span>Explore</span>
-                            <i class="bi bi-arrow-right transition-transform duration-300 group-hover:translate-x-2"
-                                aria-hidden="true"></i>
-                        </div>
-                    </div>
-                </RouterLink>
-            </div>
-        </div>
+        <CTASection title-color-class="text-gradient-orange" icon-class="text-braveOrange/80">
+            <CTACard to="/wallet" icon="bi-wallet2" title="Getting Set Up" description="Wallet & BAT guide."
+                color-class="text-braveBlue" glow-color="#0EA5E9" />
+            <CTACard to="/surprise" icon="bi-gift" title="Bonus Feature" description="Only the bravest dare to explore."
+                color-class="text-bravePurple" glow-color="#7C3AED" />
+        </CTASection>
     </div>
 </template>

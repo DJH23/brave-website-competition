@@ -29,6 +29,14 @@ const resolvedDescription = computed(() => props.description ?? (
         : 'Select which blockchain to use for this purchase:'
 ));
 
+// Compute the solid color for "Or Get Set Up" based on titleColorClass
+const getLinkColor = computed(() => {
+    if (props.titleColorClass === 'text-gradient-orange') return 'text-braveOrange';
+    if (props.titleColorClass === 'text-gradient-purple') return 'text-bravePurple';
+    if (props.titleColorClass === 'text-gradient-pink') return 'text-bravePink';
+    return 'text-braveBlue';
+});
+
 function close() {
     emit('close');
 }
@@ -121,8 +129,9 @@ function onCardMouseLeave(event: MouseEvent) {
 
                     <!-- Get Set Up Link -->
                     <div class="mt-6 text-center">
-                        <RouterLink to="/wallet#get-set-up"
-                            class="group/link text-sm text-neutral-400 hover:text-braveBlue transition-colors inline-flex items-center gap-1">
+                        <RouterLink to="/wallet#get-set-up" @click="close"
+                            class="group/link text-sm transition-colors inline-flex items-center gap-1 hover:opacity-80"
+                            :class="getLinkColor">
                             <span>Or Get Set Up</span>
                             <svg class="w-4 h-4 transition-transform duration-300 group-hover/link:translate-x-2"
                                 fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

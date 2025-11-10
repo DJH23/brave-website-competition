@@ -57,54 +57,33 @@ const routes: RouteRecordRaw[] = [
   },
 ];
 
-// Helper: wait for an element to appear (lazy-loaded views / transitions)
-function waitForEl(
-  selector: string,
-  maxAttempts = 30,
-  interval = 50
-): Promise<{ el: string; behavior: ScrollBehavior } | { top: number }> {
-  return new Promise((resolve) => {
-    let attempts = 0;
-    const check = () => {
-      const el = document.querySelector(selector);
-      if (el) {
-        resolve({ el: selector, behavior: "smooth" });
-        return;
-      }
-      attempts++;
-      if (attempts >= maxAttempts) {
-        // Fallback: just go to top if anchor never appears
-        resolve({ top: 0 });
-        return;
-      }
-      setTimeout(check, interval);
-    };
-    // Start checking after next frame (ensures component mount cycle begins)
-    requestAnimationFrame(check);
-  });
-}
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes,
-  scrollBehavior(to, from, savedPosition) {
-    if (savedPosition) return savedPosition;
-
-    if (to.hash) {
-      // Immediate attempt first; if not found, wait.
-      if (document.querySelector(to.hash)) {
-        return { el: to.hash, behavior: "smooth" };
-      }
-      return waitForEl(to.hash);
-    }
-    return { top: 0 };
-  },
 });
 
-// Update page title on route change (no scroll logic here)
+// Update page title on route change
 router.beforeEach((to, _from, next) => {
   document.title = (to.meta.title as string) || "Privacy-First Creator Hub";
   next();
+});
+
+// Handle hash navigation after component is mounted
+router.afterEach((to) => {
+  if (to.hash === "#get-set-up") {
+    // Wait for the element to appear in the DOM
+    const checkElement = () => {
+      const element = document.querySelector(to.hash);
+      if (element) {
+        element.scrollIntoView({ behavior: "smooth", block: "start" });
+      } else {
+        // Try again on next frame
+        requestAnimationFrame(checkElement);
+      }
+    };
+    // Start checking after a brief delay to let the component mount
+    setTimeout(checkElement, 50);
+  }
 });
 
 export default router;
