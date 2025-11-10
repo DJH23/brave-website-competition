@@ -1,3 +1,8 @@
 User-agent: *
 Allow: /
-Sitemap: /sitemap.xml
+Crawl-delay: 1
+
+# IPFS-friendly: no backend to protect
+# Disallow: /api/
+
+Sitemap: https://djh23.brave.link/sitemap.xml
